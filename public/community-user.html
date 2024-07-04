@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/reset.css" />
+    <link rel="stylesheet" href="/public/community.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="wrap">
+      <header>
+        <div style="position: relative">
+          <div class="align-center">
+            <p class="title pos">아무 말 대잔치</p>
+          </div>
+          <div class="content-header">
+            <div
+              class="content-header pos"
+              style="height: 104px; display: flex; align-items: center"
+            >
+              <div
+                class="profile-box profile-left cursor"
+                onclick="location.href='/post/list'"
+              >
+                <img class="profile-pic" src="/public/images/back.png" />
+              </div>
+              <div class="top-opt profile-box profile-right" style="z-index: 2">
+                <img class="profile-pic" src="/public/images/snoopy.jpg" />
+              </div>
+              <ul class="opt-pos hide">
+                <li class="opt-box cursor">회원정보수정</li>
+                <li class="opt-box cursor">비밀번호수정</li>
+                <li class="opt-box cursor">로그아웃</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="height: 104px"></div>
+        <hr class="horizontal-rule" />
+      </header>
+
+      <article class="contents content-header">
+        <p class="pagetitle">회원정보수정</p>
+        <div class="log-in" style="margin: auto">
+          <div style="margin-top: 20px">
+            <p class="labeltxt">프로필 사진</p>
+            <p class="helpertxt">* helper text</p>
+            <div class="profile-detailpic" style="margin: auto">
+              <img class="profile-pic" src="/public/images/snoopy.jpg" />
+              <div class="profile-black"></div>
+              <div style="text-align: center">
+                <button class="btn-change">변경</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 20px; margin-bottom: 20px">
+            <foam class="log-in">
+              <label class="labeltxt">이메일</label>
+              <p class="usermail">sample@exam.com</p>
+              <label class="labeltxt">닉네임</label>
+              <input class="input-box" maxlength="10" />
+              <p class="helpertxt">* helper text</p>
+              <button class="login-button" style="margin-top: 20px">
+                수정하기
+              </button>
+              <p class="txtlink"><a href="#" class="link">회원 탈퇴</a></p>
+            </foam>
+          </div>
+          <div id="toast">수정완료</div>
+        </div>
+      </article>
+
+      <!-- 회원탈퇴 모달창 -->
+      <div class="modalBackground hide">
+        <div class="modalWrapper">
+          <div class="modal-layout">
+            <p class="modal-title">회원 탈퇴 하시겠습니까?</p>
+            <p class="modal-txt">작성된 게시글과 댓글은 삭제됩니다.</p>
+            <div style="text-align: center">
+              <button class="modal-btn-cancel cursor">취소</button>
+              <button class="modal-btn-complete cursor">완료</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/public/community-user.js"></script>
+  </body>
+</html>

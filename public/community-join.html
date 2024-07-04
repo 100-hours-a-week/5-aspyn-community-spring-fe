@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/reset.css" />
+    <link rel="stylesheet" href="/public/community.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="wrap">
+      <header>
+        <div style="position: relative">
+          <div class="align-center">
+            <p class="title pos">아무 말 대잔치</p>
+          </div>
+          <div class="content-header">
+            <div
+              class="content-header pos"
+              style="
+                z-index: 1;
+                height: 104px;
+                display: flex;
+                align-items: center;
+              "
+            >
+              <div
+                class="profile-box profile-left cursor"
+                onclick="location.href='/'"
+              >
+                <img class="profile-pic" src="/public/images/back.png" />
+              </div>
+              <!-- <div class="profile-box profile-right">
+                            <img class="profile-pic" src="images/snoopy.jpg" >
+                        </div> -->
+            </div>
+          </div>
+        </div>
+        <div style="height: 104px"></div>
+
+        <hr class="horizontal-rule" />
+      </header>
+
+      <article class="contents content-header">
+        <p class="pagetitle">회원가입</p>
+        <div class="log-in" style="margin: auto">
+          <div style="margin-top: 20px">
+            <p class="labeltxt">프로필 사진</p>
+            <p class="helpertxt">* helper text</p>
+            <div class="profile-detailpic" style="margin: auto"></div>
+          </div>
+          <div style="margin-top: 20px; margin-bottom: 20px">
+            <foam class="log-in">
+              <label class="labeltxt">이메일*</label>
+              <input class="input-box" placeholder="이메일을 입력하세요" />
+              <p class="helpertxt">* helper text</p>
+              <label class="labeltxt">비밀번호*</label>
+              <input
+                class="input-box"
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+              />
+              <p class="helpertxt">* helper text</p>
+              <label class="labeltxt">비밀번호 확인*</label>
+              <input
+                class="input-box"
+                type="password"
+                placeholder="비밀번호를 한번 더 입력하세요"
+              />
+              <p class="helpertxt">* helper text</p>
+              <label class="labeltxt">닉네임*</label>
+              <input
+                class="input-box"
+                maxlength="10"
+                placeholder="닉네임을 입력하세요"
+              />
+              <p class="helpertxt">* helper text</p>
+              <button class="login-button" style="margin-top: 20px">
+                회원가입
+              </button>
+              <p class="txtlink cursor">
+                <a href="/" class="link">로그인하러 가기</a>
+              </p></foam
+            >
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <script src="/public/community-join.js"></script>
+  </body>
+</html>
