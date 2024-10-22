@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetch(`http://localhost:8080/userinfo`, {
+      const response = await fetch(`http://localhost:8080/api/userinfo`, {
         method: "GET",
         credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
       });
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-          const response = await fetch("http://localhost:8080/post/edit", {
+          const response = await fetch("http://localhost:8080/api/post/edit", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

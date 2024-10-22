@@ -1,7 +1,7 @@
 // 로그인 유저 확인
 async function fetchUserInfo() {
   try {
-    const response = await fetch(`http://localhost:8080/userinfo`, {
+    const response = await fetch(`http://localhost:8080/api/userinfo`, {
       method: "GET",
       credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
     });
@@ -45,7 +45,7 @@ document.getElementsByClassName("opt-box")[1].onclick = () => {
 };
 // 로그아웃
 document.getElementsByClassName("opt-box")[2].onclick = () => {
-  fetch(`http://localhost:8080/user/logout`, {
+  fetch(`http://localhost:8080/api/user/logout`, {
     method: "POST",
     credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
   })
@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
   const user = await fetchUserInfo();
   id = user.user_num;
 
-  fetch(`http://localhost:8080/user/loginUser/${id}`)
+  fetch(`http://localhost:8080/api/user/loginUser/${id}`)
     .then((response) => response.json())
     .then((data) => {
       let userEmail = data.email;
@@ -127,7 +127,7 @@ button.onclick = async () => {
   } else {
     // 중복확인
     if (nickname.value.length !== 0 && nickname.value.includes(" ") == false) {
-      fetch(`http://localhost:8080/user/isExist/${nickname.value}`)
+      fetch(`http://localhost:8080/api/user/isExist/${nickname.value}`)
         .then((response) => response.json())
         .then((data) => {
           // true이면 중복, false이면 중복된 닉네임 없음
@@ -135,7 +135,7 @@ button.onclick = async () => {
             alert("중복된 닉네임입니다. 다른 닉네임을 입력해주세요.");
           } else {
             // 닉네임 변경
-            fetch("http://localhost:8080/user/modifyNickname", {
+            fetch("http://localhost:8080/api/user/modifyNickname", {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -180,7 +180,7 @@ modalComplete.onclick = async () => {
   const user = await fetchUserInfo();
   loginUser = user.user_num;
 
-  fetch("http://localhost:8080/user/leaveUser", {
+  fetch("http://localhost:8080/api/user/leaveUser", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

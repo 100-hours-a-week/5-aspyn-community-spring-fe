@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetch(`http://localhost:8080/userinfo`, {
+      const response = await fetch(`http://localhost:8080/api/userinfo`, {
         method: "GET",
         credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
       });
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementsByClassName("modal-btn-complete")[1];
 
   //댓글 등록 버튼
-  const cmtSubBtn = document.getElementsByClassName("comment-sub-btn")[0];
-  const comment = document.getElementsByClassName("comment-int")[0]; //댓글 입력창
+  const commentSubBtn = document.getElementsByClassName("cmt-sub-btn")[0];
+  const comment = document.getElementsByClassName("cmt-int")[0]; //댓글 입력창
 
   //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
   let queryString = window.location.search;
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementsByClassName("modalBackground")[0].style.display =
         "none";
 
-      fetch(`http://localhost:8080/post/remove/${post}`, {
+      fetch(`http://localhost:8080/api/post/remove/${post}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -107,11 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // 댓글 입력 시 버튼 색상 변경
   comment.onkeyup = () => {
     if (comment.value.length > 0) {
-      cmtSubBtn.style.backgroundColor = "#7F6AEE";
-      cmtSubBtn.classList.add("cursor");
+      commentSubBtn.style.backgroundColor = "#7F6AEE";
+      commentSubBtn.classList.add("cursor");
     } else {
-      cmtSubBtn.style.backgroundColor = "#ACA0EB";
-      cmtSubBtn.classList.remove("cursor");
+      commentSubBtn.style.backgroundColor = "#ACA0EB";
+      commentSubBtn.classList.remove("cursor");
     }
   };
 
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 게시글&댓글 불러오기
-  fetch(`http://localhost:8080/post/${post}`)
+  fetch(`http://localhost:8080/api/post/${post}`)
     .then((response) => response.json())
     .then((data) => {
       const post = data.post;
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "none"; //모달창 미노출
 
           //댓글 삭제처리
-          fetch(`http://localhost:8080/cmt/remove/${removeSeq}`, {
+          fetch(`http://localhost:8080/api/comment/remove/${removeSeq}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -291,22 +291,22 @@ document.addEventListener("DOMContentLoaded", () => {
         // 수정할 댓글을 댓글창에 노출하고 댓글등록 버튼을 수정버튼으로 변경
         console.log("시퀀스 : ", seq);
 
-        fetch(`http://localhost:8080/cmt/${seq}`)
+        fetch(`http://localhost:8080/api/comment/${seq}`)
           .then((response) => response.json())
           .then((data) => {
             let modComment = data;
             console.log(modComment);
 
             comment.setAttribute("value", modComment.text);
-            cmtSubBtn.innerHTML = "댓글 수정";
+            commentSubBtn.innerHTML = "댓글 수정";
 
-            cmtSubBtn.onclick = function () {
+            commentSubBtn.onclick = function () {
               if (comment.value.length == 0) {
                 alert("수정할 댓글을 입력하세요");
               } else {
                 let modCmt = { seq: seq, text: comment.value };
 
-                fetch("http://localhost:8080/cmt/modify", {
+                fetch("http://localhost:8080/api/comment/modify", {
                   method: "PATCH",
                   headers: {
                     "Content-Type": "application/json",
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //-------------------------- 댓글 등록 -------------------------
   //댓글 등록 버튼
-  cmtSubBtn.onclick = async () => {
+  commentSubBtn.onclick = async () => {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
     loginUser = user.user_num;
@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("비회원은 댓글 작성이 불가합니다. 로그인 해주세요.");
     } else {
       // 새로운 댓글 등록
-      fetch("http://localhost:8080/cmt/edit", {
+      fetch("http://localhost:8080/api/comment/edit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

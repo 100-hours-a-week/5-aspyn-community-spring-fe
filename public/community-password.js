@@ -1,7 +1,7 @@
 // 로그인 유저 확인
 async function fetchUserInfo() {
   try {
-    const response = await fetch(`http://localhost:8080/userinfo`, {
+    const response = await fetch(`http://localhost:8080/api/userinfo`, {
       method: "GET",
       credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
     });
@@ -45,7 +45,7 @@ document.getElementsByClassName("opt-box")[1].onclick = () =>
 
 // 로그아웃
 document.getElementsByClassName("opt-box")[2].onclick = () => {
-  fetch(`http://localhost:8080/user/logout`, {
+  fetch(`http://localhost:8080/api/user/logout`, {
     method: "POST",
     credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
   })
@@ -126,7 +126,7 @@ button.onclick = async () => {
   loginUser = user.user_num;
 
   if (pw.value == pwch.value && strongPassword(pw.value) == true) {
-    fetch("http://localhost:8080/user/modifyPassword", {
+    fetch("http://localhost:8080/api/user/modifyPassword", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

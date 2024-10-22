@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   fetchPosts();
 
   function fetchPosts() {
-    fetch("http://localhost:8080/post/list")
+    fetch("http://localhost:8080/api/post/list")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // 로그인 유저 확인
 async function fetchUserInfo() {
   try {
-    const response = await fetch(`http://localhost:8080/userinfo`, {
+    const response = await fetch(`http://localhost:8080/api/userinfo`, {
       method: "GET",
       credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
     });
@@ -118,7 +118,7 @@ function createBox(item) {
 
 // 프로필 이미지를 서버에서 불러오는 함수
 function fetchProfileImage(userId) {
-  return fetch(`http://localhost:8080/profile/${userId}`)
+  return fetch(`http://localhost:8080/api/profile/${userId}`)
     .then((response) => {
       if (response.ok) {
         return response.arrayBuffer();

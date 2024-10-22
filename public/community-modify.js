@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetch(`http://localhost:8080/userinfo`, {
+      const response = await fetch(`http://localhost:8080/api/userinfo`, {
         method: "GET",
         credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
       });
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginUser = user.user_num;
 
     //수정할 게시글 불러오기
-    fetch(`http://localhost:8080/post/${post}`)
+    fetch(`http://localhost:8080/api/post/${post}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 user_num: loginUser,
               };
               if (title.value.length !== 0 && content.value.length !== 0) {
-                fetch(`http://localhost:8080/post/modify/${post}`, {
+                fetch(`http://localhost:8080/api/post/modify/${post}`, {
                   method: "P",
                   headers: {
                     "Content-Type": "application/json",

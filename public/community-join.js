@@ -117,7 +117,7 @@ joinBtn.onclick = () => {
     pw.value == pwch.value
     //&& korEngNum(nickname.value) == true
   ) {
-    fetch("http://localhost:8080/user/isExist", {
+    fetch("http://localhost:8080/api/user/isExist", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userInf),
@@ -126,7 +126,7 @@ joinBtn.onclick = () => {
       .then((data) => {
         if (data) {
           console.log("사용 가능한 이메일");
-          fetch("http://localhost:8080/user/join", {
+          fetch("http://localhost:8080/api/user/join", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userInf),
