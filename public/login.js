@@ -58,7 +58,7 @@ loginbtn.onclick = () => {
     password: pw.value,
   };
 
-  fetch("http://localhost:8080/user/login", {
+  fetch("http://localhost:8080/api/user/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(loginInf),
