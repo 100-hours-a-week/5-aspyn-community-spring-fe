@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return null;
         } else {
           // console.log("USER Info: ", data);
-          return data; // user_num : 'n'
+          return data; // user_id : 'n'
         }
       } else {
         throw new Error("로그인 해주세요.");
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   upload.onclick = async () => {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
-    loginUser = user.user_num;
+    loginUser = user.user_id;
 
     if (loginUser == null) {
       alert("비회원은 게시글 작성이 불가합니다. 로그인 해주세요.");
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let newContent = {
           title: title.value,
           text: content.value,
-          user_num: loginUser,
+          user_id: loginUser,
         };
 
         try {

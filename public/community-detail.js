@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return null;
         } else {
           // console.log("USER Info: ", data);
-          return data; // user_num : 'n'
+          return data; // user_id : 'n'
         }
       } else {
         throw new Error("로그인 해주세요.");
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadContent(item) {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
-    loginUser = user.user_num;
+    loginUser = user.user_id;
 
     // 줄바꿈 문자를 <br> 태그로 변환
     const post_text = item.text.replace(/\n/g, "<br>");
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("콘텐츠 가져오기 완료");
 
     // 세션 로그인 유저 넘버와 게시글 작성 유저 넘버가 같으면
-    if (loginUser == item.user_num) {
+    if (loginUser == item.user_id) {
       document
         .getElementsByClassName("profile-right")[1]
         .classList.remove("hide");
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function createCmtBox(c) {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
-    loginUser = user.user_num;
+    loginUser = user.user_id;
 
     let newDiv = document.createElement("div");
     newDiv.classList.add("detail-comment");
@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   commentSubBtn.onclick = async () => {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
-    loginUser = user.user_num;
+    loginUser = user.user_id;
 
     let newCmt = {
       postId: post,

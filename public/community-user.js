@@ -14,7 +14,7 @@ async function fetchUserInfo() {
         return null;
       } else {
         // console.log("USER Info: ", data);
-        return data; // user_num : 'n'
+        return data; // user_id : 'n'
       }
     } else {
       throw new Error("로그인 해주세요.");
@@ -69,7 +69,7 @@ button = document.getElementsByClassName("login-button")[0];
 window.addEventListener("load", async () => {
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
-  id = user.user_num;
+  id = user.user_id;
 
   fetch(`http://localhost:8080/api/user/loginUser/${id}`)
     .then((response) => response.json())
@@ -119,7 +119,7 @@ const toastOn = () => {
 button.onclick = async () => {
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
-  loginUser = user.user_num;
+  loginUser = user.user_id;
 
   if (!user) {
     alert("로그인 해주세요.");
@@ -141,7 +141,7 @@ button.onclick = async () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                user_num: loginUser,
+                user_id: loginUser,
                 nickname: nickname.value,
               }),
             }).then((response) => {
@@ -178,14 +178,14 @@ modalCancel.onclick = () => {
 modalComplete.onclick = async () => {
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
-  loginUser = user.user_num;
+  loginUser = user.user_id;
 
   fetch("http://localhost:8080/api/user/leaveUser", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ user_num: loginUser }),
+    body: JSON.stringify({ user_id: loginUser }),
   })
     .then((response) => response.json())
     .then((data) => {

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const user = await fetchUserInfo();
   if (!user) return;
 
-  const loginUser = user.user_num;
+  const loginUser = user.user_id;
   const profileImageElement = document.querySelector(".profile-pic");
 
   // 로그인 유저 프로필 이미지 가져오기
@@ -61,7 +61,7 @@ async function fetchUserInfo() {
         window.location.href = "/"; // 로그인 페이지로 리다이렉트
         return null;
       } else {
-        return data; // user_num: 'n'
+        return data; // user_id: 'n'
       }
     } else {
       alert("로그인 해주세요.");
@@ -102,7 +102,7 @@ function createBox(item) {
   const profilePic = newDiv.querySelector(".profile-pic");
 
   // 게시글 작성자 프로필 이미지 가져오기
-  fetchProfileImage(item.user_num)
+  fetchProfileImage(item.user_id)
     .then((profileImageSrc) => {
       profilePic.src = profileImageSrc;
     })

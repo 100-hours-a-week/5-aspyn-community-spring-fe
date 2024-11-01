@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return null;
         } else {
           // console.log("USER Info: ", data);
-          return data; // user_num : 'n'
+          return data; // user_id : 'n'
         }
       } else {
         throw new Error("로그인 해주세요.");
@@ -51,13 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
   (async function () {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
-    if (!user || !user.user_num) {
+    if (!user || !user.user_id) {
       alert("로그인 해주세요.");
       window.location.href = "/";
       return;
     }
 
-    const loginUser = user.user_num;
+    const loginUser = user.user_id;
 
     //수정할 게시글 불러오기
     fetch(`http://localhost:8080/api/post/${post}`)
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const dbPost = data.post;
           title.value = dbPost.title; // 인풋박스의 value 속성 값 변경
           content.innerHTML = dbPost.text; // innerHTML을 value로 변경함
-          const postWriter = dbPost.user_num;
+          const postWriter = dbPost.user_id;
 
           // 로그인 유저와 콘텐츠 작성 유저가 같을 시에만 수정 가능
           if (loginUser == postWriter) {
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 id: post,
                 title: title.value,
                 text: content.value,
-                user_num: loginUser,
+                user_id: loginUser,
               };
               if (title.value.length !== 0 && content.value.length !== 0) {
                 fetch(`http://localhost:8080/api/post/modify/${post}`, {

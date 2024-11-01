@@ -14,7 +14,7 @@ async function fetchUserInfo() {
         return null;
       } else {
         // console.log("USER Info: ", data);
-        return data; // user_num : 'n'
+        return data; // user_id : 'n'
       }
     } else {
       throw new Error("로그인 해주세요.");
@@ -123,7 +123,7 @@ const toastOn = () => {
 button.onclick = async () => {
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
-  loginUser = user.user_num;
+  loginUser = user.user_id;
 
   if (pw.value == pwch.value && strongPassword(pw.value) == true) {
     fetch("http://localhost:8080/api/user/modifyPassword", {
@@ -131,7 +131,7 @@ button.onclick = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ user_num: loginUser, password: pw.value }),
+      body: JSON.stringify({ user_id: loginUser, password: pw.value }),
     }).then((response) => {
       if (response) {
         toastOn();
