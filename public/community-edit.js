@@ -44,21 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (loginUser == null) {
       alert("비회원은 게시글 작성이 불가합니다. 로그인 해주세요.");
     } else {
-      if (title.value.length !== 0 && content.value.length !== 0) {
+      if (title.value.length !== 0 && content.value.length !== 0 && imageInput.files.length > 0) {
         // 게시글 등록 기능
-        let newContent = {
-          title: title.value,
-          text: content.value,
-          user_id: loginUser,
-        };
+        let newContent = new FormData();
+      newContent.append("title", title.value);
+      newContent.append("text", content.value);
+      newContent.append("user_id", loginUser);
+      newContent.append("image", imageInput.files[0]); // 이미지 파일 추가
 
         try {
           const response = await fetch("http://localhost:8080/api/post/edit", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newContent),
+            body: newContent, // FormData 전송
           });
 
           if (!response.ok) {
@@ -66,12 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           const resData = await response.json(); // JSON 데이터 추출
-          console.log(resData);
 
           if (!resData.errorCode) {
             alert("게시글이 성공적으로 저장되었습니다.");
             let post = resData.postId; // controller에서 { postId: newPostId } 이렇게 보내고 있음
-            console.log(post);
             window.location.href = `/post/detail?post=${post}`;
             console.log("게시글 등록 완료");
           } else {
