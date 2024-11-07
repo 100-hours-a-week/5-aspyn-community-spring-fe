@@ -48,17 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentSubBtn = document.getElementsByClassName("cmt-sub-btn")[0];
   const comment = document.getElementsByClassName("cmt-int")[0]; //댓글 입력창
 
-  //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
-  let queryString = window.location.search;
-  // 쿼리 문자열을 분석하여 객체로 변환
-  let params = new URLSearchParams(queryString);
-  // 특정 매개변수의 값을 가져오기
-  let post = params.get("post"); // 콘텐츠아이디 값
+  // URL에서 마지막 경로 세그먼트 가져오기
+  const pathSegments = window.location.pathname.split('/');
+  const postId = pathSegments[pathSegments.length - 1];
+
+  console.log("포스트 넘버 : " + postId);
 
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
   contentModBtn.onclick = () =>
-    (window.location.href = `/post/update?post=${post}`);
+    (window.location.href = `/post/update/${postId}`);
 
   // 게시글 삭제 버튼 클릭 시 모달창 노출
   contentDelBtn.onclick = function () {
@@ -78,12 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementsByClassName("modalBackground")[0].style.display =
         "none";
 
-      fetch(`http://localhost:8080/api/post/remove/${post}`, {
+      fetch(`http://localhost:8080/api/post/remove/${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: post }),
+        body: JSON.stringify({ id: postId }),
       })
         .then((response) => {
           if (!response.errorCode) {
@@ -164,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 게시글&댓글 불러오기
-  fetch(`http://localhost:8080/api/post/${post}`)
+  fetch(`http://localhost:8080/api/post/${postId}`)
     .then((response) => response.json())
     .then((data) => {
       const post = data.post;
@@ -340,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginUser = user.user_id;
 
     let newCmt = {
-      postId: post,
+      postId: postId,
       text: comment.value,
       userNum: loginUser,
     };

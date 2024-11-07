@@ -100,7 +100,7 @@ function createBox(item) {
 
   // 클릭 시 해당 게시글로 이동
   newDiv.onclick = () => {
-    window.location.href = `/post/detail?post=${item.id}`;
+    window.location.href = `/post/detail/${item.id}`;
   };
 }
 

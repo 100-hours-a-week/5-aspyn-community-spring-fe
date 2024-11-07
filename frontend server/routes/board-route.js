@@ -8,10 +8,10 @@ const BoardController = require("../controllers/board-controller");
 router.get("/post/list", BoardController.getList);
 
 // 게시글 상세 페이지
-router.get("/post/detail", BoardController.getDetail);
+router.get("/post/detail/:postId", BoardController.getDetail);
 
 // 게시글 수정 페이지
-router.get("/post/update", BoardController.getModify);
+router.get("/post/update/:postId", BoardController.getModify);
 
 // 게시글 신규 작성 페이지
 router.get("/post/new", BoardController.getEdit);
