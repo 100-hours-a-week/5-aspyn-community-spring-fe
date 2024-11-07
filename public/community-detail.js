@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
   contentModBtn.onclick = () =>
-    (window.location.href = `/post/modify?post=${post}`);
+    (window.location.href = `/post/update?post=${post}`);
 
   // 게시글 삭제 버튼 클릭 시 모달창 노출
   contentDelBtn.onclick = function () {
@@ -141,10 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 줄바꿈 문자를 <br> 태그로 변환
     const post_text = item.text.replace(/\n/g, "<br>");
 
-    // console.log(item);
+    console.log(item);
     title.innerHTML = item.title;
     writer.innerHTML = item.nickname;
-    date.innerHTML = formatDate(item.modify_date);
+    date.innerHTML = formatDate(item.updatedAt);
     contentTxt.innerHTML = `<p>${post_text}</p>`;
     document.getElementsByClassName("detail-view")[0].innerHTML =
       `<p style="font-size: 20px; font-weight: 700;">${item.view}</p>
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("콘텐츠 가져오기 완료");
 
     // 세션 로그인 유저 넘버와 게시글 작성 유저 넘버가 같으면
-    if (loginUser == item.user_id) {
+    if (loginUser == item.userId) {
       document
         .getElementsByClassName("profile-right")[1]
         .classList.remove("hide");
@@ -168,8 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((response) => response.json())
     .then((data) => {
       const post = data.post;
-      // console.log(data);
-      // console.log(post);
 
       if (data.status == "SUCCESS") {
         loadContent(post);

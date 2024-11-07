@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const editBtn = document.querySelector(".btn-edit");
   editBtn.onclick = () => {
     if (loginUser !== null) {
-      window.location.href = `/post/edit`;
+      window.location.href = `/post/new`;
     } else {
       alert("비회원은 게시글 작성이 불가합니다. 로그인 해주세요.");
     }
