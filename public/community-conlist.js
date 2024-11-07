@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 로그인 유저 프로필 이미지 가져오기
   fetchProfileImage(loginUser)
-    .then((profileImageSrc) => {
-      profileImageElement.src = profileImageSrc;
+    .then((profileUrl) => {
+      profileImageElement.src = profileUrl;
     })
     .catch((error) => {
       console.error("Error fetching profile image:", error);
@@ -79,36 +79,24 @@ function createBox(item) {
   let newDiv = document.createElement("div");
   newDiv.classList.add("content-box", "cursor");
 
-  let modify_date = formatDate(item.modify_date);
+  let updatedAt = formatDate(item.updatedAt);
 
   newDiv.innerHTML = `
       <div>
           <p class="con-title">${item.title}</p>
           <p class="con-react">좋아요 ${item.like} 댓글 ${item.comment} 조회수 ${item.view}</p>
-          <p class="write-date" style="float: right;">${modify_date}</p>
+          <p class="write-date" style="float: right;">${updatedAt}</p>
           <div style="clear: both;"></div>
       </div>
       <hr class="horizontal-rule">
       <div class="list-profile">
           <div class="profile-box">
-              <img class="profile-pic" src="/public/images/graycircle.png">
+              <img class="profile-pic" src="${item.profileUrl || '/public/images/graycircle.png'}">
           </div>
           <p class="list-user">${item.nickname}</p>
       </div>`;
 
   document.querySelector("article.contents").append(newDiv);
-
-  // 프로필 이미지 설정
-  const profilePic = newDiv.querySelector(".profile-pic");
-
-  // 게시글 작성자 프로필 이미지 가져오기
-  fetchProfileImage(item.user_id)
-    .then((profileImageSrc) => {
-      profilePic.src = profileImageSrc;
-    })
-    .catch((error) => {
-      console.error("Error fetching profile image:", error);
-    });
 
   // 클릭 시 해당 게시글로 이동
   newDiv.onclick = () => {
@@ -118,29 +106,17 @@ function createBox(item) {
 
 // 프로필 이미지를 서버에서 불러오는 함수
 function fetchProfileImage(userId) {
-  return fetch(`http://localhost:8080/api/profile/${userId}`)
+  return fetch(`http://localhost:8080/api/user/loginUser/${userId}`)
     .then((response) => {
       if (response.ok) {
-        return response.arrayBuffer();
+        return response.json();
       } else {
-        throw new Error("Profile image not found");
+        throw new Error("프로필 이미지가 없습니다.");
       }
     })
-    .then((buffer) => {
-      const base64Flag = "data:image/jpeg;base64,";
-      const imageStr = arrayBufferToBase64(buffer);
-      return base64Flag + imageStr;
+    .then((data) => {
+      return data.profileUrl;
     });
-}
-
-function arrayBufferToBase64(buffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return window.btoa(binary);
 }
 
 // 날짜 형식을 변환하는 함수

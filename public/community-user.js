@@ -61,8 +61,13 @@ document.getElementsByClassName("opt-box")[2].onclick = () => {
     });
 };
 
+// 프로필 이미지 '변경' 버튼
+profile_change = document.getElementsByClassName("btn-change")[0];
+
 nickname = document.getElementsByClassName("input-box")[0];
 nicknametxt = document.getElementsByClassName("helpertxt")[1];
+
+// 수정하기 버튼
 button = document.getElementsByClassName("login-button")[0];
 
 // 로그인 유저의 아이디, 닉네임 보여주기
@@ -115,7 +120,7 @@ const toastOn = () => {
   }, 1000);
 };
 
-// 수정하기 버튼
+// 수정하기 버튼 클릭
 button.onclick = async () => {
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
@@ -200,5 +205,7 @@ modalComplete.onclick = async () => {
 };
 
 // 프로필 이미지 변경 버튼 클릭 시
-document.getElementsByClassName("btn-change")[0].onclick = () =>
+document.getElementsByClassName("btn-change")[0].onclick = () => {
   alert("아직 할 줄 몰라요");
+  // 이미지 업로드
+}

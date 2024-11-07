@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const title = document.getElementsByClassName("mod-titleint")[0];
   const content = document.getElementsByClassName("mod-conint")[0];
-
+  const imageInput = document.getElementById("imageInput"); // 이미지 파일 입력 요소
   const upload = document.getElementsByClassName("login-button")[0];
 
   upload.onclick = async () => {
@@ -44,13 +44,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (loginUser == null) {
       alert("비회원은 게시글 작성이 불가합니다. 로그인 해주세요.");
     } else {
+      // imageInput이 존재하고 files 속성이 있는지 확인
+      if (imageInput && imageInput.files) {
+        const files = imageInput.files;
+        // 파일 처리 로직
+        console.log("선택된 파일:", files);
+      } else {
+        console.log("파일 입력 요소가 없거나 파일이 선택되지 않았습니다.");
+        alert("이미지 파일을 선택해주세요.");
+      }
+
       if (title.value.length !== 0 && content.value.length !== 0 && imageInput.files.length > 0) {
         // 게시글 등록 기능
         let newContent = new FormData();
-      newContent.append("title", title.value);
-      newContent.append("text", content.value);
-      newContent.append("user_id", loginUser);
-      newContent.append("image", imageInput.files[0]); // 이미지 파일 추가
+        newContent.append("postDto", JSON.stringify({ 
+          title: title.value, 
+          text: content.value, 
+          user_id: loginUser 
+        }));
+        newContent.append("image", imageInput.files[0]); // 이미지 파일 추가
 
         try {
           const response = await fetch("http://localhost:8080/api/post/edit", {
