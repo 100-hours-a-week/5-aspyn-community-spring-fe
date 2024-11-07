@@ -11,9 +11,9 @@ router.get("/post/list", BoardController.getList);
 router.get("/post/detail", BoardController.getDetail);
 
 // 게시글 수정 페이지
-router.get("/post/modify", BoardController.getModify);
+router.get("/post/update", BoardController.getModify);
 
 // 게시글 신규 작성 페이지
-router.get("/post/edit", BoardController.getEdit);
+router.get("/post/new", BoardController.getEdit);
 
 module.exports = router;
