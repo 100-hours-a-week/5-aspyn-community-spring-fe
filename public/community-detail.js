@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOMContentLoaded 이벤트가 트리거되었습니다.");
+
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
@@ -14,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
           return null;
         } else {
-          // console.log("USER Info: ", data);
           return data; // user_id : 'n'
         }
       } else {
@@ -26,10 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // URL에서 마지막 경로 세그먼트 가져오기 (게시글 아이디)
+  const pathSegments = window.location.pathname.split('/');
+  const postId = pathSegments[pathSegments.length - 1];
+
   // 뒤로가기 버튼
   let back = document.getElementsByClassName("profile-box")[0];
-
   back.onclick = () => (window.location.href = `/post/list`);
+
+  // 로그인 유저 프로필 이미지
+  const loginProfile = document.getElementsByClassName("profile-pic")[1];
 
   // 게시글 수정-삭제 버튼
   const contentModBtn = document.getElementsByClassName("btn-rel")[0];
@@ -39,20 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalConCancel = document.getElementsByClassName("modal-btn-cancel")[0];
   const modalConComplete =
     document.getElementsByClassName("modal-btn-complete")[0];
-  // 댓글 삭제 모달 버튼 (취소-확인))
+  
+    // 댓글 삭제 모달 버튼 (취소-확인))
   const modalCmtCancel = document.getElementsByClassName("modal-btn-cancel")[1];
   const modalCmtComplete =
     document.getElementsByClassName("modal-btn-complete")[1];
 
   //댓글 등록 버튼
-  const commentSubBtn = document.getElementsByClassName("cmt-sub-btn")[0];
-  const comment = document.getElementsByClassName("cmt-int")[0]; //댓글 입력창
+  const commentSubBtn = document.getElementsByClassName("comment-sub-btn")[0];
+  const comment = document.getElementsByClassName("comment-int")[0]; //댓글 입력창
 
-  // URL에서 마지막 경로 세그먼트 가져오기
-  const pathSegments = window.location.pathname.split('/');
-  const postId = pathSegments[pathSegments.length - 1];
-
-  console.log("포스트 넘버 : " + postId);
 
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
@@ -128,7 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let title = document.getElementsByClassName("con-title")[0]; //제목
   let writer = document.getElementsByClassName("list-user")[0]; // 게시글 작성자
+  let writerProfile = document.getElementsByClassName("profile-pic")[2]; // 게시글 작성자 프로필 이미지
   let date = document.getElementsByClassName("write-date")[0]; // 게시글 작성시간
+  let postImage = document.getElementsByClassName("detail-img")[0]; // 게시글 이미지
   let contentTxt = document.getElementsByClassName("detail-text")[0]; //게시글 내용
 
   // 게시글 내용 불러와서 보여주기
@@ -136,15 +141,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // 로그인 유저 정보 가져오기
     const user = await fetchUserInfo();
     loginUser = user.user_id;
-
+    loginNickname = user.nickname;
+    loginProfile.src = user.profile_url;
+    
     // 줄바꿈 문자를 <br> 태그로 변환
     const post_text = item.text.replace(/\n/g, "<br>");
 
     console.log(item);
     title.innerHTML = item.title;
     writer.innerHTML = item.nickname;
+    writerProfile.src = item.profileUrl;
     date.innerHTML = formatDate(item.updatedAt);
     contentTxt.innerHTML = `<p>${post_text}</p>`;
+    postImage.src = item.imgUrl;
     document.getElementsByClassName("detail-view")[0].innerHTML =
       `<p style="font-size: 20px; font-weight: 700;">${item.view}</p>
          <p style="font-size: 16px; font-weight: 700;">조회수</p>`;
@@ -164,24 +173,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 게시글&댓글 불러오기
   fetch(`http://localhost:8080/api/post/${postId}`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error (`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      const post = data.post;
+      console.log("api 호출 성공: ", data);
 
       if (data.status == "SUCCESS") {
+        const post = data.post;
         loadContent(post);
+
+        if (Array.isArray(post.comments)) {
+          post.comments.forEach((comment) => {
+            createCmtBox(comment);
+          });
+        } else {
+          console.error("댓글 데이터가 올바르지 않습니다.");
+        }
+
       } else if (data.status == "ERROR") {
         alert(data.message);
         window.location.href = `/post/list`;
       }
 
-      if (Array.isArray(post.comments)) {
-        post.comments.forEach((comment) => {
-          createCmtBox(comment);
-        });
-      } else {
-        console.error("댓글 데이터가 올바르지 않습니다.");
-      }
     }) // then 종료
     .catch((error) => console.error("Fetch 오류:", error));
 
@@ -325,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
                   });
               } // else 닫는 중괄호
-            }; // 댓글 수정 작업 종료 cmtSubBtn 버튼
+            }; // 댓글 수정 작업 종료 commentSubBtn 버튼
           });
       }; // btn.onclick 종료 중괄호
     }); //댓글 수정 foreach문 중괄호
