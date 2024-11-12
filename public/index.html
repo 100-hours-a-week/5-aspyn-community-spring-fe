@@ -4,46 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/public/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/public/community.css" />
-    <title>아무 말 대잔치</title>
+    <link rel="stylesheet" type="text/css" href="/public/index.css" />
+    <title>chalcak</title>
   </head>
   <body>
     <section class="wrap">
-      <header>
-        <p class="title" style="margin: auto">아무 말 대잔치</p>
-        <hr class="horizontal" />
-      </header>
-      <div class="main-login">
-        <p style="font-size: 32px; font-weight: 700">로그인</p>
-        <form class="log-in">
-          <label class="labeltxt">이메일</label>
-          <input
-            class="input-box"
-            type="email"
-            placeholder="이메일을 입력하세요"
-          />
-          <label class="labeltxt" style="margin-top: 20px">비밀번호</label>
-          <input
-            class="input-box"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-          />
-          <p class="helpertxt">*helper text</p>
-          <button
-            type="button"
-            class="login-button"
-            style="margin-top: 20px"
-            onclick="location.href='/post/list'"
-          >
-            로그인
-          </button>
-          <p class="txtlink">
-            <a href="/user/join" class="link">회원가입</a>
-          </p>
-        </form>
-      </div>
+      <div class="container">
+        <div class="illustrations">  <!-- 배경 이미지 -->
+            <img src="/public/images/main.png" alt="Illustrations" class="illustration-img">
+        </div>
+        <div class="login-box signin">
+          <h1 class="logo">chalcak</h1>
+          <div class="form-header">
+            <div class="show-signin">로그인</div>
+            <div class="show-signup">회원가입</div>
+          </div>
+          <form>
+            <div class="form-elements">
+
+              <!-- 프로필 이미지 선택 -->
+              <div class="profile-image">
+                <img src="/public/images/basic_user.png" alt="Profile" id="profile-preview">
+              </div>
+
+              <!-- 아이디 입력 -->
+              <div class="form-element email">
+                <div class="input-container">
+                    <img src="/public/images/email.png" alt="아이콘" class="input-icon">
+                    <input type="email" id="email" placeholder="아이디">
+                </div>
+                <p class="helpertext" id="email-helper">*helper text</p>
+              </div>
+
+              <!-- 비밀번호 입력 -->
+              <div class="form-element password">
+                <div class="input-container">
+                    <img src="/public/images/password.png" alt="아이콘" class="input-icon">
+                    <input type="password" id="password" placeholder="비밀번호">
+                </div>
+                <p class="helpertext" id="password-helper">*helper text</p>
+              </div>
+
+              <!-- 비밀번호 확인 -->
+              <div class="form-element confirm-password">
+                <div class="input-container">
+                    <img src="/public/images/password.png" alt="아이콘" class="input-icon">
+                    <input type="password" id="confirm-password" placeholder="비밀번호 확인">
+                </div>
+                <p class="helpertext" id="confirm-password-helper">*helper text</p>
+              </div>
+
+              <!-- 닉네임 입력 -->
+              <div class="form-element nickname">
+                <div class="input-container">
+                    <img src="/public/images/nickname.png" alt="아이콘" class="input-icon">
+                    <input type="text" maxlength="10" id="nickname" placeholder="닉네임">
+                </div>
+                <p class="helpertext" id="nickname-helper">*helper text</p>
+              </div>
+
+              <!-- 로그인/회원가입 버튼 -->
+              <div class="form-element">
+                <button id="submit-btn">로그인</button> <!-- 회원가입-->
+              </div>
+            </div>
+          </form>
+          <div class="suggest">
+            <p >아직 회원이 아니신가요?</p>
+            <p class="signup">회원가입하기</p>
+          </div>
+        </div>
     </section>
 
-    <script src="/public/login.js"></script>
+    <script src="/public/index-login.js"></script>
   </body>
 </html>
