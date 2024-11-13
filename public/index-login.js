@@ -38,10 +38,12 @@ emailInput.addEventListener("keyup",() => {
 // 비밀번호 입력 유효성 검사
 passwordInput.addEventListener("keyup", () => {
   if (strongPassword(passwordInput.value)) {
-      passwordHelper.style.opacity = 0;
+    passwordHelper.style.opacity = 0;
+  } else if (passwordInput.value.length === 0) {
+    passwordHelper.style.opacity = 0;
   } else {
-      passwordHelper.textContent = "* 8~20자 영문, 숫자, 특수문자를 사용하세요.";
-      passwordHelper.style.opacity = 1;
+    passwordHelper.textContent = "* 8~20자 영문, 숫자, 특수문자를 사용하세요.";
+    passwordHelper.style.opacity = 1;
   }
 });
 
@@ -122,7 +124,7 @@ function handleSignUp() {
   // const confirmPassword = document.querySelector('.confirm-password input').value;
   // const nickname = document.querySelector('.nickname input').value;
 
-  if (password !== confirmPassword) {
+  if (passwordInput !== confirmPasswordInput) {
     alert("비밀번호가 일치하지 않습니다.");
     return;
   }
@@ -136,16 +138,16 @@ function handleSignUp() {
   // };
 
   let userInfo = {
-    email: email,
-    password: password,
-    nickname: nickname,
+    email: emailInput.value,
+    password: passwordInput.value,
+    nickname: nicknameInput.value,
   };
 
   if (
-    loginEmail(id.value) == true &&
-    strongPassword(pw.value) == true &&
-    pw.value == pwch.value
-    //&& korEngNum(nickname.value) == true
+    loginEmail(emailInput) == true &&
+    strongPassword(passwordInput) == true &&
+    passwordInput == confirmPasswordInput &&
+    korEngNum(nicknameInput) == true
   ) {
     fetch("http://localhost:8080/api/user/isExist", {
       method: "POST",
@@ -186,8 +188,8 @@ function handleSignIn() {
   // const email = document.querySelector('.username input').value;
   // const password = document.querySelector('.password input').value;
 
-  if (username === "" || password === "") {
-    alert("Please enter both username and password.");
+  if (emailInput === "" || passwordInput === "") {
+    alert("아이디와 비밀번호를 입력하세요.");
     return;
   }
 
@@ -197,8 +199,8 @@ function handleSignIn() {
   //   password: pw.value,
   // };
   const loginInfo = {
-    email: email,
-    password: password,
+    email: emailInput.value,
+    password: passwordInput.value,
   };
 
   fetch("http://localhost:8080/api/user/login", {
