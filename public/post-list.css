@@ -1,0 +1,123 @@
+/* 페이지 전체를 중앙에 600px로 제한하는 스타일 */
+.wrap {
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4px;
+}
+
+.logo {
+  font-family: "BagelFatOne-Regular";
+  font-size: 40px;
+  color: #ff5c5c;
+  margin: 24px 0 24px 0;
+}
+
+.post-button {
+  background-color: #aca0eb;
+  color: white;
+  border: 0;
+  border-radius: 15px;
+  text-align: center;
+  padding: 10px 30px 10px 30px;
+  box-sizing: border-box;
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.intro-text {
+  font-family: "Orbit-Regular";
+  font-size: 16px;
+  margin: 20px 0 40px 0;
+}
+
+.post-button {
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 15px; /* 5? */
+  padding: 10px 30px;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.post-button:hover {
+  background-color: #ff4c3b;
+}
+
+.post-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
+  row-gap: 24px; /* 세로 간격 */
+}
+
+.post-card {
+  background-color: #ffffff;
+  width: 296px;
+  height: 336px;
+  padding: 12x;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.post-image {
+  width: 272px;
+  height: 272px;
+  background-color: #d9d9d9;
+  border-radius: 16px;
+  margin: 12px 12px 16px 12px;
+  overflow: hidden;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.post-title {
+  font-size: 15px;
+  margin-bottom: 22px;
+  color: #333;
+}
+
+.post-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.author-profile {
+  width: 24px;
+  height: 24px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.author-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.post-author {
+  font-size: 14px;
+  color: #666;
+}
+
+.post-icon {
+  width: 16px;
+  height: 16px;
+}
