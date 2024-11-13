@@ -1,0 +1,138 @@
+/* 폰트 추가 */
+@font-face {
+  /* 베이글팻 */
+  font-family: "BagelFatOne-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_JAMO@1.0/BagelFatOne-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  /* 프리텐다드 */
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Orbit-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/Orbit-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 페이지 설정 */
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #f7f5f3 !important;
+  width: 100%;
+  min-height: 600px;
+  box-sizing: border-box;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  width: 1920px;
+  background-color: transparent;
+  font-family: Pretendard-Regular;
+  min-height: calc(100vh - 200px); /* 페이지 최소 높이 설정 */
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.page {
+  width: 600px;
+  margin: auto;
+  background-color: #d1b7ff;
+}
+
+.rel {
+  position: relative;
+}
+
+.abs {
+  position: absolute;
+}
+
+.header-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 70%;
+  overflow: hidden;
+  /* position: relative; */
+  background-color: #d1b7ff;
+  align-items: center;
+}
+
+.header-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 70%;
+}
+
+.right {
+  right: 24px;
+  /* margin-left: auto; */
+}
+
+.left {
+  left: 24px;
+  /* margin-right: auto; */
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.opt-pos {
+  position: absolute;
+  margin-top: 150px;
+  margin-left: 485px;
+}
+
+/* .opt-pos {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: none;
+  } */
+
+.opt-box {
+  width: 115px;
+  height: 35px;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d9d9d9;
+}
+
+.opt-box:hover {
+  background-color: #e9e9e9;
+}
+
+.hide {
+  display: none;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
