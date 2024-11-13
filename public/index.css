@@ -37,6 +37,7 @@ min-height: calc(100vh - 200px); /* 페이지 최소 높이 설정 */
 display: flex;
 align-items: center;
 justify-content: center;
+position: relative;
 }
 
 .illustrations {
@@ -49,17 +50,17 @@ justify-content: center;
 }
 
 .login-box {
-    position:fixed;
+    position:absolute;
     top: 170px;
     /* margin-top: 400px; */
     /* top:50%; */
-    left:50%;
-    transform:translate(-50%);
+    /* left:50%; */
+    /* transform:translate(-50%); */
     background-color: #ffffff;
     /* padding: 54px 54px 34px 54px; */
     padding: 54px;;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: calc(100vh - 200px); /* 화면 높이에 따라 자동 조정 */
+    /* max-height: calc(100vh - 200px); 화면 높이에 따라 자동 조정 */
     
 }
 
