@@ -119,24 +119,13 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
 
 // 회원가입 동작
 function handleSignUp() {
-  // const email = document.querySelector('.email input').value;
-  // const password = document.querySelector('.password input').value;
-  // const confirmPassword = document.querySelector('.confirm-password input').value;
-  // const nickname = document.querySelector('.nickname input').value;
 
   if (passwordInput !== confirmPasswordInput) {
     alert("비밀번호가 일치하지 않습니다.");
     return;
   }
-  // alert(`Sign Up Successful!\nUsername: ${email}`);
-  // 서버에 회원가입 요청 전송 (예: fetch API 사용)
 
-  // let userInfo = {
-  //   email: id.value,
-  //   password: pw.value,
-  //   nickname: nickname.value,
-  // };
-
+  // 서버에 회원가입 요청 전송 
   let userInfo = {
     email: emailInput.value,
     password: passwordInput.value,
@@ -185,19 +174,13 @@ function handleSignUp() {
 
 // 로그인 동작
 function handleSignIn() {
-  // const email = document.querySelector('.username input').value;
-  // const password = document.querySelector('.password input').value;
 
   if (emailInput === "" || passwordInput === "") {
     alert("아이디와 비밀번호를 입력하세요.");
     return;
   }
 
-  // 서버에 로그인 요청 전송 (예: fetch API 사용)
-  // const loginInfo = {
-  //   email: id.value,
-  //   password: pw.value,
-  // };
+  // 서버에 로그인 요청 전송
   const loginInfo = {
     email: emailInput.value,
     password: passwordInput.value,
