@@ -20,12 +20,19 @@
             <div class="show-signup">회원가입</div>
           </div>
           <form>
-            <div class="form-elements">
 
-              <!-- 프로필 이미지 선택 -->
+            <!-- 프로필 이미지 선택 -->
+            <div class="profile-box">
               <div class="profile-image">
                 <img src="/public/images/basic_user.png" alt="Profile" id="profile-preview">
               </div>
+              <div style="text-align: center">
+                <label for="imageInput" class="profile-button">파일 선택</label>
+                <input type="file" accept="image/*" id="imageInput" onchange="previewImage(event)" hidden>
+              </div>
+            </div>
+            
+            <div class="form-elements">
 
               <!-- 아이디 입력 -->
               <div class="form-element email">

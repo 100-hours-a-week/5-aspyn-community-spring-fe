@@ -1,4 +1,3 @@
-
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirm-password");
@@ -6,9 +5,13 @@ const nicknameInput = document.getElementById("nickname");
 
 const emailHelper = document.getElementById("email-helper");
 const passwordHelper = document.getElementById("password-helper");
-const confirmPasswordHelper = document.getElementById("confirm-password-helper");
+const confirmPasswordHelper = document.getElementById(
+  "confirm-password-helper"
+);
 const nicknameHelper = document.getElementById("nickname-helper");
 
+const preview = document.getElementById("profile-preview");
+const profileBtn = document.querySelector("profile-button");
 const submitBtn = document.getElementById("submit-btn");
 
 // 이메일 유효성 검사
@@ -26,8 +29,8 @@ const korEngNum = (str) => /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
 sessionStorage.clear();
 
 // 아이디 입력 유효성 검사
-emailInput.addEventListener("keyup",() => {
-  if(loginEmail(emailInput.value)) {
+emailInput.addEventListener("keyup", () => {
+  if (loginEmail(emailInput.value)) {
     emailHelper.style.opacity = 0;
   } else {
     emailHelper.textContent = "* 올바른 이메일 주소 형식을 입력하세요.";
@@ -37,9 +40,9 @@ emailInput.addEventListener("keyup",() => {
 
 // 비밀번호 입력 유효성 검사
 passwordInput.addEventListener("keyup", () => {
-  if (strongPassword(passwordInput.value)) {
+  if (passwordInput.value.length == 0) {
     passwordHelper.style.opacity = 0;
-  } else if (passwordInput.value.length === 0) {
+  } else if (strongPassword(passwordInput.value)) {
     passwordHelper.style.opacity = 0;
   } else {
     passwordHelper.textContent = "* 8~20자 영문, 숫자, 특수문자를 사용하세요.";
@@ -49,12 +52,15 @@ passwordInput.addEventListener("keyup", () => {
 
 // 비밀번호 확인 입력 유효성 검사
 confirmPasswordInput.addEventListener("keyup", () => {
+  if (confirmPasswordInput.value.length == 0) {
+    confirmPasswordHelper.style.opacity = 0;
+  }
   if (confirmPasswordInput.value === passwordInput.value) {
-      confirmPasswordHelper.textContent = "* 비밀번호가 일치합니다.";
-      confirmPasswordHelper.style.opacity = 1;
+    confirmPasswordHelper.textContent = "* 비밀번호가 일치합니다.";
+    confirmPasswordHelper.style.opacity = 1;
   } else {
-      confirmPasswordHelper.textContent = "* 비밀번호가 일치하지 않습니다.";
-      confirmPasswordHelper.style.opacity = 1;
+    confirmPasswordHelper.textContent = "* 비밀번호가 일치하지 않습니다.";
+    confirmPasswordHelper.style.opacity = 1;
   }
 });
 
@@ -69,103 +75,124 @@ nicknameInput.addEventListener("keyup", () => {
     } else if (korEngNum(nicknameInput.value)) {
       nicknameHelper.style.opacity = 0;
     }
- } else {
+  } else {
     nicknameHelper.textContent = "* 닉네임은 최대 10자까지 가능합니다.";
     nicknameHelper.style.opacity = 1;
   }
 });
 
-
-function resetClass(element, classname){
+function resetClass(element, classname) {
   element.classList.remove(classname);
 }
 
 // 로그인 탭 클릭
-document.getElementsByClassName("show-signin")[0].addEventListener("click", function() {
-  let form = document.getElementsByClassName("login-box")[0];
-  resetClass(form, "signup");
-  form.classList.add("signin");
-  document.getElementById("submit-btn").innerText = "로그인";
-});
+document
+  .getElementsByClassName("show-signin")[0]
+  .addEventListener("click", function () {
+    let form = document.getElementsByClassName("login-box")[0];
+    resetClass(form, "signup");
+    form.classList.add("signin");
+    document.getElementById("submit-btn").innerText = "로그인";
+  });
 
 // 회원가입 탭 클릭
-document.getElementsByClassName("show-signup")[0].addEventListener("click", function() {
-  let form = document.getElementsByClassName("login-box")[0];
-  resetClass(form, "signin");
-  form.classList.add("signup");
-  document.getElementById("submit-btn").innerText = "회원가입";
-});
+document
+  .getElementsByClassName("show-signup")[0]
+  .addEventListener("click", function () {
+    let form = document.getElementsByClassName("login-box")[0];
+    resetClass(form, "signin");
+    form.classList.add("signup");
+    document.getElementById("submit-btn").innerText = "회원가입";
+  });
 
 // 하단 회원가입하기 텍스트링크 클릭
-document.getElementsByClassName("signup")[0].addEventListener("click", function() {
-  let form = document.getElementsByClassName("login-box")[0];
-  resetClass(form, "signin");
-  form.classList.add("signup");
-  document.getElementById("submit-btn").innerText = "회원가입";
-});
+document
+  .getElementsByClassName("signup")[0]
+  .addEventListener("click", function () {
+    let form = document.getElementsByClassName("login-box")[0];
+    resetClass(form, "signin");
+    form.classList.add("signup");
+    document.getElementById("submit-btn").innerText = "회원가입";
+  });
 
 // 로그인 or 회원가입 버튼 클릭
-document.getElementById("submit-btn").addEventListener("click", function(event) {
-  event.preventDefault(); // 기본 폼 제출 방지
-  const form = document.querySelector('.login-box');
+document
+  .getElementById("submit-btn")
+  .addEventListener("click", function (event) {
+    event.preventDefault(); // 기본 폼 제출 방지
+    const form = document.querySelector(".login-box");
 
-  if (form.classList.contains('signin')) {
-    handleSignIn();
-  } else if (form.classList.contains('signup')) {
-    handleSignUp();
-  } 
-});
-
+    if (form.classList.contains("signin")) {
+      handleSignIn();
+    } else if (form.classList.contains("signup")) {
+      handleSignUp();
+    }
+  });
 
 // 회원가입 동작
 function handleSignUp() {
-
-  if (passwordInput !== confirmPasswordInput) {
+  if (passwordInput.value !== confirmPasswordInput.value) {
     alert("비밀번호가 일치하지 않습니다.");
+    return;
+  } else if (emailInput.value == "") {
+    alert("이메일을 입력하세요.");
+    return;
+  } else if (passwordInput.value == "") {
+    alert("비밀번호를 입력하세요.");
+    return;
+  } else if (nicknameInput.value == "") {
+    alert("닉네임을 입력하세요.");
     return;
   }
 
-  // 서버에 회원가입 요청 전송 
-  let userInfo = {
-    email: emailInput.value,
-    password: passwordInput.value,
-    nickname: nicknameInput.value,
-  };
-
+  // 유효성 검사 통과 시 서버에 회원가입 요청 전송
   if (
-    loginEmail(emailInput) == true &&
-    strongPassword(passwordInput) == true &&
-    passwordInput == confirmPasswordInput &&
-    korEngNum(nicknameInput) == true
+    loginEmail(emailInput.value) &&
+    strongPassword(passwordInput.value) &&
+    passwordInput.value == confirmPasswordInput.value &&
+    korEngNum(nicknameInput.value) &&
+    nicknameInput.value.includes(" ") == false &&
+    nicknameInput.value.length > 0
   ) {
-    fetch("http://localhost:8080/api/user/isExist", {
+    // formData 객체 생성
+    const formData = new FormData();
+
+    // 회원 정보
+    const userInfo = {
+      email: emailInput.value,
+      password: passwordInput.value,
+      nickname: nicknameInput.value,
+    };
+
+    formData.append(
+      "request",
+      new Blob([JSON.stringify(userInfo)], { type: "application/json" })
+    );
+
+    // 프로필 이미지 추가 (파일이 선택된 경우에만)
+    const fileInput = document.getElementById("imageInput");
+    if (fileInput.files.length > 0) {
+      formData.append("file", fileInput.files[0]);
+    }
+
+    // 서버로 api 요청
+    fetch("http://localhost:8080/api/user/join", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userInfo),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data) {
-          console.log("사용 가능한 이메일");
-          fetch("http://localhost:8080/api/user/join", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userInfo),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status == "SUCCESS") {
-                console.log("회원가입 완료");
-                alert("회원가입이 완료되었습니다. 로그인을 해주세요.");
-                window.location.href = "/";
-              } else {
-                throw new Error("회원가입 시 오류가 발생했습니다.");
-              }
-            });
+        if (data.status == "SUCCESS") {
+          console.log("회원가입 완료");
+          alert("회원가입이 완료되었습니다. 로그인을 해주세요.");
+          window.location.href = "/";
         } else {
-          console.log("중복 이메일");
-          alert("중복된 이메일입니다. 다른 이메일을 입력하세요.");
+          alert(data.message);
         }
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+        alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
       });
   } else {
     alert("회원가입 실패. 입력 정보를 확인하세요.");
@@ -174,8 +201,7 @@ function handleSignUp() {
 
 // 로그인 동작
 function handleSignIn() {
-
-  if (emailInput === "" || passwordInput === "") {
+  if (emailInput.value === "" || passwordInput.value === "") {
     alert("아이디와 비밀번호를 입력하세요.");
     return;
   }
@@ -206,4 +232,23 @@ function handleSignIn() {
       console.error("Error:", error);
       alert("서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
     });
+}
+
+// 프로필 이미지 [파일선택] 버튼 클릭
+profileBtn.addEventListener("click", function () {
+  imageInput.click();
+});
+
+// 파일 선택 시 미리보기 업데이트
+imageInput.addEventListener("change", previewImage);
+
+function previewImage(event) {
+  const input = event.target;
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }
