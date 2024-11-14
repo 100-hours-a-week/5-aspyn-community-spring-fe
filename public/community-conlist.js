@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   if (!user) return;
 
   const loginUser = user.user_id;
-  const profileImageElement = document.querySelector(".profile-pic");
+  const profileImageElement = document.querySelector(".header-box img");
 
   // 로그인 유저 프로필 이미지 가져오기
   fetchProfileImage(loginUser)
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
   // 게시글 작성 버튼
-  const editBtn = document.querySelector(".btn-edit");
+  const editBtn = document.querySelector(".post-button");
   editBtn.onclick = () => {
     if (loginUser !== null) {
       window.location.href = `/post/new`;
@@ -76,30 +76,37 @@ async function fetchUserInfo() {
 
 // 콘텐츠 목록 div 박스 추가
 function createBox(item) {
-  let newDiv = document.createElement("div");
-  newDiv.classList.add("content-box", "cursor");
+  let newPost = document.createElement("article");
+  newPost.classList.add("post-card", "rel");
 
-  let updatedAt = formatDate(item.updatedAt);
-
-  newDiv.innerHTML = `
-      <div>
-          <p class="con-title">${item.title}</p>
-          <p class="con-react">좋아요 ${item.like} 댓글 ${item.comment} 조회수 ${item.view}</p>
-          <p class="write-date" style="float: right;">${updatedAt}</p>
-          <div style="clear: both;"></div>
+  newPost.innerHTML = `
+    <div class="post-image rel cursor">
+      <img src="${item.imgUrl || "/public/images/photo.jpg"}" />
+    </div>
+    <h3 class="post-title cursor">${item.title}</h3>
+    <div class="post-info">
+      <div class="post-info">
+        <span class="author-profile">
+          <img src="${item.profileUrl || "/public/images/basic_user.png"}" />
+        </span>
+        <span class="post-author">${item.nickname}</span>
       </div>
-      <hr class="horizontal-rule">
-      <div class="list-profile">
-          <div class="profile-box">
-              <img class="profile-pic" src="${item.profileUrl || '/public/images/graycircle.png'}">
-          </div>
-          <p class="list-user">${item.nickname}</p>
-      </div>`;
+      <div class="post-icon">
+        <img class="thumbnail" src="/public/images/camera.png" />
+      </div>
+    </div>`;
 
-  document.querySelector("article.contents").append(newDiv);
+  // 생성한 게시글을 목록에 추가
+  document.querySelector(".post-list").append(newPost);
+
+  let postImg = newPost.querySelector(".post-image");
+  let title = newPost.querySelector(".post-title");
 
   // 클릭 시 해당 게시글로 이동
-  newDiv.onclick = () => {
+  postImg.onclick = () => {
+    window.location.href = `/post/detail/${item.id}`;
+  };
+  title.onclick = () => {
     window.location.href = `/post/detail/${item.id}`;
   };
 }
@@ -117,16 +124,4 @@ function fetchProfileImage(userId) {
     .then((data) => {
       return data.profileUrl;
     });
-}
-
-// 날짜 형식을 변환하는 함수
-function formatDate(dateString) {
-  const dateObj = new Date(dateString);
-  const year = dateObj.getFullYear();
-  const month = String(dateObj.getMonth() + 1).padStart(2, "0");
-  const day = String(dateObj.getDate()).padStart(2, "0");
-  const hours = String(dateObj.getHours()).padStart(2, "0");
-  const minutes = String(dateObj.getMinutes()).padStart(2, "0");
-  const seconds = String(dateObj.getSeconds()).padStart(2, "0");
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
