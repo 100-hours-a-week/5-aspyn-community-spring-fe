@@ -14,6 +14,15 @@
   margin: 24px 0 24px 0;
 }
 
+/* 가로줄 구분선 */
+.horizontal {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background-color: #ddd;
+  margin: 0;
+}
+
 .post-button {
   background-color: #aca0eb;
   color: white;
