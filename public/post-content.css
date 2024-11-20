@@ -114,6 +114,8 @@
   border-radius: 16px;
   margin-top: 20px;
   background-color: white;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .comment-text {
