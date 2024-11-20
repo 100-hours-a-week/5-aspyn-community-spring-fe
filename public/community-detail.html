@@ -56,9 +56,15 @@
         </div>
 
         <div class="photo-meta">
-          <div class="metadata"><p>2.8</p></div>
+          <div class="metadata">
+            <p>F</p>
+            <p>2.8</p>
+          </div>
           <div class="metadata"><p>1/100</p></div>
-          <div class="metadata"><p>1600</p></div>
+          <div class="metadata">
+            <p>ISO&nbsp</p>
+            <p>1600</p>
+          </div>
         </div>
 
         <div class="post-text">
@@ -81,43 +87,49 @@
                 </div>
                 <div class="profile-nickname"><p>로그인유저</p></div>
               </div>
-              <button type="button" class="comment-sub-btn">댓글 등록</button>
+              <button type="button" class="comment-button">댓글 등록</button>
             </div>
           </form>
         </div>
 
         <!-- 해당 게시글 댓글이 있는 경우 js로 댓글 박스 자동 생성 -->
         <!-- 댓글 목록(수정,삭제 버튼) -->
-        <!-- <div class="detail-comment"> 
-                <div>
-                    <div class="list-profile">
-                        <div class="profile-box">
-                            <img class="profile-pic" src="images/graycircle.png" >
-                        </div>
-                        <p class="list-user">더미 작성자 1</p>
-                        <p class="write-date">2024-01-01 00:00:00</p>
-                    </div>
-                    <p class="cmt-content">댓글 내용</p>
-                </div>
-                <div style="margin-left: auto;">
-                    <button class="btn-rel">수정</button>
-                    <button class="btn-rel">삭제</button>
-                </div>
-            </div> -->
+        <div class="post-comment">
+          <div class="postinfo-box">
+            <div class="comment-writer">
+              <!-- list-profile-->
+              <div class="profile-box">
+                <img src="images/graycircle.png" />
+              </div>
+              <p class="profile-nickname">더미 작성자 1</p>
+              <p class="comment-date">2024-01-01 00:00:00</p>
+            </div>
+            <div class="right">
+              <button class="update-button">수정</button>
+              <button class="update-button">삭제</button>
+            </div>
+          </div>
+          <div class="comment-content">
+            <p>댓글 내용</p>
+          </div>
+        </div>
 
         <!-- 댓글 목록(수정,삭제 버튼 없음) -->
-        <!-- <div class="detail-comment">
-                <div>
-                    <div class="list-profile">
-                        <div class="profile-box">
-                            <img class="profile-pic" src="images/graycircle.png" >
-                        </div>
-                        <p class="list-user">더미 작성자 1</p>
-                        <p class="write-date">2024-01-01 00:00:00</p>
-                    </div>
-                    <p class="cmt-content">댓글 내용</p>
-                </div>
-            </div> -->
+        <div class="post-comment">
+          <div class="postinfo-box">
+            <div class="comment-writer">
+              <!-- list-profile-->
+              <div class="profile-box">
+                <img src="images/graycircle.png" />
+              </div>
+              <p class="profile-nickname">더미 작성자 1</p>
+              <p class="comment-date">2024-01-01 00:00:00</p>
+            </div>
+          </div>
+          <div class="comment-content">
+            <p>댓글 내용</p>
+          </div>
+        </div>
       </article>
       <!-- 게시글 삭제 모달창 -->
       <div class="modalBackground hide">

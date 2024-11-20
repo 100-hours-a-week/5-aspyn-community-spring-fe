@@ -49,11 +49,12 @@
   align-items: center;
   margin-top: 12px;
   margin-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .post-info {
   display: flex;
-  margin-left: 16px;
   align-items: center;
 }
 
@@ -75,7 +76,7 @@
   background-color: #f7f5f3;
   border-color: #ff5c5c;
   border-radius: 8px;
-  margin-right: 16px;
+  margin-left: 4px;
 }
 
 .post-image {
@@ -98,6 +99,7 @@
   font-size: 15px;
   font-family: "Orbit-Regular";
   margin: 0 16px 0 16px;
+  display: flex;
 }
 
 .post-text {
@@ -108,7 +110,7 @@
 
 .comment {
   width: 568px;
-  height: 158px;
+  /* height: 158px; */
   border-radius: 16px;
   margin-top: 20px;
   background-color: white;
@@ -150,20 +152,31 @@ textarea::placeholder {
   align-items: center;
 }
 
-.cmt-content {
-  font-size: 15px;
-  font-weight: 400;
-  margin-left: 46px;
-  margin-top: 10px;
-}
-
 .comment-writer {
   display: flex;
   align-items: center;
-  margin-left: 24px;
+  /* margin-left: 24px; */
 }
 
 .comment-bottom {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding-left: 24px;
+}
+
+.post-comment {
+  align-items: center;
+  margin-top: 24px;
+}
+
+.comment-date {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.comment-content {
+  font-size: 15px;
+  padding-left: 48px;
+  /* padding-top: 10px; */
 }
