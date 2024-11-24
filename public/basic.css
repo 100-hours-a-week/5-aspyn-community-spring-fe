@@ -69,8 +69,7 @@ body {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
-  /* position: relative; */
-  background-color: #d1b7ff;
+  /* background-color: #d1b7ff; */
   align-items: center;
 }
 
@@ -83,12 +82,10 @@ body {
 
 .right {
   right: 24px;
-  /* margin-left: auto; */
 }
 
 .left {
   left: 24px;
-  /* margin-right: auto; */
 }
 
 .cursor {
@@ -100,16 +97,6 @@ body {
   margin-top: 150px;
   margin-left: 485px;
 }
-
-/* .opt-pos {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    display: none;
-  } */
 
 .opt-box {
   width: 115px;
