@@ -32,20 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let modify = document.getElementsByClassName("modify-button")[0];
   let back = document.getElementsByClassName("profile-box")[0];
 
-  //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
-  let queryString = window.location.search;
-  // console.log(queryString);
-
-  // 쿼리 문자열을 분석하여 객체로 변환
-  let params = new URLSearchParams(queryString);
-  // console.log(params);
-
-  // 특정 매개변수의 값을 가져오기
-  let post = params.get("post"); // 콘텐츠아이디 값
+  // URL에서 마지막 경로 세그먼트 가져오기 (게시글 아이디)
+  const pathSegments = window.location.pathname.split("/");
+  const post = pathSegments[pathSegments.length - 1];
 
   //뒤로가기
   back.onclick = () => {
-    window.location.href = `/post/detail?post=${post}`;
+    window.location.href = `/post/${post}`;
   };
 
   (async function () {
@@ -95,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   .then((data) => {
                     if (data.status == "SUCCESS") {
                       alert("게시글 수정이 완료되었습니다.");
-                      window.location.href = `/post/detail?post=${post}`;
+                      window.location.href = `/post/${post}`;
                     } else {
                       throw new Error("게시글 수정이 실패되었습니다.");
                     }
@@ -110,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
           } else {
             alert("수정 권한이 없습니다.");
-            window.location.href = `/post/detail?post=${post}`;
+            window.location.href = `/post/${post}`;
           }
         } else {
           alert("해당 게시글을 찾을 수 없습니다.");

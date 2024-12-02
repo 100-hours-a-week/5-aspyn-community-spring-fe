@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // URL에서 마지막 경로 세그먼트 가져오기 (게시글 아이디)
-  const pathSegments = window.location.pathname.split('/');
+  const pathSegments = window.location.pathname.split("/");
   const postId = pathSegments[pathSegments.length - 1];
 
   // 뒤로가기 버튼
@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalConCancel = document.getElementsByClassName("modal-btn-cancel")[0];
   const modalConComplete =
     document.getElementsByClassName("modal-btn-complete")[0];
-  
-    // 댓글 삭제 모달 버튼 (취소-확인))
+
+  // 댓글 삭제 모달 버튼 (취소-확인))
   const modalCmtCancel = document.getElementsByClassName("modal-btn-cancel")[1];
   const modalCmtComplete =
     document.getElementsByClassName("modal-btn-complete")[1];
@@ -56,11 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentSubBtn = document.getElementsByClassName("comment-sub-btn")[0];
   const comment = document.getElementsByClassName("comment-int")[0]; //댓글 입력창
 
-
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
   contentModBtn.onclick = () =>
-    (window.location.href = `/post/update/${postId}`);
+    (window.location.href = `/post/${postId}/update`);
 
   // 게시글 삭제 버튼 클릭 시 모달창 노출
   contentDelBtn.onclick = function () {
@@ -143,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginUser = user.user_id;
     loginNickname = user.nickname;
     loginProfile.src = user.profile_url;
-    
+
     // 줄바꿈 문자를 <br> 태그로 변환
     const post_text = item.text.replace(/\n/g, "<br>");
 
@@ -154,11 +153,13 @@ document.addEventListener("DOMContentLoaded", () => {
     date.innerHTML = formatDate(item.updatedAt);
     contentTxt.innerHTML = `<p>${post_text}</p>`;
     postImage.src = item.imgUrl;
-    document.getElementsByClassName("detail-view")[0].innerHTML =
-      `<p style="font-size: 20px; font-weight: 700;">${item.view}</p>
+    document.getElementsByClassName(
+      "detail-view"
+    )[0].innerHTML = `<p style="font-size: 20px; font-weight: 700;">${item.view}</p>
          <p style="font-size: 16px; font-weight: 700;">조회수</p>`;
-    document.getElementsByClassName("detail-view")[1].innerHTML =
-      `<p style="font-size: 20px; font-weight: 700;">${item.comment}</p>
+    document.getElementsByClassName(
+      "detail-view"
+    )[1].innerHTML = `<p style="font-size: 20px; font-weight: 700;">${item.comment}</p>
          <p style="font-size: 16px; font-weight: 700;">댓글</p>`;
 
     console.log("콘텐츠 가져오기 완료");
@@ -175,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(`http://localhost:8080/api/post/${postId}`)
     .then((response) => {
       if (!response.ok) {
-        throw new Error (`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
@@ -193,12 +194,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           console.error("댓글 데이터가 올바르지 않습니다.");
         }
-
       } else if (data.status == "ERROR") {
         alert(data.message);
         window.location.href = `/post/list`;
       }
-
     }) // then 종료
     .catch((error) => console.error("Fetch 오류:", error));
 

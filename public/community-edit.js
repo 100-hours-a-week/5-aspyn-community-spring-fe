@@ -54,14 +54,21 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("이미지 파일을 선택해주세요.");
       }
 
-      if (title.value.length !== 0 && content.value.length !== 0 && imageInput.files.length > 0) {
+      if (
+        title.value.length !== 0 &&
+        content.value.length !== 0 &&
+        imageInput.files.length > 0
+      ) {
         // 게시글 등록 기능
         let newContent = new FormData();
-        newContent.append("postDto", JSON.stringify({ 
-          title: title.value, 
-          text: content.value, 
-          user_id: loginUser 
-        }));
+        newContent.append(
+          "postDto",
+          JSON.stringify({
+            title: title.value,
+            text: content.value,
+            user_id: loginUser,
+          })
+        );
         newContent.append("image", imageInput.files[0]); // 이미지 파일 추가
 
         try {
@@ -79,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!resData.errorCode) {
             alert("게시글이 성공적으로 저장되었습니다.");
             let post = resData.postId; // controller에서 { postId: newPostId } 이렇게 보내고 있음
-            window.location.href = `/post/detail?post=${post}`;
+            window.location.href = `/post/${post}`;
             console.log("게시글 등록 완료");
           } else {
             throw new Error("게시글 저장이 실패되었습니다.");
