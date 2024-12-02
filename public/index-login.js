@@ -206,25 +206,29 @@ function handleSignIn() {
     return;
   }
 
-  // 서버에 로그인 요청 전송
-  const loginInfo = {
-    email: emailInput.value,
-    password: passwordInput.value,
-  };
+  const formData = new FormData();
+  formData.append("email", emailInput.value);
+  formData.append("password", passwordInput.value);
 
-  fetch("http://localhost:8080/api/user/login", {
+  fetch("http://localhost:8080/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginInfo),
-    credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
+    body: formData,
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status == "ERROR") {
-        alert(data.message);
+    .then((response) => {
+      if (!response.ok) {
+        // 로그인 실패 처리
+        alert("로그인 실패");
         return false;
-      } else {
-        alert(data.message);
+      }
+      // JWT 토큰 수신
+      return response.headers.get("Authorization");
+    })
+    .then((token) => {
+      if (token) {
+        // Bearer 토큰 저장
+        localStorage.setItem("jwt", token);
+
+        alert("로그인 성공");
         window.location.href = "/post/list";
       }
     })
