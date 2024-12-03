@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   fetchPosts();
 
   function fetchPosts() {
-    fetch("http://localhost:8080/api/post/list")
+    fetchWithAuth("http://localhost:8080/api/post/list", "GET")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 // 로그인 유저 확인
 async function fetchUserInfo() {
   try {
-    const response = await fetch(`http://localhost:8080/api/userinfo`, {
-      method: "GET",
-      credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
-    });
+    const response = await fetchWithAuth(
+      "http://localhost:8080/api/userinfo",
+      "GET"
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -113,7 +113,10 @@ function createBox(item) {
 
 // 프로필 이미지를 서버에서 불러오는 함수
 function fetchProfileImage(userId) {
-  return fetch(`http://localhost:8080/api/user/loginUser/${userId}`)
+  return fetchWithAuth(
+    `http://localhost:8080/api/user/loginUser/${userId}`,
+    "GET"
+  )
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -124,4 +127,24 @@ function fetchProfileImage(userId) {
     .then((data) => {
       return data.profileUrl;
     });
+}
+
+// JWT 포함한 fetch 함수
+async function fetchWithAuth(url, method, body = null) {
+  const token = localStorage.getItem("jwt"); // JWT를 localStorage에서 가져옴
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `${token}`, // Authorization 헤더에 JWT 추가
+  };
+
+  const options = {
+    method: method,
+    headers: headers,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body); // 요청에 body가 필요한 경우 추가
+  }
+
+  return fetch(url, options);
 }
