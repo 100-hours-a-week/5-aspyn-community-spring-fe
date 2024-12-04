@@ -93,12 +93,11 @@
 
         <!-- 해당 게시글 댓글이 있는 경우 js로 댓글 박스 자동 생성 -->
         <!-- 댓글 목록(수정,삭제 버튼) -->
-        <div class="post-comment">
+        <!-- <div class="post-comment">
           <div class="postinfo-box">
             <div class="comment-writer">
-              <!-- list-profile-->
               <div class="profile-box">
-                <img src="images/graycircle.png" />
+                <img src="/public/images/graycircle.png" />
               </div>
               <p class="profile-nickname">더미 작성자 1</p>
               <p class="comment-date">2024-01-01 00:00:00</p>
@@ -111,15 +110,14 @@
           <div class="comment-content">
             <p>댓글 내용</p>
           </div>
-        </div>
+        </div> -->
 
         <!-- 댓글 목록(수정,삭제 버튼 없음) -->
-        <div class="post-comment">
+        <!-- <div class="post-comment">
           <div class="postinfo-box">
             <div class="comment-writer">
-              <!-- list-profile-->
               <div class="profile-box">
-                <img src="images/graycircle.png" />
+                <img src="/public/images/graycircle.png" />
               </div>
               <p class="profile-nickname">더미 작성자 1</p>
               <p class="comment-date">2024-01-01 00:00:00</p>
@@ -128,32 +126,29 @@
           <div class="comment-content">
             <p>댓글 내용</p>
           </div>
-        </div>
+        </div> -->
       </article>
+
       <!-- 게시글 삭제 모달창 -->
-      <div class="modalBackground hide">
-        <div class="modalWrapper">
-          <div class="modal-layout">
-            <p class="modal-title">게시글을 삭제하시겠습니까?</p>
-            <p class="modal-txt">삭제한 내용은 복구 할 수 없습니다.</p>
-            <div style="text-align: center">
-              <button class="modal-btn-cancel cursor">취소</button>
-              <button class="modal-btn-complete cursor">완료</button>
-            </div>
+      <div class="modal-bg hide">
+        <div class="modal-position modal-layout">
+          <p class="modal-title">게시글을 삭제하시겠습니까?</p>
+          <p class="modal-text">삭제한 내용은 복구 할 수 없습니다.</p>
+          <div style="text-align: center">
+            <button class="modal-button cancel cursor">취소</button>
+            <button class="modal-button complete cursor">완료</button>
           </div>
         </div>
       </div>
 
       <!-- 댓글 삭제 모달창 -->
-      <div class="modalBackground hide">
-        <div class="modalWrapper">
-          <div class="modal-layout">
-            <p class="modal-title">댓글을 삭제하시겠습니까?</p>
-            <p class="modal-txt">삭제한 내용은 복구 할 수 없습니다.</p>
-            <div style="text-align: center">
-              <button class="modal-btn-cancel cursor">취소</button>
-              <button class="modal-btn-complete cursor">완료</button>
-            </div>
+      <div class="modal-bg hide">
+        <div class="modal-position modal-layout">
+          <p class="modal-title">댓글을 삭제하시겠습니까?</p>
+          <p class="modal-text">삭제한 내용은 복구 할 수 없습니다.</p>
+          <div style="text-align: center">
+            <button class="modal-button cancel cursor">취소</button>
+            <button class="modal-button complete cursor">완료</button>
           </div>
         </div>
       </div>

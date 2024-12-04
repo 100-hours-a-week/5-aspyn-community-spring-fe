@@ -182,3 +182,72 @@ textarea::placeholder {
   padding-left: 48px;
   /* padding-top: 10px; */
 }
+
+.modal-bg {
+  /* 모달 오버레이 */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+  /* z-index: 4; */
+}
+
+.modal-position {
+  /* 화면에 꽉 차게 하는 코드(여기서는 너비를 꽉 채우는 용도) */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  /* 위아래 너비를 준 상태에서 가로 50%, 세로 50%를 이동시킬 수 있다 (= 한가운데 배치) */
+  transform: translate(-50%, -50%);
+
+  /* 모달 오버레이 배경보다 한 단계 더 높게 배치 */
+  z-index: 5;
+}
+
+.modal-layout {
+  width: 408px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  float: left;
+  margin: auto;
+  box-sizing: border-box;
+  border: none;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 48px;
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.modal-button {
+  width: 127px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  margin: 24px 8px 48px 8px;
+  color: #ffffff;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.modal-button.cancel {
+  background-color: #242424;
+}
+
+.modal-button.complete {
+  background-color: #ff5c5c;
+}
