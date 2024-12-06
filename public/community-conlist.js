@@ -9,9 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 로그인 유저 프로필 이미지 가져오기
   fetchProfileImage(loginUser)
     .then((profileUrl) => {
-      if (profileUrl == null) {
-        profileImageElement.src = "/public/images/basic_user.png";
-      } else {
+      if (profileUrl != null) {
         profileImageElement.src = profileUrl;
       }
     })
