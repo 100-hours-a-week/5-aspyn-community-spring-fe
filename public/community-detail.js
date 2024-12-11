@@ -34,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const writer = document.getElementsByClassName("profile-nickname")[0]; // 게시글 작성자
   const writer_profile = document.getElementById("post-profile"); // 게시글 작성자 프로필 이미지
   const date = document.getElementsByClassName("post-date")[0]; // 게시글 작성시간
+  const post_button = document.getElementsByClassName("right")[1]; // 게시글 수정/삭제 버튼
   const post_img = document
     .getElementsByClassName("post-image")[0]
     .querySelector("img"); // 게시글 이미지
   const post_content = document.getElementsByClassName("post-text")[0]; //게시글 내용
-  const metadata = document.getElementsByClassName("photo-meta")[0]; // 메타 데이터
 
   // 댓글 창에 표시되는 로그인 유저 정보
   const commentLoginNickname =
@@ -84,10 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loginUser = user.user_id;
 
       // 상단 및 댓글 창 로그인 유저 프로필 사진 표시하기
-      if (user.profile_url == "-") {
-        loginProfile.src = "/public/images/basic_user.png";
-        commentLoginProfile.src = "/public/images/basic_user.png";
-      } else {
+      if (user.profile_url) {
         loginProfile.src = user.profile_url;
         commentLoginProfile.src = user.profile_url;
       }
@@ -180,22 +177,46 @@ document.addEventListener("DOMContentLoaded", () => {
     date.innerHTML = formatDate(item.updatedAt);
     post_content.innerHTML = `<p>${post_text}</p>`;
     post_img.src = item.imgUrl;
-    document.getElementsByClassName(
-      "detail-view"
-    )[0].innerHTML = `<p style="font-size: 20px; font-weight: 700;">${item.view}</p>
-         <p style="font-size: 16px; font-weight: 700;">조회수</p>`;
-    document.getElementsByClassName(
-      "detail-view"
-    )[1].innerHTML = `<p style="font-size: 20px; font-weight: 700;">${item.comment}</p>
-         <p style="font-size: 16px; font-weight: 700;">댓글</p>`;
 
-    console.log("콘텐츠 가져오기 완료");
-
-    // 로그인 유저 넘버와 게시글 작성 유저 넘버가 같으면
-    if (loginUser == item.userId) {
+    if (item.iris == null) {
       document
-        .getElementsByClassName("profile-right")[1]
-        .classList.remove("hide");
+        .getElementsByClassName("metadata")[0]
+        .querySelector("p")
+        .classList.add("hide");
+    } else {
+      document.getElementsByClassName(
+        "metadata"
+      )[0].innerHTML = `<p>F ${item.iris}</p>`;
+    }
+
+    if (item.shutterSpeed == null) {
+      document
+        .getElementsByClassName("metadata")[1]
+        .querySelector("p")
+        .classList.add("hide");
+    } else {
+      document.getElementsByClassName(
+        "metadata"
+      )[1].innerHTML = `<p>${item.shutterSpeed}초</p>`;
+    }
+
+    if (item.iso == null) {
+      document
+        .getElementsByClassName("metadata")[2]
+        .querySelector("p")
+        .classList.add("hide");
+    } else {
+      document.getElementsByClassName(
+        "metadata"
+      )[2].innerHTML = `<p>ISO ${item.iso}</p>`;
+    }
+
+    console.log("콘텐츠 가져오기 완료------------");
+
+    // 로그인 유저 넘버와 게시글 작성 유저 넘버가 같으면 수정/삭제 노출
+    if (loginUser == item.userId) {
+      console.log("지금 로그인한 유저가 게시글 작성자임");
+      post_button.classList.remove("hide");
     }
   }
 
