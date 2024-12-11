@@ -122,3 +122,27 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+.button {
+  width: 136px;
+  height: 40px;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 16px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.color-red {
+  background-color: #ff5c5c;
+}
+
+.color-purple {
+  background-color: #d1b7ff;
+}
+
+.center {
+  text-align: center;
+}
