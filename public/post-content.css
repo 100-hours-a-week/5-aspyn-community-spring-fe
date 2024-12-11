@@ -133,20 +133,6 @@ textarea::placeholder {
   font-size: 15px;
 }
 
-.comment-button {
-  width: 136px;
-  height: 40px;
-  background-color: #d1b7ff;
-  /* background-color: #ff5c5c; */
-  color: white;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 16px;
-  margin: 8px;
-  cursor: pointer;
-}
-
 .detail-comment {
   margin: 28px;
   display: flex;
