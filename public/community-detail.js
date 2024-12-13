@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
   contentModBtn.onclick = () =>
-    (window.location.href = `/post/${postId}/update`);
+    (window.location.href = `/post//update/${postId}`);
 
   // 게시글 삭제 버튼 클릭 시 모달창 노출
   contentDelBtn.onclick = function () {
