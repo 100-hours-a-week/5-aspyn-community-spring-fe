@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelector("img");
 
   // 뒤로가기 버튼
-  const back = document.getElementsByClassName("profile-box")[0];
+  const back = document.getElementsByClassName("header-box")[0];
   back.onclick = () => (window.location.href = `/post/list`);
 
   // 상단 로그인 유저 프로필 이미지
