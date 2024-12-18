@@ -14,7 +14,7 @@
     <section class="wrap">
       <header class="container rel">
         <h1 class="logo">chalcak</h1>
-        <div class="header-box abs left">
+        <div class="header-box abs left cursor">
           <img src="/public/images/back.png" />
         </div>
         <div class="header-box abs right">
@@ -32,19 +32,97 @@
         <div class="content-header">
           <p class="page-title">게시글 작성</p>
         </div>
+
+        <!-- 미리보기 이미지와 메타데이터 입력란 -->
+        <div class="image-container">
+          <img class="preview" src="#" alt="미리보기 이미지" />
+
+          <div class="metadata">
+            <div>
+              <label>조리개</label>
+              <input
+                type="text"
+                id="iris"
+                maxlength="3"
+                placeholder="예: 3.2"
+                class="metadata-input"
+              />
+            </div>
+            <div>
+              <label>셔터스피드</label>
+              <input
+                type="text"
+                id="shutterSpeed"
+                maxlength="6"
+                placeholder="예: 1/400"
+                class="metadata-input"
+              />
+            </div>
+            <div>
+              <label>ISO</label>
+              <input
+                type="text"
+                id="iso"
+                maxlength="5"
+                placeholder="예: 200"
+                class="metadata-input"
+              />
+            </div>
+          </div>
+        </div>
+
         <div style="text-align: center">
-          <label for="imageInput" class="image-button"
+          <label for="imageInput" class="image-button before"
             ><img src="/public/images/add.png" class="icon-upload" />
             <p>파일 선택</p>
           </label>
           <input
             type="file"
             accept="image/*"
-            id="imageInput"
+            id="upload-image"
             onchange="previewImage(event)"
             hidden
           />
         </div>
+
+        <!-- 미리보기 이미지와 메타데이터 입력란 -->
+        <!-- <div class="image-container">
+          <img class="preview" src="#" alt="미리보기 이미지" />
+
+          <div class="metadata">
+            <div>
+              <label>조리개</label>
+              <input
+                type="text"
+                id="iris"
+                maxlength="3"
+                placeholder="예: 3.2"
+                class="metadata-input"
+              />
+            </div>
+            <div>
+              <label>셔터스피드</label>
+              <input
+                type="text"
+                id="shutterSpeed"
+                maxlength="6"
+                placeholder="예: 1/400"
+                class="metadata-input"
+              />
+            </div>
+            <div>
+              <label>ISO</label>
+              <input
+                type="text"
+                id="iso"
+                maxlength="5"
+                placeholder="예: 200"
+                class="metadata-input"
+              />
+            </div>
+          </div>
+        </div> -->
+
         <div>
           <foam>
             <div style="display: flex">
@@ -56,21 +134,21 @@
                 type="text"
                 maxlength="26"
                 placeholder="제목을 입력해주세요. (최대 26글자)"
-                class="post-title"
+                class="text-box"
               />
             </div>
             <div style="display: flex">
               <p class="font14">내용</p>
               <p class="point-color">&nbsp;*</p>
             </div>
-            <div style="display: flex; justify-content: center">
+            <div>
               <textarea
-                class="text-box"
+                class="text-box area"
                 placeholder="내용을 입력해주세요."
               ></textarea>
             </div>
             <div class="center button-style">
-              <button class="button color-red">완료</button>
+              <button class="button color-red">등록</button>
             </div>
           </foam>
           <hr class="horizontal" />

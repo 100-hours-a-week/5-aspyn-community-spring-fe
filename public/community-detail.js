@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.getElementsByClassName(
         "metadata"
-      )[0].innerHTML = `<p>F ${item.iris}</p>`;
+      )[0].innerHTML = `<p>F${item.iris}</p>`;
     }
 
     if (item.shutterSpeed == null) {
