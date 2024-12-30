@@ -58,8 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelector("img");
 
   // 게시글 수정-삭제 버튼
-  const contentModBtn = document.getElementsByClassName("update-button")[0];
-  const contentDelBtn = document.getElementsByClassName("update-button")[1];
+  const postUpdate = document.getElementsByClassName("update-button")[0]; // 수정버튼
+  const postDelete = document.getElementsByClassName("update-button")[1]; // 삭제버튼
+
+  // 모달창
+  const modal = document.getElementsByClassName("modal-bg")[0]; // 모달창 전체
+  const modalTitle = document.getElementsByClassName("modal-title")[0]; // 게시글을 삭제하시겠습니까?
+  const modalCancel = document.getElementsByClassName("modal-button")[0]; // 취소버튼
+  const modalComplete = document.getElementsByClassName("modal-button")[1]; // 완료버튼
 
   // TODO: 새로 매칭 필요
   // 게시글 삭제 모달 버튼 (취소-확인)
@@ -98,27 +104,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //----------------------------- 게시글 ---------------------------
   // 게시글 수정
-  contentModBtn.onclick = () =>
-    (window.location.href = `/post//update/${postId}`);
+  postUpdate.onclick = () => (window.location.href = `/post/update/${postId}`);
 
   // 게시글 삭제 버튼 클릭 시 모달창 노출
-  contentDelBtn.onclick = function () {
-    document.getElementsByClassName("modalBackground")[0].style.display =
-      "block";
+  postDelete.onclick = function () {
+    modal.classList.remove("hide");
+    modalTitle.innerHTML = "게시글을 삭제하시겠습니까?";
 
-    modalConCancel.onclick = () => {
-      // 취소
-      document.getElementsByClassName("modalBackground")[0].style.display =
-        "none";
+    // 모달창 - 취소버튼
+    modalCancel.onclick = () => {
+      modal.classList.add("hide");
       console.log("게시글 삭제 취소");
     };
 
-    // 게시글 삭제 - 모달창
-    modalConComplete.onclick = () => {
-      // 완료
-      document.getElementsByClassName("modalBackground")[0].style.display =
-        "none";
-
+    // 모달창 - 삭제버튼
+    modalComplete.onclick = () => {
+      // 게시글 삭제
+      // TODO : api 엔드포인트 수정 예정
       fetchWithAuth(
         `http://localhost:8080/api/post/remove/${postId}`,
         "DELETE",
@@ -137,6 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("게시글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
         });
 
+      modal.classList.add("hide");
       console.log("게시글 삭제");
     };
   };
@@ -252,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 댓글 박스 삽입
   async function createCmtBox(c) {
     let newDiv = document.createElement("div");
-    newDiv.classList.add("detail-comment");
+    newDiv.classList.add("comment-box");
 
     // 날짜 형식 변환
     const modifyDate = formatDate(c.modifyDate);
@@ -261,33 +264,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (loginUser == c.userNum) {
       newDiv.innerHTML = `
-          <div>
-              <div class="list-profile">
-                  <div class="profile-box">
-                      <img class="profile-pic" src="/public/images/graycircle.png" >
-                  </div>
-                  <p class="list-user">${c.nickname}</p>
-                  <p class="write-date">${modifyDate}</p>
+          <div class="postinfo-box">
+            <div class="post-info">
+              <div class="profile-box">
+                <img src="/public/images/basic_user.png" />
               </div>
-              <p class="cmt-content">${text}</p>
+              <p class="profile-nickname">${c.nickname}</p>
+              <p class="post-date">${modifyDate}</p>
+            </div>
+            <!--게시글을 작성한 유저인 경우-->
+            <div class="right">
+              <button class="update-button" data-edit-seq=${c.seq}>수정</button>
+              <button class="update-button" data-remove-seq=${c.seq}>삭제</button>
+            </div>
           </div>
-          <!--게시글을 작성한 유저인 경우에만 버튼 노출-->
-          <div style="margin-left: auto;">
-              <button class="btn-rel" data-edit-seq=${c.seq}>수정</button>
-              <button class="btn-rel" data-remove-seq=${c.seq}>삭제</button>
-          </div>`;
+          <p class="comment-content">${text}</p>`;
     } else {
       newDiv.innerHTML = `
-          <div>
-            <div class="list-profile">
-                  <div class="profile-box">
-                      <img class="profile-pic" src="/public/images/graycircle.png" >
-                  </div>
-                  <p class="list-user">${c.nickname}</p>
-                  <p class="write-date">${modifyDate}</p>
+          <div class="postinfo-box">
+            <div class="post-info">
+              <div class="profile-box">
+                <img src="/public/images/basic_user.png" />
               </div>
-            <p class="cmt-content">${text}</p>
-          </div>`;
+              <p class="profile-nickname">${c.nickname}</p>
+              <p class="post-date">${modifyDate}</p>
+            </div>
+            <!--게시글을 작성한 유저인 경우에만 버튼 노출-->
+            <div class="right">
+              <button class="update-button">수정</button>
+              <button class="update-button">삭제</button>
+            </div>
+          </div>
+          <p class="comment-content">${text}</p>`;
     }
 
     //newDiv를 'contents' 클래스를 가지고 있는 <article> 태그 안에 삽입
@@ -298,21 +306,20 @@ document.addEventListener("DOMContentLoaded", () => {
     commentRemoveBtns.forEach(function (btn) {
       btn.onclick = function () {
         let removeSeq = this.getAttribute("data-remove-seq");
-        document.getElementsByClassName("modalBackground")[1].style.display =
-          "block";
-        // 댓글 삭제 모달 - 취소버튼
-        modalCmtCancel.onclick = () => {
-          document.getElementsByClassName("modalBackground")[1].style.display =
-            "none";
+
+        modal.classList.remove("hide");
+        modalTitle.innerHTML = "댓글을 삭제하시겠습니까?";
+
+        // 모달창 - 취소버튼(댓글)
+        modalCancel.onclick = () => {
+          modal.classList.add("hide");
           console.log("댓글 삭제 취소");
         };
 
-        // 댓글 삭제 모달 - 확인버튼(댓글 삭제처리)
-        modalCmtComplete.onclick = () => {
-          document.getElementsByClassName("modalBackground")[1].style.display =
-            "none"; //모달창 미노출
-
-          //댓글 삭제처리
+        // 모달창 - 삭제버튼(댓글) -> 댓글 삭제
+        modalComplete.onclick = () => {
+          // 댓글 삭제처리
+          // TODO : api 엔드포인트 수정 예정
           fetchWithAuth(
             `http://localhost:8080/api/comment/remove/${removeSeq}`,
             "DELETE",
@@ -331,6 +338,8 @@ document.addEventListener("DOMContentLoaded", () => {
               console.error("댓글 삭제 중 오류가 발생했습니다:", error);
               alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
             });
+
+          modal.classList.remove("hide"); // 모달 닫기(미노출)
         };
       };
     }); // 댓글 삭제 foreach 종료 중괄호
