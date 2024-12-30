@@ -66,6 +66,7 @@
   border-radius: 8px;
   box-sizing: border-box;
   background-color: #f7f5f3;
+  font-family: "Orbit-Regular";
 }
 
 .text-box.area {
@@ -140,4 +141,5 @@
   border-radius: 8px;
   box-sizing: border-box;
   background-color: #f7f5f3;
+  /* font-family: "Orbit-Regular"; */
 }
