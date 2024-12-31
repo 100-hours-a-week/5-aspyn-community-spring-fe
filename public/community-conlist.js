@@ -4,18 +4,63 @@ document.addEventListener("DOMContentLoaded", async function () {
   if (!user) return;
 
   const loginUser = user.user_id;
-  const profileImageElement = document.querySelector(".header-box img");
+  const profileBox = document.querySelector(".header-box");
+  const profileImage = document.querySelector(".header-box img");
+  const options = document.querySelector(".opt-pos");
 
   // 로그인 유저 프로필 이미지 가져오기
   fetchProfileImage(loginUser)
     .then((profileUrl) => {
       if (profileUrl != null) {
-        profileImageElement.src = profileUrl;
+        profileImage.src = profileUrl;
       }
     })
     .catch((error) => {
       console.error("Error fetching profile image:", error);
     });
+
+  // 옵션 박스 보이기
+  function showOptions() {
+    options.classList.remove("hide"); // 옵션 박스 보이기
+  }
+
+  // 옵션 박스 숨기기
+  function hideOptions() {
+    options.classList.add("hide"); // 옵션 박스 숨기기
+  }
+
+  // 프로필 이미지에 마우스를 올리면 옵션 박스 보이기
+  profileBox.addEventListener("mouseover", showOptions);
+
+  // 옵션 박스에 마우스를 올리면 계속 보이기
+  options.addEventListener("mouseover", showOptions);
+
+  // 프로필 이미지와 옵션 박스에서 마우스를 벗어나면 옵션 박스 숨기기
+  profileBox.addEventListener("mouseleave", () => {
+    setTimeout(() => {
+      if (!options.matches(":hover")) {
+        hideOptions();
+      }
+    }, 100); // 짧은 지연 시간 추가
+  });
+
+  options.addEventListener("mouseleave", hideOptions);
+
+  const userInfo = document.getElementsByClassName("opt-box")[0]; // 회원정보수정
+  const password = document.getElementsByClassName("opt-box")[1]; // 비밀번호수정
+  const logout = document.getElementsByClassName("opt-box")[2]; // 로그아웃
+
+  userInfo.onclick = () => {
+    window.location.href = `/user/info/${loginUser}`;
+  };
+
+  password.onclick = () => {
+    window.location.href = `/user/password/${loginUser}`;
+  };
+
+  logout.onclick = () => {
+    // 로그아웃
+  };
 
   // 게시글 작성 버튼
   const editBtn = document.querySelector(".post-button");
@@ -115,10 +160,7 @@ function createBox(item) {
 
 // 프로필 이미지를 서버에서 불러오는 함수
 function fetchProfileImage(userId) {
-  return fetchWithAuth(
-    `http://localhost:8080/api/user/loginUser/${userId}`,
-    "GET"
-  )
+  return fetchWithAuth(`http://localhost:8080/api/user/login/${userId}`, "GET")
     .then((response) => {
       if (response.ok) {
         return response.json();

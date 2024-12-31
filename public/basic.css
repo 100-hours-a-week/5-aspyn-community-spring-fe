@@ -95,7 +95,7 @@ body {
 .opt-pos {
   position: absolute;
   margin-top: 150px;
-  margin-left: 485px;
+  margin-left: 450px;
 }
 
 .opt-box {
@@ -107,6 +107,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #d9d9d9;
+  cursor: pointer;
 }
 
 .opt-box:hover {
