@@ -159,10 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(pair[0], pair[1]);
               }
 
+              // 사진 메타데이터 값이 append 되지 않아 수정이 안 되고 있음 -> 수정 필요
+
               if (title.value.length !== 0 && content.value.length !== 0) {
                 try {
                   const response = await fetchWithImg(
-                    `http://localhost:8080/api/post/modify/${post}`,
+                    `http://localhost:8080/api/post/${post}`,
                     "PATCH",
                     updatePost
                   );

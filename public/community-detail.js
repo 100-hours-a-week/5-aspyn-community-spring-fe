@@ -121,11 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
     modalComplete.onclick = () => {
       // 게시글 삭제
       // TODO : api 엔드포인트 수정 예정
-      fetchWithAuth(
-        `http://localhost:8080/api/post/remove/${postId}`,
-        "DELETE",
-        { id: postId }
-      )
+      fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "DELETE", {
+        id: postId,
+      })
         .then((response) => {
           if (!response.errorCode) {
             alert("게시글이 삭제 되었습니다");
@@ -321,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // 댓글 삭제처리
           // TODO : api 엔드포인트 수정 예정
           fetchWithAuth(
-            `http://localhost:8080/api/comment/remove/${removeSeq}`,
+            `http://localhost:8080/api/comment/${removeSeq}`,
             "DELETE",
             { seq: removeSeq }
           )
