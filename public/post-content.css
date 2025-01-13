@@ -1,0 +1,236 @@
+/* 페이지 전체를 중앙에 600px로 제한하는 스타일 */
+.wrap {
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4px;
+}
+
+.logo {
+  font-family: "BagelFatOne-Regular";
+  font-size: 40px;
+  color: #ff5c5c;
+  margin: 24px 0 24px 0;
+}
+
+/* 가로줄 구분선 */
+.horizontal {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background-color: #ddd;
+  margin: 0;
+}
+
+.profile-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 70%;
+}
+
+.profile-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 70%;
+}
+
+.post-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-left: 16px;
+}
+
+.postinfo-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.post-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-nickname {
+  font-size: 15px;
+  margin-left: 8px;
+}
+
+.post-date {
+  font-size: 14px;
+  margin-left: 24px;
+}
+
+.update-button {
+  width: 50px;
+  height: 28px;
+  color: #ff5c5c;
+  border-style: solid;
+  background-color: #f7f5f3;
+  border-color: #ff5c5c;
+  border-radius: 8px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.post-image {
+  width: 568px;
+  margin: 12px 16px 16px 16px;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-meta {
+  display: flex;
+  justify-content: center;
+}
+
+.metadata {
+  font-size: 15px;
+  font-family: "Orbit-Regular";
+  margin: 0 16px 0 16px;
+  display: flex;
+}
+
+.post-text {
+  margin: 20px 20px 36px 20px;
+  font-size: 15px;
+  font-family: "Orbit-Regular";
+}
+
+.comment {
+  width: 568px;
+  /* height: 158px; */
+  border-radius: 16px;
+  margin-top: 20px;
+  background-color: white;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.comment-text {
+  width: 520px;
+  height: 54px;
+  margin: 24px;
+  border: none;
+  resize: none;
+  font-family: "Pretendard-Regular";
+  font-size: 15px;
+}
+
+textarea::placeholder {
+  font-family: "Pretendard-Regular";
+  font-size: 15px;
+}
+
+.comment-box {
+  margin: 20px 0;
+}
+
+.comment-writer {
+  display: flex;
+  align-items: center;
+  /* margin-left: 24px; */
+}
+
+.comment-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 24px;
+}
+
+.post-comment {
+  align-items: center;
+  margin-top: 24px;
+}
+
+.comment-box {
+  margin: 20px 0;
+}
+.comment-content {
+  font-size: 15px;
+  padding-left: 48px;
+  padding-right: 32px;
+  /* padding-top: 10px; */
+}
+
+.modal-bg {
+  /* 모달 오버레이 */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+  /* z-index: 4; */
+}
+
+.modal-position {
+  /* 화면에 꽉 차게 하는 코드(여기서는 너비를 꽉 채우는 용도) */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  /* 위아래 너비를 준 상태에서 가로 50%, 세로 50%를 이동시킬 수 있다 (= 한가운데 배치) */
+  transform: translate(-50%, -50%);
+
+  /* 모달 오버레이 배경보다 한 단계 더 높게 배치 */
+  z-index: 5;
+}
+
+.modal-layout {
+  width: 408px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  float: left;
+  margin: auto;
+  box-sizing: border-box;
+  border: none;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 48px;
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.modal-button {
+  width: 127px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  margin: 24px 8px 48px 8px;
+  color: #ffffff;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.modal-button.cancel {
+  background-color: #242424;
+}
+
+.modal-button.complete {
+  background-color: #ff5c5c;
+}

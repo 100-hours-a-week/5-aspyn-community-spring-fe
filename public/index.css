@@ -1,222 +1,215 @@
-/* 폰트 추가 */
-
-@font-face { /* 베이글팻 */
-    font-family: 'BagelFatOne-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_JAMO@1.0/BagelFatOne-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face { /* 프리텐다드 */
-    font-family: "Pretendard-Regular";
-    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-      format("woff");
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  /* 페이지 설정 */
-body {
-    display: flex;
-    justify-content: center;
-    background-color: #F7F5F3;
-    width: 100%;
-    min-height: 600px;
-  }
-
-.wrap {
-display: flex;
-flex-direction: column;
-width: 1920px;
-background-color: transparent;
-font-family: Pretendard-Regular;
-min-height: calc(100vh - 200px); /* 페이지 최소 높이 설정 */
-}
-
-.container {
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
 .illustrations {
-    /* margin-right: 50px; */
+  /* margin-right: 50px; */
 }
 
 .illustration-img {
-    width: 1372px;
-    margin-top: 365px;
+  width: 1372px;
+  margin-top: 365px;
 }
 
 .login-box {
-    position:fixed;
-    top: 170px;
-    /* margin-top: 400px; */
-    /* top:50%; */
-    left:50%;
-    transform:translate(-50%);
-    background-color: #ffffff;
-    /* padding: 54px 54px 34px 54px; */
-    padding: 54px;;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: calc(100vh - 200px); /* 화면 높이에 따라 자동 조정 */
-    
+  position: absolute;
+  top: 170px;
+  /* margin-top: 400px; */
+  /* top:50%; */
+  /* left:50%; */
+  /* transform:translate(-50%); */
+  background-color: #ffffff;
+  /* padding: 54px 54px 34px 54px; */
+  padding: 54px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  /* max-height: calc(100vh - 200px); 화면 높이에 따라 자동 조정 */
 }
 
 .logo {
-    font-family: 'BagelFatOne-Regular';
-    font-size: 50px;
-    color: #ff5c5c;
-    margin-bottom: 52px;
+  font-family: "BagelFatOne-Regular";
+  font-size: 50px;
+  color: #ff5c5c;
+  margin-bottom: 52px;
 }
 
 .login-box .form-header {
-    /* height:30px; */
-    display:flex;
-    align-items:center;
-    text-align:left;
-    }
+  /* height:30px; */
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
 
 .login-box .form-header > div {
-    /* width:calc(100% / 3); */
-    margin-right: 16px;
-    color:#bbbbbb;
-    font-size:20px;
-    font-weight:700;
-    cursor:pointer;
-    }
+  /* width:calc(100% / 3); */
+  margin-right: 16px;
+  color: #bbbbbb;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-box {
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  align-items: center;
+  transition: all 500ms ease-in-out;
+}
 
 .profile-image {
-    text-align: center;
-    margin-top: 32px;
-    margin-bottom: 32px;
-    overflow: hidden;
-    transition:all 500ms ease-in-out;
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  /* transition:all 500ms ease-in-out; */
 }
 
 .profile-image img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.profile-button {
+  font-size: 12px;
+  display: inline-block;
+  padding: 5px 10px;
+  /* background-color: #ff6f61; */
+  color: #ff6f61;
+  border-color: #ff6f61;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-top: 10px;
+  /* position: absolute;
+    object-fit: contain;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+}
+
+.profile-button:hover {
+  background-color: #ff4c3b;
+  color: white;
+}
+
+/* 숨겨진 input[type="file"] 기본 스타일 제거 */
+input[type="file"] {
+  display: none;
 }
 
 /* 입력 필드를 감싸는 컨테이너 */
 .input-container {
-    position: relative; /* 아이콘 배치를 위해 relative 사용 */
-    width: 100%;
-    display: flex;
-    align-items: center;
+  position: relative; /* 아이콘 배치를 위해 relative 사용 */
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 /* 아이콘 스타일 */
 .input-icon {
-    position: absolute;
-    left: 14px; 
-    width: 20px;
-    height: 20px;
-    pointer-events: none; /* 클릭 방지 */
-    opacity: 0.3;
+  position: absolute;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* 클릭 방지 */
+  opacity: 0.3;
 }
 
 .helpertext {
-    color: #FF5953;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    text-align: right;
-    opacity: 0;
-  }
+  color: #ff5953;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: right;
+  opacity: 0;
+}
 
 .login-box.signup .form-header div.show-signup {
-    color: #D1B7FF;
-    /* color: #000; */
+  color: #d1b7ff;
 }
 .login-box.signin .form-header div.show-signin {
-    color: #D1B7FF;
-    /* color: #000; */
+  color: #d1b7ff;
 }
 
 .login-box .form-elements {
-    margin-top:24px;
-    width: 332px;
+  margin-top: 24px;
+  width: 332px;
 }
 .login-box .form-elements .form-element {
-    /* height:48px; */
-    height: 68px;
-    margin-top:5px;
-    opacity:1;
-    overflow:hidden;
-    transition:all 500ms ease-in-out;
+  /* height:48px; */
+  height: 68px;
+  margin-top: 5px;
+  opacity: 1;
+  overflow: hidden;
+  transition: all 500ms ease-in-out;
 }
 
 .login-box .form-elements input {
-    width:100%;
-    height: 48px;
-    /* padding:10px; */
-    padding: 10px 10px 10px 48px;
-    font-size:15px;
-    border-radius:4px;
-    box-sizing:border-box;
-    border: none;
-    outline: none;
-    background:#F7F5F3;
+  width: 100%;
+  height: 48px;
+  /* padding:10px; */
+  padding: 10px 10px 10px 48px;
+  font-size: 15px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: #f7f5f3;
 }
 
 .login-box .form-elements button {
-    width:100%;
-    height: 48px;
-    padding:10px;
-    font-size:16px;
-    font-weight:700;
-    /* margin-top:16px; */
-    border-radius:4px;
-    box-sizing:border-box;
-    background:#FF5953;
-    color:#ffffff;
-    cursor:pointer;
-    border:none;
-    outline:none;
-    overflow: hidden;
-    transition:all 500ms ease-in-out;
+  width: 100%;
+  height: 48px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  /* margin-top:16px; */
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: #ff5953;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  transition: all 500ms ease-in-out;
 }
 
 .login-box .suggest {
-    font-size: 14px;
-    text-align: center;
-    margin-top: 40px;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .login-box .suggest > .signup {
-    font-weight: 700px;
-    color: #D1B7FF;
-    cursor: pointer;
-    text-decoration: none;
+  font-weight: 700px;
+  color: #d1b7ff;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .login-box .suggest > .signup:visited {
-    color: #D1B7FF;
+  color: #d1b7ff;
 }
 
-.login-box.signin .form-elements > .profile-image {
-    height:0px;
-    opacity:0;
+.login-box.signin .profile-box {
+  height: 26px;
+  opacity: 0;
 }
 
 .login-box.signin .confirm-password {
-    height:0px;
-    opacity:0;
+  height: 0px;
+  opacity: 0;
 }
 
 .login-box.signin .nickname {
-    height:0px;
-    opacity:0;
+  height: 0px;
+  opacity: 0;
 }
 
 .login-box.signup .suggest {
-    height:0px;
-    display:none;
+  height: 0px;
+  display: none;
 }
-

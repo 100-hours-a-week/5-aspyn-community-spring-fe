@@ -126,7 +126,7 @@ button.onclick = async () => {
   loginUser = user.user_id;
 
   if (pw.value == pwch.value && strongPassword(pw.value) == true) {
-    fetch("http://localhost:8080/api/user/modifyPassword", {
+    fetch("http://localhost:8080/api/user/password", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

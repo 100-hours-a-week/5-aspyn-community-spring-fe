@@ -19,7 +19,7 @@ exports.getModify = (req, res) => {
 };
 
 // 게시글 신규 작성 페이지 열기
-exports.getEdit = (req, res) => {
+exports.getNew = (req, res) => {
   const filePath = path.join(__dirname, "../../public/community-edit.html");
   res.sendFile(filePath);
 };

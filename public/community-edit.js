@@ -1,11 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetch(`http://localhost:8080/api/userinfo`, {
-        method: "GET",
-        credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
-      });
+      const response = await fetchWithAuth(
+        `http://localhost:8080/api/userinfo`,
+        "GET"
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -26,21 +26,85 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //뒤로가기 버튼
-  let back = document.getElementsByClassName("profile-box")[0];
-
+  // 뒤로가기 버튼
+  let back = document.getElementsByClassName("header-box")[0];
   back.onclick = () => (window.location.href = `/post/list`);
 
-  const title = document.getElementsByClassName("mod-titleint")[0];
-  const content = document.getElementsByClassName("mod-conint")[0];
-  const imageInput = document.getElementById("imageInput"); // 이미지 파일 입력 요소
-  const upload = document.getElementsByClassName("login-button")[0];
+  // 로그인 유저 정보 가져오기
+  const user = await fetchUserInfo();
+  const loginUser = user.user_id;
 
+  // 로그인 유저 프로필
+  const loginProfile = document.getElementById("login-profile");
+  loginProfile.src = user.profile_url;
+
+  const title = document.getElementsByClassName("text-box")[0];
+  const content = document.getElementsByClassName("text-box")[1];
+  const imageButton = document.getElementsByClassName("image-button")[0];
+  const imageInput = document.getElementById("upload-image"); // 이미지 파일 입력 요소
+  const upload = document.getElementsByClassName("button")[0]; // 게시글 등록 버튼
+
+  const iris = document.getElementById("iris");
+  const shutterSpeed = document.getElementById("shutterSpeed");
+  const iso = document.getElementById("iso");
+
+  // 이미지 [파일선택] 버튼 클릭
+  imageButton.addEventListener("click", function () {
+    imageInput.click();
+  });
+
+  // 파일 선택 시 미리보기 업데이트
+  imageInput.addEventListener("change", previewImage);
+
+  function previewImage(event) {
+    const file = event.target.files[0];
+
+    console.log("선택된 파일:", file); // 파일이 선택되었는지 확인하는 로그
+
+    const previewContainer =
+      document.getElementsByClassName("image-container")[0];
+    const previewImage = document.getElementsByClassName("preview")[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        console.log("파일 읽기 성공"); // 파일이 정상적으로 읽혔는지 확인하는 로그
+
+        previewImage.src = e.target.result;
+        previewContainer.style.display = "block"; // 미리보기 컨테이너 표시
+      };
+
+      reader.readAsDataURL(file);
+      imageButton.classList.remove("before");
+      imageButton.classList.add("after");
+    } else {
+      console.log("파일이 선택되지 않았습니다."); // 파일이 선택되지 않은 경우 확인
+      previewContainer.style.display = "none";
+      previewImage.src = "";
+    }
+  }
+
+  // 조리개 유효성 검사 (숫자와 마침표만 입력 가능)
+  function validateIris(input) {
+    const regex = /^(?!0)([1-9][0-9]*)(\.[0-9]*[1-9])?$/;
+    return regex.test(input);
+  }
+
+  // 셔터스피드 유효성 검사 (숫자와 /만 가능)
+  function validateShutterSpeed(input) {
+    const regex = /^(1\/([2-9]|[1-9][0-9]*0)|[1-9][0-9]*)$/;
+    return regex.test(input); // true, false 반환
+  }
+
+  // iso 유효성 검사 (두 자리 수 이상이며, 마지막은 반드시 0)
+  function validateISO(input) {
+    const regex = /^[1-9][0-9]*0$/;
+    return regex.test(input);
+  }
+
+  // 게시글 업로드 버튼 클릭
   upload.onclick = async () => {
-    // 로그인 유저 정보 가져오기
-    const user = await fetchUserInfo();
-    loginUser = user.user_id;
-
     if (loginUser == null) {
       alert("비회원은 게시글 작성이 불가합니다. 로그인 해주세요.");
     } else {
@@ -54,21 +118,48 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("이미지 파일을 선택해주세요.");
       }
 
-      if (title.value.length !== 0 && content.value.length !== 0 && imageInput.files.length > 0) {
+      if (
+        title.value.length !== 0 &&
+        content.value.length !== 0 &&
+        imageInput.files.length > 0
+      ) {
         // 게시글 등록 기능
-        let newContent = new FormData();
-        newContent.append("postDto", JSON.stringify({ 
-          title: title.value, 
-          text: content.value, 
-          user_id: loginUser 
-        }));
-        newContent.append("image", imageInput.files[0]); // 이미지 파일 추가
+        let newPost = new FormData();
+        newPost.append(
+          "request",
+          JSON.stringify({
+            title: title.value,
+            text: content.value,
+            userId: loginUser,
+          })
+        );
+
+        if (iris.value && !validateIris(iris.value)) {
+          alert("조리개 값이 올바르지 않습니다.");
+        } else if (validateIris(iris.value)) {
+          newPost.append("iris", iris.value);
+        }
+
+        if (shutterSpeed.value && !validateShutterSpeed(shutterSpeed.value)) {
+          alert("셔터스피드 값이 올바르지 않습니다.");
+        } else if (validateShutterSpeed(shutterSpeed.value)) {
+          newPost.append("shutterSpeed", shutterSpeed.value);
+        }
+
+        if (iso.value && !validateISO(iso.value)) {
+          alert("ISO 값이 올바르지 않습니다.");
+        } else if (validateISO(iso.value)) {
+          newPost.append("iso", iso.value);
+        }
+
+        newPost.append("file", imageInput.files[0]); // 이미지 파일 추가
 
         try {
-          const response = await fetch("http://localhost:8080/api/post/edit", {
-            method: "POST",
-            body: newContent, // FormData 전송
-          });
+          const response = await fetchWithImg(
+            "http://localhost:8080/api/post/edit",
+            "POST",
+            newPost
+          );
 
           if (!response.ok) {
             throw new Error("서버 응답 오류: " + response.status);
@@ -79,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!resData.errorCode) {
             alert("게시글이 성공적으로 저장되었습니다.");
             let post = resData.postId; // controller에서 { postId: newPostId } 이렇게 보내고 있음
-            window.location.href = `/post/detail?post=${post}`;
+            window.location.href = `/post/${post}`;
             console.log("게시글 등록 완료");
           } else {
             throw new Error("게시글 저장이 실패되었습니다.");
@@ -94,25 +185,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  title.onkeyup = () => {
-    if (title.value.length < 27) {
-      console.log("게시글 제목 입력");
-      if (title.value.length > 0 && content.value.length > 0) {
-        upload.style.backgroundColor = "#7F6AEE";
-      } else {
-        upload.style.backgroundColor = "#ACA0EB";
-      }
-    } else {
-      console.log("입력 글자 수 초과(최대 26글자)");
-      alert("제목은 최대 26글자까지 입력 가능합니다.");
+  // 게시글 내용 작성
+  content.onkeyup = () => {
+    if (title.value.length > 0 && content.value.length > 0) {
+      upload.style.backgroundColor = "#ff4c3b";
     }
   };
 
-  content.onkeyup = () => {
-    if (title.value.length > 0 && content.value.length > 0) {
-      upload.style.backgroundColor = "#7F6AEE";
-    } else {
-      upload.style.backgroundColor = "#ACA0EB";
+  // JWT 포함한 fetch 함수
+  async function fetchWithAuth(url, method, body = null) {
+    const token = localStorage.getItem("jwt"); // JWT를 localStorage에서 가져옴
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `${token}`, // Authorization 헤더에 JWT 추가
+    };
+
+    const options = {
+      method: method,
+      headers: headers,
+    };
+
+    if (body) {
+      options.body = JSON.stringify(body); // 요청에 body가 필요한 경우 추가
     }
-  };
+
+    return fetch(url, options);
+  }
+
+  // 이미지를 포함한 게시글 업로드 fetch 함수
+  async function fetchWithImg(url, method, body = null) {
+    const token = localStorage.getItem("jwt"); // JWT를 localStorage에서 가져옴
+    const headers = {};
+
+    if (!(body instanceof FormData)) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    headers["Authorization"] = `${token}`; // Authorization 헤더에 JWT 추가
+
+    const options = {
+      method: method,
+      headers: headers,
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    };
+
+    return fetch(url, options);
+  }
 });

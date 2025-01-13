@@ -1,144 +1,105 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="kr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/public/reset.css" />
-    <link rel="stylesheet" href="/public/community.css" />
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/public/basic.css" />
+    <link rel="stylesheet" type="text/css" href="/public/post-content.css" />
+
+    <title>chalcak</title>
   </head>
   <body>
     <section class="wrap">
-      <header>
-        <div style="position: relative">
-          <div class="align-center">
-            <p class="title pos">아무 말 대잔치</p>
-          </div>
-          <div class="content-header">
-            <div
-              class="content-header pos"
-              style="
-                z-index: 1;
-                height: 104px;
-                display: flex;
-                align-items: center;
-              "
-            >
-              <div class="profile-box profile-left cursor">
-                <img class="profile-pic" src="/public/images/back.png" />
-              </div>
-              <div class="profile-box profile-right">
-                <img class="profile-pic" src="/public/images/snoopy.jpg" />
-              </div>
-            </div>
-          </div>
+      <header class="container rel">
+        <h1 class="logo">chalcak</h1>
+        <div class="header-box abs left cursor">
+          <img src="/public/images/back.png" />
         </div>
-        <div style="height: 104px"></div>
-
-        <hr class="horizontal-rule" />
+        <div class="header-box abs right">
+          <img id="login-profile" src="/public/images/basic_user.png" />
+        </div>
+        <ul class="opt-pos hide">
+          <li class="opt-box cursor">회원정보수정</li>
+          <li class="opt-box cursor">비밀번호수정</li>
+          <li class="opt-box cursor">로그아웃</li>
+        </ul>
       </header>
-      <article class="contents content-header">
-        <div style="margin-left: 26px; margin-right: 26px">
-          <h3 class="con-title" style="margin-top: 24px">이거 에러임</h3>
-          <div class="list-profile">
-            <div class="profile-box">
-              <img class="profile-pic" src="/public/images/graycircle.png" />
+      <hr class="horizontal" />
+
+      <!-- 게시글 내용 -->
+      <article>
+        <div>
+          <h3 class="post-title">게시글 제목</h3>
+          <!-- 게시글 헤더 -->
+          <div class="postinfo-box">
+            <div class="post-info">
+              <div class="profile-box">
+                <img id="post-profile" src="/public/images/basic_user.png" />
+              </div>
+              <p class="profile-nickname">작성자닉네임총열글자</p>
+              <p class="post-date">2024-01-01 00:00:00</p>
             </div>
-            <p class="list-user">더미 작성자</p>
-            <p class="write-date">2024-01-01 00:00:00</p>
-            <div class="profile-right hide">
-              <button class="btn-rel">수정</button>
-              <button class="btn-rel">삭제</button>
+
+            <div class="right hide">
+              <button class="update-button">수정</button>
+              <button class="update-button">삭제</button>
             </div>
           </div>
         </div>
-        <hr class="horizontal-rule" style="opacity: 0.2; margin-top: 20px" />
-        <div class="imgBox">
-          <img class="detail-img" src="#" />
+        <hr class="horizontal" />
+
+        <!-- 게시글 본문 -->
+        <div class="post-image">
+          <img src="/public/images/photo.jpg" />
         </div>
-        <div class="detail-text">
-          <p>무엇이 문제이길래 또 연결이 안 된걸까요...?<br /></p>
-        </div>
-        <div class="viewcount">
-          <div class="detail-view">
-            <p style="font-size: 20px; font-weight: 700">123</p>
-            <p style="font-size: 16px; font-weight: 700">조회수</p>
+
+        <div class="photo-meta">
+          <div class="metadata">
+            <p id="iris">-</p>
           </div>
-          <div class="detail-view">
-            <p style="font-size: 20px; font-weight: 700">123</p>
-            <p style="font-size: 16px; font-weight: 700">댓글</p>
+          <div class="metadata"><p id="shutter-speed">-</p></div>
+          <div class="metadata">
+            <p id="iso">-</p>
           </div>
         </div>
-        <hr class="horizontal-rule" style="opacity: 0.2; margin-top: 20px" />
+
+        <div class="post-text">
+          <p>게시글 내용<br /></p>
+        </div>
+        <hr class="horizontal" />
+
+        <!-- 댓글 입력 창-->
         <div class="comment">
           <form>
-            <input
-              type="text"
+            <textarea
+              class="comment-text"
               placeholder="댓글을 입력해주세요."
-              class="comment-int"
-            />
-            <hr class="horizontal-rule" style="opacity: 0.2" />
-            <button type="button" class="comment-sub-btn">댓글 등록</button>
+            ></textarea>
+            <hr class="horizontal" />
+            <div class="comment-bottom">
+              <div class="comment-writer">
+                <div class="profile-box">
+                  <img src="/public/images/basic_user.png" />
+                </div>
+                <p class="profile-nickname">로그인유저</p>
+              </div>
+              <button type="button" class="button color-purple">
+                댓글 등록
+              </button>
+            </div>
           </form>
         </div>
-
-        <!-- 해당 게시글 댓글이 있는 경우 js로 댓글 박스 자동 생성 -->
-        <!-- 댓글 목록(수정,삭제 버튼) -->
-        <!-- <div class="detail-comment"> 
-                <div>
-                    <div class="list-profile">
-                        <div class="profile-box">
-                            <img class="profile-pic" src="images/graycircle.png" >
-                        </div>
-                        <p class="list-user">더미 작성자 1</p>
-                        <p class="write-date">2024-01-01 00:00:00</p>
-                    </div>
-                    <p class="cmt-content">댓글 내용</p>
-                </div>
-                <div style="margin-left: auto;">
-                    <button class="btn-rel">수정</button>
-                    <button class="btn-rel">삭제</button>
-                </div>
-            </div> -->
-
-        <!-- 댓글 목록(수정,삭제 버튼 없음) -->
-        <!-- <div class="detail-comment">
-                <div>
-                    <div class="list-profile">
-                        <div class="profile-box">
-                            <img class="profile-pic" src="images/graycircle.png" >
-                        </div>
-                        <p class="list-user">더미 작성자 1</p>
-                        <p class="write-date">2024-01-01 00:00:00</p>
-                    </div>
-                    <p class="cmt-content">댓글 내용</p>
-                </div>
-            </div> -->
       </article>
-      <!-- 게시글 삭제 모달창 -->
-      <div class="modalBackground hide">
-        <div class="modalWrapper">
-          <div class="modal-layout">
-            <p class="modal-title">게시글을 삭제하시겠습니까?</p>
-            <p class="modal-txt">삭제한 내용은 복구 할 수 없습니다.</p>
-            <div style="text-align: center">
-              <button class="modal-btn-cancel cursor">취소</button>
-              <button class="modal-btn-complete cursor">완료</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- 댓글 삭제 모달창 -->
-      <div class="modalBackground hide">
-        <div class="modalWrapper">
-          <div class="modal-layout">
-            <p class="modal-title">댓글을 삭제하시겠습니까?</p>
-            <p class="modal-txt">삭제한 내용은 복구 할 수 없습니다.</p>
-            <div style="text-align: center">
-              <button class="modal-btn-cancel cursor">취소</button>
-              <button class="modal-btn-complete cursor">완료</button>
-            </div>
+      <!-- 게시글 삭제 모달창 -->
+      <div class="modal-bg hide">
+        <div class="modal-position modal-layout">
+          <p class="modal-title">게시글을 삭제하시겠습니까?</p>
+          <p class="modal-text">삭제한 내용은 복구 할 수 없습니다.</p>
+          <div style="text-align: center">
+            <button class="modal-button cancel cursor">취소</button>
+            <button class="modal-button complete cursor">삭제</button>
           </div>
         </div>
       </div>

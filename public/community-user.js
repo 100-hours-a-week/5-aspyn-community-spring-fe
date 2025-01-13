@@ -76,7 +76,7 @@ window.addEventListener("load", async () => {
   const user = await fetchUserInfo();
   id = user.user_id;
 
-  fetch(`http://localhost:8080/api/user/loginUser/${id}`)
+  fetch(`http://localhost:8080/api/user/login/${id}`)
     .then((response) => response.json())
     .then((data) => {
       let userEmail = data.email;
@@ -140,7 +140,7 @@ button.onclick = async () => {
             alert("중복된 닉네임입니다. 다른 닉네임을 입력해주세요.");
           } else {
             // 닉네임 변경
-            fetch("http://localhost:8080/api/user/modifyNickname", {
+            fetch("http://localhost:8080/api/user/nickname", {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -185,7 +185,7 @@ modalComplete.onclick = async () => {
   const user = await fetchUserInfo();
   loginUser = user.user_id;
 
-  fetch("http://localhost:8080/api/user/leaveUser", {
+  fetch("http://localhost:8080/api/use/leave", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -208,4 +208,4 @@ modalComplete.onclick = async () => {
 document.getElementsByClassName("btn-change")[0].onclick = () => {
   alert("아직 할 줄 몰라요");
   // 이미지 업로드
-}
+};
