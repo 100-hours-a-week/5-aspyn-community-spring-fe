@@ -47,15 +47,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   options.addEventListener("mouseleave", hideOptions);
 
   const userInfo = document.getElementsByClassName("opt-box")[0]; // 회원정보수정
-  const password = document.getElementsByClassName("opt-box")[1]; // 비밀번호수정
-  const logout = document.getElementsByClassName("opt-box")[2]; // 로그아웃
+  const logout = document.getElementsByClassName("opt-box")[1]; // 로그아웃
 
   userInfo.onclick = () => {
     window.location.href = `/user/info/${loginUser}`;
-  };
-
-  password.onclick = () => {
-    window.location.href = `/user/password/${loginUser}`;
   };
 
   logout.onclick = () => {

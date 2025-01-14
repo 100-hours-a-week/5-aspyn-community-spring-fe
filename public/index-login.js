@@ -25,9 +25,6 @@ const strongPassword = (str) =>
 //닉네임 유효성 검사 정규식
 const korEngNum = (str) => /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
 
-// 세션 유저 아이디 클리어
-sessionStorage.clear();
-
 // 아이디 입력 유효성 검사
 emailInput.addEventListener("keyup", () => {
   if (loginEmail(emailInput.value)) {
