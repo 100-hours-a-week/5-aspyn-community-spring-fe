@@ -322,38 +322,38 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // 회원탈퇴 모달 버튼 (취소-확인)
+  const modal = document.getElementsByClassName("modalBackground")[0];
   const modalCancel = document.getElementsByClassName("modal-btn-cancel")[0];
   const modalComplete =
     document.getElementsByClassName("modal-btn-complete")[0];
-  const leave = document.getElementsByClassName("txtlink")[0];
+  const leave = document.getElementsByClassName("leave")[0];
 
-  // leave.onclick = () =>
-  //   (document.getElementsByClassName("modalBackground")[0].style.display =
-  //     "block");
+  // 탈퇴하기 클릭
+  leave.addEventListener("click", () => {
+    modal.classList.add("show");
+  })
 
-  // // 회원탈퇴 취소
-  // modalCancel.onclick = () => {
-  //   document.getElementsByClassName("modalBackground")[0].style.display =
-  //     "none";
-  //   console.log("회원탈퇴 취소");
-  // };
+  // 탈퇴하기 모달 - 취소 클릭
+  modalCancel.addEventListener("click", () => {
+    modal.classList.remove("show");
+  })
 
-  // // 회원탈퇴 완료
-  // modalComplete.onclick = async () => {
-  //   fetchWithAuth("http://localhost:8080/api/use/leave", "DELETE", {
-  //     user_id: loginUser,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.status == "SUCCESS") {
-  //         alert("회원 탈퇴가 완료되었습니다.");
-  //         console.log("회원탈퇴 완료");
-  //       } else {
-  //         throw new Error("회원 탈퇴 처리 중 오류가 발생했습니다.");
-  //       }
-  //     });
-  //   window.location.href = "/";
-  // };
+  // 탈퇴하기 모달 - 탈퇴 클릭
+  modalComplete.addEventListener("click", () => {
+    fetchWithAuth("http://localhost:8080/api/user/leave", "DELETE")
+    .then((response) => response.json())
+      .then((data) => {
+        if (data.status == "SUCCESS") {
+          alert("회원 탈퇴가 완료되었습니다.");
+          console.log("회원탈퇴 완료");
+          window.location.href = "/";
+        } else {
+          alert("회원 탈퇴 오류");
+          console.log("회원탈퇴 오류");
+          throw new Error("회원 탈퇴 처리 중 오류가 발생했습니다.");
+        }
+      });
+  })
 
   // 프로필 이미지 [프로필 변경] 버튼 클릭
   profileBtn.addEventListener("click", function () {
