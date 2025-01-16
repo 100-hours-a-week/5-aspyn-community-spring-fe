@@ -338,7 +338,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     modal.classList.remove("show");
   })
 
-
   modal.addEventListener("click", (event) => {
     // 배경(overlay)만 클릭된 경우에만 모달 닫기
     if (event.target === modal) {
