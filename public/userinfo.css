@@ -213,7 +213,7 @@ input[type="file"] {
 }
 
 .login-box.pw .profile-box .button-img {
-  height: 26px;
+  height: 36px;
   opacity: 0;
 }
 
@@ -225,4 +225,27 @@ input[type="file"] {
 .login-box.pw .nickname {
   height: 0px;
   opacity: 0;
+}
+
+#toast {
+  width: 102px;
+  height: 46px;
+  background-color: #d1b7ff;
+  color: white;
+  padding: 12px 20px 12px 20px;
+  border-radius: 30px;
+  border: none;
+  box-sizing: border-box;
+  margin-top: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+#toast.active {
+  opacity: 1;
+  visibility: visible;
 }
