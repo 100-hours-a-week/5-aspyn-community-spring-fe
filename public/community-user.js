@@ -338,6 +338,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     modal.classList.remove("show");
   })
 
+
+  modal.addEventListener("click", (event) => {
+    // 배경(overlay)만 클릭된 경우에만 모달 닫기
+    if (event.target === modal) {
+      modal.classList.remove("show");
+    }
+  })
+
   // 탈퇴하기 모달 - 탈퇴 클릭
   modalComplete.addEventListener("click", () => {
     fetchWithAuth("http://localhost:8080/api/user/leave", "DELETE")
