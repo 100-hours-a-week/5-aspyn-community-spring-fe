@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const logout = document.getElementsByClassName("opt-box")[1]; // 로그아웃
 
   userInfo.onclick = () => {
-    window.location.href = `/user/info/${loginUser}`;
+    window.location.href = `/user/info`;
   };
 
   logout.onclick = () => {
@@ -233,7 +233,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // 회원 정보
         const userInfo = {
-          id: loginUser,
           nickname: nicknameInput.value,
         };
 

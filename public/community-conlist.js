@@ -4,14 +4,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   if (!user) return;
 
   const loginUser = user.user_id;
-  const profileBox = document.querySelector(".header-box");
   const profileImage = document.querySelector(".header-box img");
-  const options = document.querySelector(".opt-pos");
-
+  
   // 상단 로그인 유저의 프로필 이미지
   if (user.profile_url){
     profileImage.src = user.profile_url;
   }
+  
+  const profileBox = document.querySelector(".header-box");
+  const options = document.querySelector(".opt-pos");
 
   // 옵션 박스 보이기
   function showOptions() {
@@ -44,11 +45,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   const logout = document.getElementsByClassName("opt-box")[1]; // 로그아웃
 
   userInfo.onclick = () => {
-    window.location.href = `/user/info/${loginUser}`;
+    window.location.href = `/user/info`;
   };
 
   logout.onclick = () => {
     // 로그아웃
+    console.log("로그아웃");
   };
 
   // 게시글 작성 버튼
