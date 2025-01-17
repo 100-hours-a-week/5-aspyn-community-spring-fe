@@ -8,16 +8,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   const profileImage = document.querySelector(".header-box img");
   const options = document.querySelector(".opt-pos");
 
-  // 로그인 유저 프로필 이미지 가져오기
-  fetchProfileImage(loginUser)
-    .then((profileUrl) => {
-      if (profileUrl != null) {
-        profileImage.src = profileUrl;
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching profile image:", error);
-    });
+  // 상단 로그인 유저의 프로필 이미지
+  if (user.profile_url){
+    profileImage.src = user.profile_url;
+  }
 
   // 옵션 박스 보이기
   function showOptions() {
@@ -151,21 +145,6 @@ function createBox(item) {
   title.onclick = () => {
     window.location.href = `/post/${item.id}`;
   };
-}
-
-// 프로필 이미지를 서버에서 불러오는 함수
-function fetchProfileImage(userId) {
-  return fetchWithAuth(`http://localhost:8080/api/user/login/${userId}`, "GET")
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("프로필 이미지가 없습니다.");
-      }
-    })
-    .then((data) => {
-      return data.profileUrl;
-    });
 }
 
 // JWT 포함한 fetch 함수

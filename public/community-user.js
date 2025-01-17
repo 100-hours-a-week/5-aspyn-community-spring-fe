@@ -44,8 +44,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   const profileImg = document
     .getElementsByClassName("profile-image")[0]
     .querySelector("img"); // 기존 프로필 이미지
-  loginProfile.src = user.profile_url;
-  profileImg.src = user.profile_url;
+  
+  if (user.profile_url) {
+    loginProfile.src = user.profile_url;
+    profileImg.src = user.profile_url;
+  }
 
   const profileBox = document.getElementsByClassName("header-box")[1];
   const options = document.querySelector(".opt-pos");
