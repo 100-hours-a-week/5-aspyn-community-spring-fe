@@ -87,28 +87,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.location.href = `/user/info`;
   };
 
-  logout.onclick = () => {
-    // 로그아웃
-    console.log("로그아웃");
-  };
-
   // 로그아웃
-  // document.getElementsByClassName("opt-box")[2].onclick = () => {
-  //   fetch(`http://localhost:8080/api/user/logout`, {
-  //     method: "POST",
-  //     credentials: "include", // 세션과 쿠키를 포함하여 요청을 보냄
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         window.location.href = "/";
-  //       } else {
-  //         console.error("로그아웃 실패");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("로그아웃 중 오류 발생: ", error);
-  //     });
-  // };
+  logout.onclick = () => {
+    localStorage.removeItem('jwt');
+    console.log("로그아웃");
+    window.location.href = `/`;
+  };
 
   function resetClass(element, classname) {
     element.classList.remove(classname);

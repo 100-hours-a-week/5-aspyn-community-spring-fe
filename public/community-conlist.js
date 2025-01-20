@@ -48,9 +48,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.location.href = `/user/info`;
   };
 
+  // 로그아웃
   logout.onclick = () => {
-    // 로그아웃
+    localStorage.removeItem('jwt');
     console.log("로그아웃");
+    window.location.href = `/`;
   };
 
   // 게시글 작성 버튼
