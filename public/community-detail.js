@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
   back.onclick = () => (window.location.href = `/post/list`);
 
   // 상단 로그인 유저 프로필 이미지
-  // const loginProfile = document.getElementById("login-profile");
   const loginProfile = document
     .getElementsByClassName("header-box")[1]
     .querySelector("img");
@@ -80,8 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementsByClassName("modal-btn-complete")[1];
 
   //댓글 등록 버튼
-  const commentSubBtn = document.getElementsByClassName("comment-button")[0];
+  const commentSubBtn = document.getElementsByClassName("button")[0];
   const comment = document.getElementsByClassName("comment-text")[0]; //댓글 입력창
+
+  let loginUser = null;
 
   // 로그인 유저 정보 가져오기
   fetchUserInfo()
@@ -93,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (user.profile_url) {
         loginProfile.src = user.profile_url;
         commentLoginProfile.src = user.profile_url;
+        loginProfileUrl = user.profile_url;
       }
 
       // 댓글 창에 표시되는 로그인 유저 닉네임 표시하기
@@ -145,15 +147,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----------------------------------- 댓글 --------------------------
 
   // 댓글 입력 시 버튼 색상 변경
-  comment.onkeyup = () => {
-    if (comment.value.length > 0) {
-      commentSubBtn.style.backgroundColor = "#7F6AEE";
-      commentSubBtn.classList.add("cursor");
+  comment.addEventListener("keyup",() => {
+    if (comment.value.trim().length > 0) {
+      commentSubBtn.classList.remove("color-purple");
+      commentSubBtn.classList.add("color-red", "cursor");
     } else {
-      commentSubBtn.style.backgroundColor = "#ACA0EB";
-      commentSubBtn.classList.remove("cursor");
+      commentSubBtn.classList.remove("color-red", "cursor");
+      commentSubBtn.classList.add("color-purple");
     }
-  };
+  });
 
   // 날짜 형식을 변환하는 함수
   function formatDate(dateString) {
@@ -256,21 +258,21 @@ document.addEventListener("DOMContentLoaded", () => {
     newDiv.classList.add("comment-box");
 
     // 날짜 형식 변환
-    const modifyDate = formatDate(c.modifyDate);
+    const modifyDate = formatDate(c.updatedAt);
     // 줄바꿈 문자를 <br> 태그로 변환
     const text = c.text.replace(/\n/g, "<br>");
 
-    if (loginUser == c.userNum) {
+    if (loginUser == c.userId) {
       newDiv.innerHTML = `
           <div class="postinfo-box">
             <div class="post-info">
               <div class="profile-box">
-                <img src="/public/images/basic_user.png" />
+                <img src="${c.profileUrl ? c.profileUrl : '/public/images/basic_user.png'}" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
               <p class="post-date">${modifyDate}</p>
             </div>
-            <!--게시글을 작성한 유저인 경우-->
+            <!--댓글을 작성한 유저인 경우-->
             <div class="right">
               <button class="update-button" data-edit-seq=${c.seq}>수정</button>
               <button class="update-button" data-remove-seq=${c.seq}>삭제</button>
@@ -282,22 +284,17 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="postinfo-box">
             <div class="post-info">
               <div class="profile-box">
-                <img src="/public/images/basic_user.png" />
+                <img src="${c.profileUrl ? c.profileUrl : '/public/images/basic_user.png'}" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
               <p class="post-date">${modifyDate}</p>
-            </div>
-            <!--게시글을 작성한 유저인 경우에만 버튼 노출-->
-            <div class="right">
-              <button class="update-button">수정</button>
-              <button class="update-button">삭제</button>
             </div>
           </div>
           <p class="comment-content">${text}</p>`;
     }
 
-    //newDiv를 'contents' 클래스를 가지고 있는 <article> 태그 안에 삽입
-    document.querySelector("article.contents").append(newDiv);
+    //newDiv를 'content' 클래스를 가지고 있는 <article> 태그 안에 삽입
+    document.querySelector("article.content").append(newDiv);
 
     // 댓글 삭제버튼 클릭 이벤트 할당
     let commentRemoveBtns = document.querySelectorAll("[data-remove-seq]");
@@ -398,21 +395,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let newCmt = {
       postId: postId,
       text: comment.value,
-      userNum: loginUser,
     };
 
     if (comment.value.length == 0) {
       alert("댓글을 입력하세요");
-    } else if (user == null) {
+    } else if (loginUser == null) {
       alert("비회원은 댓글 작성이 불가합니다. 로그인 해주세요.");
     } else {
       // 새로운 댓글 등록
       fetchWithAuth("http://localhost:8080/api/comment/edit", "POST", newCmt)
         .then((response) => {
           if (!response.errorCode) {
+            console.log("댓글 등록 완료");
             alert("댓글이 성공적으로 저장되었습니다.");
             location.reload();
-            console.log("댓글 등록 완료");
           } else {
             throw new Error("댓글 저장이 실패되었습니다.");
           }
