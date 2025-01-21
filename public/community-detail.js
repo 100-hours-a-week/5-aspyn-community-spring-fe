@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         const data = await response.json();
 
-        console.log(data);
+        // console.log(data);
         if (data.status == "ERROR") {
           alert(data.message);
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 모달창 - 삭제버튼
     modalComplete.onclick = () => {
       // 게시글 삭제
-      // TODO : 삭제 동작 여부 확인 필요
       fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "DELETE")
         .then((response) => {
           if (!response.errorCode) {
@@ -289,55 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //newDiv를 'content' 클래스를 가지고 있는 <article> 태그 안에 삽입
     document.querySelector("article.content").append(newDiv);
-
-    // 댓글 수정버튼 클릭 이벤트 할당
-    let commentEditBtns = document.querySelectorAll("[data-edit-seq]");
-    commentEditBtns.forEach(function (btn) {
-      btn.onclick = function () {
-        // 댓글 수정 버튼을 클릭하면
-        let seq = this.getAttribute("data-edit-seq");
-        // 수정할 댓글을 댓글창에 노출하고 댓글등록 버튼을 수정버튼으로 변경
-        console.log("시퀀스 : ", seq);
-
-        fetchWithAuth(`http://localhost:8080/api/comment/${seq}`, "GET")
-          .then((response) => response.json())
-          .then((data) => {
-            let modComment = data;
-            console.log(modComment);
-
-            comment.setAttribute("value", modComment.text);
-            commentSubBtn.innerHTML = "댓글 수정";
-
-            commentSubBtn.onclick = function () {
-              if (comment.value.length == 0) {
-                alert("수정할 댓글을 입력하세요");
-              } else {
-                let modCmt = { seq: seq, text: comment.value };
-
-                fetchWithAuth(
-                  "http://localhost:8080/api/comment/modify",
-                  "PATCH",
-                  modCmt
-                )
-                  .then((response) => response.json())
-                  .then((data) => {
-                    if (data.status == "SUCCESS") {
-                      alert("댓글이 성공적으로 수정되었습니다.");
-                      location.reload();
-                      console.log("댓글 수정 완료");
-                    } else {
-                      throw new Error("댓글 수정이 실패되었습니다.");
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("댓글 수정 중 오류가 발생했습니다:", error);
-                    alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
-                  });
-              } // else 닫는 중괄호
-            }; // 댓글 수정 작업 종료 commentSubBtn 버튼
-          });
-      }; // btn.onclick 종료 중괄호
-    }); //댓글 수정 foreach문 중괄호
   }
 
   // 수정 버튼 클릭 이벤트 추가
@@ -350,7 +300,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopImmediatePropagation();
 
       const seq = e.target.dataset.editSeq; // 댓글의 고유 ID
-      console.log("수정하려는 댓글 번호: ", seq);
 
       const commentContent = document.querySelector(
         `.comment-content[data-seq='${seq}']`
@@ -402,8 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const updateCommentBtn = document.querySelector(
         `.small-button[data-edit-seq='${seq}']`
       );
-
-      console.log("수정하려다 취소함: ", seq);
 
       if (commentContent && cancelCommentBtn) {
         // '취소' 버튼을 다시 '삭제' 버튼으로 변경
@@ -524,7 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => {
           if (!response.errorCode) {
             console.log("댓글 등록 완료");
-            alert("댓글이 성공적으로 저장되었습니다.");
+            alert("댓글이 등록되었습니다.");
             location.reload();
           } else {
             throw new Error("댓글 저장이 실패되었습니다.");
