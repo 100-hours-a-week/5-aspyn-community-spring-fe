@@ -161,10 +161,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.innerHTML = item.title;
     writer.innerHTML = item.nickname;
-    writer_profile.src = item.profileUrl;
     date.innerHTML = formatDate(item.updatedAt);
     post_content.innerHTML = `<p>${post_text}</p>`;
     post_img.src = item.imgUrl;
+
+    if (item.imgUrl === "-") {
+      alert("삭제된 게시글 입니다.");
+      window.location.href = `/post/list`;
+    }
+
+    // 게시글 작성자의 프로필 이미지가 있는 경우(없으면 기본값)
+    if (item.profileUrl) {
+      writer_profile.src = item.profileUrl;
+    }
 
     if (item.iris == null) {
       document
