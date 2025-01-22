@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const loginUser = user.user_id;
   const profileImage = document.querySelector(".header-box img");
-  
+
   // 상단 로그인 유저의 프로필 이미지
-  if (user.profile_url){
+  if (user.profile_url) {
     profileImage.src = user.profile_url;
   }
-  
+
   const profileBox = document.querySelector(".header-box");
   const options = document.querySelector(".opt-pos");
 
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 로그아웃
   logout.onclick = () => {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem("jwt");
     console.log("로그아웃");
     window.location.href = `/`;
   };
@@ -77,11 +77,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         return response.json();
       })
       .then((data) => {
-        const posts = data.data;
+        // console.log("게시글 목록 데이터: ", data); // 응답 데이터 구조 확인
+        const posts = data?.data; // datat가 undefinde/null이어도 에러 발생 x. undefined 반환.
         posts.forEach((post) => createBox(post));
       })
       .catch((error) => {
-        console.error("Error fetching board list: ", error);
+        console.error(error);
       });
   }
 });
