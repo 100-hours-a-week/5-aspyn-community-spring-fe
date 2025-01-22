@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 로그인 유저 정보 가져오기
   fetchUserInfo()
     .then((user) => {
-      console.log(user);
       loginUser = user.user_id;
 
       // 상단 및 댓글 창 로그인 유저 프로필 사진 표시하기

@@ -36,15 +36,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   const loginUser = user.user_id;
   const userEmail = user.email;
   let userNick = user.nickname;
-  console.log(userEmail);
-  console.log(userNick);
 
   // 로그인 유저 프로필
   const loginProfile = document.getElementById("login-profile");
   const profileImg = document
     .getElementsByClassName("profile-image")[0]
     .querySelector("img"); // 기존 프로필 이미지
-  
+
   if (user.profile_url) {
     loginProfile.src = user.profile_url;
     profileImg.src = user.profile_url;
@@ -89,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 로그아웃
   logout.onclick = () => {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem("jwt");
     console.log("로그아웃");
     window.location.href = `/`;
   };
@@ -317,24 +315,24 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 탈퇴하기 클릭
   leave.addEventListener("click", () => {
     modal.classList.add("show");
-  })
+  });
 
   // 탈퇴하기 모달 - 취소 클릭
   modalCancel.addEventListener("click", () => {
     modal.classList.remove("show");
-  })
+  });
 
   modal.addEventListener("click", (event) => {
     // 배경(overlay)만 클릭된 경우에만 모달 닫기
     if (event.target === modal) {
       modal.classList.remove("show");
     }
-  })
+  });
 
   // 탈퇴하기 모달 - 탈퇴 클릭
   modalComplete.addEventListener("click", () => {
     fetchWithAuth("http://localhost:8080/api/user/leave", "DELETE")
-    .then((response) => response.json())
+      .then((response) => response.json())
       .then((data) => {
         if (data.status == "SUCCESS") {
           alert("회원 탈퇴가 완료되었습니다.");
@@ -346,7 +344,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           throw new Error("회원 탈퇴 처리 중 오류가 발생했습니다.");
         }
       });
-  })
+  });
 
   // 프로필 이미지 [프로필 변경] 버튼 클릭
   profileBtn.addEventListener("click", function () {
