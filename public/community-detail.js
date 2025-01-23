@@ -26,6 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
   }
+
+  //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
+  let queryString = window.location.search;
+  // 쿼리 문자열을 분석하여 객체로 변환
+  let params = new URLSearchParams(queryString);
+
+  // 특정 매개변수의 값을 가져오기 (게시글의 페이지 번호)
+  const pageNum = params.get("page");
+
   // URL에서 마지막 경로 세그먼트 가져오기 (게시글 아이디)
   const pathSegments = window.location.pathname.split("/");
   const postId = pathSegments[pathSegments.length - 1];
@@ -49,7 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 뒤로가기 버튼
   const back = document.getElementsByClassName("header-box")[0];
-  back.onclick = () => (window.location.href = `/post/list`);
+  if (pageNum == null) {
+    back.onclick = () => (window.location.href = `/post/list`);
+  } else {
+    back.onclick = () => (window.location.href = `/post/list?page=${pageNum}`);
+  }
 
   // 상단 로그인 유저 프로필 이미지
   const loginProfile = document

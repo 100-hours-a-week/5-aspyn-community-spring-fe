@@ -69,9 +69,22 @@ document.addEventListener("DOMContentLoaded", async function () {
   let totalPages = null;
   const paginationContainer = this.querySelector(".pagination");
 
+  //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
+  let queryString = window.location.search;
+  // 쿼리 문자열을 분석하여 객체로 변환
+  let params = new URLSearchParams(queryString);
+
+  // 특정 매개변수의 값을 가져오기 (게시글의 페이지 번호)
+  const pageNum = params.get("page");
+
+  if (pageNum != null) {
+    currentPage = pageNum;
+  }
+
   // 게시글 목록 가져오기
   fetchPosts(currentPage);
 
+  // 게시글 목록 가져오는 메소드
   function fetchPosts(page) {
     const url = `http://localhost:8080/api/post/list?page=${page}`;
 
@@ -93,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         posts.forEach((post) => createBox(post));
 
-        updatePagination(currentPage, totalPages); // 현재 페이지번호, 전체 페이지 수 전달
+        updatePagination(page, totalPages); // 현재 페이지번호, 전체 페이지 수 전달
       })
       .catch((error) => {
         console.error(error);
@@ -101,11 +114,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // 페이지네이션 업데이트
-  function updatePagination(currentPage, totalPages) {
+  function updatePagination(current, total) {
     // 현재 페이지 그룹 계산 (1~5 => 그룹 1, 6~10 => 그룹 2)
-    const currentGroup = Math.max(Math.ceil(currentPage / 5), 1);
+    const currentGroup = Math.max(Math.ceil(current / 5), 1);
     const startPage = (currentGroup - 1) * 5 + 1;
-    const endPage = Math.min(currentGroup * 5, totalPages);
+    const endPage = Math.min(currentGroup * 5, total);
 
     paginationContainer.innerHTML = "";
 
@@ -117,34 +130,29 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 페이지 번호 버튼 생성 (현재 그룹만 표시)
     for (let i = startPage; i <= endPage; i++) {
       paginationContainer.innerHTML += `<button class="page-number ${
-        i === currentPage ? "active" : ""
+        i == current ? "active" : ""
       }">${i}</button>`;
     }
 
     // 다음 버튼 [>]
     paginationContainer.innerHTML += `<button class="page-button next" ${
-      currentGroup === Math.ceil(totalPages / 5) ? "disabled" : ""
+      currentGroup === Math.ceil(total / 5) ? "disabled" : ""
     }>&gt;</button>`;
 
     // 페이지네이션 버튼 이벤트 추가
-    paginationEvents(totalPages);
+    paginationEvents(current, total);
   }
 
   // 페이지네이션 버튼 이벤트
-  function paginationEvents(totalPages) {
+  function paginationEvents(current, total) {
     // 이전 버튼 [<]
     const prevButton = document.querySelector(".page-button.prev");
     prevButton?.addEventListener("click", () => {
-      const currentGroup = Math.ceil(currentPage / 5);
+      const currentGroup = Math.ceil(current / 5);
       if (currentGroup > 1) {
         const newPage = (currentGroup - 1) * 5; // 이전 그룹의 마지막 페이지
-        // const newPage = (currentGroup - 2) * 5 + 1; // 이전 그룹의 첫 번째 페이지
         currentPage = newPage;
         fetchPosts(newPage);
-
-        // 페이지네이션 숫자 변경
-        const prevGroup = currentGroup - 1;
-        // prePagination(prevGroup);
       }
     });
 
@@ -152,8 +160,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const nextButton = document.querySelector(".page-button.next");
     nextButton?.addEventListener("click", () => {
       // const currentGroup = Math.ceil(currentPage / 5);
-      const currentGroup = Math.ceil(currentPage / 5);
-      const maxGroup = Math.ceil(totalPages / 5);
+      const currentGroup = Math.ceil(current / 5);
+      const maxGroup = Math.ceil(total / 5);
       if (currentGroup < maxGroup) {
         const newPage = currentGroup * 5 + 1; // 다음 그룹의 첫 번째 페이지
         currentPage = newPage;
@@ -166,7 +174,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     pageButtons.forEach((button) => {
       button.addEventListener("click", (event) => {
         const selectedPage = Number(event.target.textContent);
-        if (selectedPage != currentPage) {
+        if (selectedPage != current) {
           currentPage = selectedPage;
           fetchPosts(currentPage);
         }
