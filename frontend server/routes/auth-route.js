@@ -6,6 +6,6 @@ const AuthController = require("../controllers/auth-controller");
 router.get("/user/join", AuthController.join);
 
 // 회원정보 변경 페이지 (닉네임, 비밀번호)
-router.get("/user/info/:userId", AuthController.nickname);
+router.get("/user/info", AuthController.nickname);
 
 module.exports = router;

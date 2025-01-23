@@ -11,7 +11,7 @@ const confirmPasswordHelper = document.getElementById(
 const nicknameHelper = document.getElementById("nickname-helper");
 
 const preview = document.getElementById("profile-preview");
-const profileBtn = document.querySelector("profile-button");
+const profileBtn = document.querySelector(".profile-button");
 const submitBtn = document.getElementById("submit-btn");
 
 // 이메일 유효성 검사

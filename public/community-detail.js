@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         const data = await response.json();
 
-        console.log(data);
+        // console.log(data);
         if (data.status == "ERROR") {
           alert(data.message);
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
@@ -26,6 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
   }
+
+  //현재 페이지 url의 쿼리스트링을 가져옴.(?부터)
+  let queryString = window.location.search;
+  // 쿼리 문자열을 분석하여 객체로 변환
+  let params = new URLSearchParams(queryString);
+
+  // 특정 매개변수의 값을 가져오기 (게시글의 페이지 번호)
+  const pageNum = params.get("page");
+
   // URL에서 마지막 경로 세그먼트 가져오기 (게시글 아이디)
   const pathSegments = window.location.pathname.split("/");
   const postId = pathSegments[pathSegments.length - 1];
@@ -49,17 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 뒤로가기 버튼
   const back = document.getElementsByClassName("header-box")[0];
-  back.onclick = () => (window.location.href = `/post/list`);
+  if (pageNum == null) {
+    back.onclick = () => (window.location.href = `/post/list`);
+  } else {
+    back.onclick = () => (window.location.href = `/post/list?page=${pageNum}`);
+  }
 
   // 상단 로그인 유저 프로필 이미지
-  // const loginProfile = document.getElementById("login-profile");
   const loginProfile = document
     .getElementsByClassName("header-box")[1]
     .querySelector("img");
 
   // 게시글 수정-삭제 버튼
-  const postUpdate = document.getElementsByClassName("update-button")[0]; // 수정버튼
-  const postDelete = document.getElementsByClassName("update-button")[1]; // 삭제버튼
+  const postUpdate = document.getElementsByClassName("small-button")[0]; // 게시글 수정 버튼
+  const postDelete = document.getElementsByClassName("small-button")[1]; // 게시글 삭제 버튼
 
   // 모달창
   const modal = document.getElementsByClassName("modal-bg")[0]; // 모달창 전체
@@ -67,32 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCancel = document.getElementsByClassName("modal-button")[0]; // 취소버튼
   const modalComplete = document.getElementsByClassName("modal-button")[1]; // 완료버튼
 
-  // TODO: 새로 매칭 필요
-  // 게시글 삭제 모달 버튼 (취소-확인)
-  const modalConCancel = document.getElementsByClassName("modal-btn-cancel")[0];
-  const modalConComplete =
-    document.getElementsByClassName("modal-btn-complete")[0];
-
-  // TODO: 새로 매칭 필요
-  // 댓글 삭제 모달 버튼 (취소-확인))
-  const modalCmtCancel = document.getElementsByClassName("modal-btn-cancel")[1];
-  const modalCmtComplete =
-    document.getElementsByClassName("modal-btn-complete")[1];
-
   //댓글 등록 버튼
-  const commentSubBtn = document.getElementsByClassName("comment-button")[0];
+  const commentSubBtn = document.getElementsByClassName("button")[0];
   const comment = document.getElementsByClassName("comment-text")[0]; //댓글 입력창
+
+  let loginUser = null;
 
   // 로그인 유저 정보 가져오기
   fetchUserInfo()
     .then((user) => {
-      console.log(user);
       loginUser = user.user_id;
 
       // 상단 및 댓글 창 로그인 유저 프로필 사진 표시하기
       if (user.profile_url) {
         loginProfile.src = user.profile_url;
         commentLoginProfile.src = user.profile_url;
+        loginProfileUrl = user.profile_url;
       }
 
       // 댓글 창에 표시되는 로그인 유저 닉네임 표시하기
@@ -120,10 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 모달창 - 삭제버튼
     modalComplete.onclick = () => {
       // 게시글 삭제
-      // TODO : api 엔드포인트 수정 예정
-      fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "DELETE", {
-        id: postId,
-      })
+      fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "DELETE")
         .then((response) => {
           if (!response.errorCode) {
             alert("게시글이 삭제 되었습니다");
@@ -145,15 +144,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----------------------------------- 댓글 --------------------------
 
   // 댓글 입력 시 버튼 색상 변경
-  comment.onkeyup = () => {
-    if (comment.value.length > 0) {
-      commentSubBtn.style.backgroundColor = "#7F6AEE";
-      commentSubBtn.classList.add("cursor");
+  comment.addEventListener("keyup", () => {
+    if (comment.value.trim().length > 0) {
+      commentSubBtn.classList.remove("color-purple");
+      commentSubBtn.classList.add("color-red", "cursor");
     } else {
-      commentSubBtn.style.backgroundColor = "#ACA0EB";
-      commentSubBtn.classList.remove("cursor");
+      commentSubBtn.classList.remove("color-red", "cursor");
+      commentSubBtn.classList.add("color-purple");
     }
-  };
+  });
 
   // 날짜 형식을 변환하는 함수
   function formatDate(dateString) {
@@ -174,10 +173,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.innerHTML = item.title;
     writer.innerHTML = item.nickname;
-    writer_profile.src = item.profileUrl;
     date.innerHTML = formatDate(item.updatedAt);
     post_content.innerHTML = `<p>${post_text}</p>`;
     post_img.src = item.imgUrl;
+
+    if (item.imgUrl === "-") {
+      alert("삭제된 게시글 입니다.");
+      window.location.href = `/post/list`;
+    }
+
+    // 게시글 작성자의 프로필 이미지가 있는 경우(없으면 기본값)
+    if (item.profileUrl) {
+      writer_profile.src = item.profileUrl;
+    }
 
     if (item.iris == null) {
       document
@@ -256,163 +264,236 @@ document.addEventListener("DOMContentLoaded", () => {
     newDiv.classList.add("comment-box");
 
     // 날짜 형식 변환
-    const modifyDate = formatDate(c.modifyDate);
+    const modifyDate = formatDate(c.updatedAt);
     // 줄바꿈 문자를 <br> 태그로 변환
     const text = c.text.replace(/\n/g, "<br>");
 
-    if (loginUser == c.userNum) {
+    if (loginUser == c.userId) {
       newDiv.innerHTML = `
           <div class="postinfo-box">
             <div class="post-info">
               <div class="profile-box">
-                <img src="/public/images/basic_user.png" />
+                <img src="${
+                  c.profileUrl ? c.profileUrl : "/public/images/basic_user.png"
+                }" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
               <p class="post-date">${modifyDate}</p>
             </div>
-            <!--게시글을 작성한 유저인 경우-->
+            <!--댓글을 작성한 유저인 경우-->
             <div class="right">
-              <button class="update-button" data-edit-seq=${c.seq}>수정</button>
-              <button class="update-button" data-remove-seq=${c.seq}>삭제</button>
+              <button class="small-button" id="comment-update" data-edit-seq=${
+                c.id
+              }>수정</button>
+              <button class="small-button" id="comment-delete" data-remove-seq=${
+                c.id
+              }>삭제</button>
             </div>
           </div>
-          <p class="comment-content">${text}</p>`;
+          <p class="comment-content" data-seq=${c.id}>${text}</p>`;
     } else {
       newDiv.innerHTML = `
           <div class="postinfo-box">
             <div class="post-info">
               <div class="profile-box">
-                <img src="/public/images/basic_user.png" />
+                <img src="${
+                  c.profileUrl ? c.profileUrl : "/public/images/basic_user.png"
+                }" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
               <p class="post-date">${modifyDate}</p>
             </div>
-            <!--게시글을 작성한 유저인 경우에만 버튼 노출-->
-            <div class="right">
-              <button class="update-button">수정</button>
-              <button class="update-button">삭제</button>
-            </div>
           </div>
-          <p class="comment-content">${text}</p>`;
+          <p class="comment-content" data-seq=${c.id}>${text}</p>`;
     }
 
-    //newDiv를 'contents' 클래스를 가지고 있는 <article> 태그 안에 삽입
-    document.querySelector("article.contents").append(newDiv);
+    //newDiv를 'content' 클래스를 가지고 있는 <article> 태그 안에 삽입
+    document.querySelector("article.content").append(newDiv);
+  }
 
-    // 댓글 삭제버튼 클릭 이벤트 할당
-    let commentRemoveBtns = document.querySelectorAll("[data-remove-seq]");
-    commentRemoveBtns.forEach(function (btn) {
-      btn.onclick = function () {
-        let removeSeq = this.getAttribute("data-remove-seq");
+  // 수정 버튼 클릭 이벤트 추가
+  document.addEventListener("click", (e) => {
+    // 수정 버튼 클릭 시
+    if (
+      e.target.classList.contains("small-button") &&
+      e.target.id === "comment-update"
+    ) {
+      e.stopImmediatePropagation();
 
-        modal.classList.remove("hide");
-        modalTitle.innerHTML = "댓글을 삭제하시겠습니까?";
+      const seq = e.target.dataset.editSeq; // 댓글의 고유 ID
 
-        // 모달창 - 취소버튼(댓글)
-        modalCancel.onclick = () => {
-          modal.classList.add("hide");
-          console.log("댓글 삭제 취소");
-        };
+      const commentContent = document.querySelector(
+        `.comment-content[data-seq='${seq}']`
+      );
 
-        // 모달창 - 삭제버튼(댓글) -> 댓글 삭제
-        modalComplete.onclick = () => {
-          // 댓글 삭제처리
-          // TODO : api 엔드포인트 수정 예정
-          fetchWithAuth(
-            `http://localhost:8080/api/comment/${removeSeq}`,
-            "DELETE",
-            { seq: removeSeq }
-          )
-            .then((response) => {
-              if (!response.errorCode) {
-                alert("댓글이 삭제 되었습니다.");
-                location.reload();
-                console.log("댓글 삭제");
-              } else {
-                throw new Error("댓글 삭제 시 오류가 발생했습니다.");
-              }
-            })
-            .catch((error) => {
-              console.error("댓글 삭제 중 오류가 발생했습니다:", error);
-              alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
-            });
+      const updateCommentBtn = document.querySelector(
+        `.small-button[data-edit-seq='${seq}']`
+      );
 
-          modal.classList.remove("hide"); // 모달 닫기(미노출)
-        };
-      };
-    }); // 댓글 삭제 foreach 종료 중괄호
+      const cancelCommentBtn = document.querySelector(
+        `.small-button[data-remove-seq='${seq}']`
+      );
 
-    // 댓글 수정버튼 클릭 이벤트 할당
-    let commentEditBtns = document.querySelectorAll("[data-edit-seq]");
-    commentEditBtns.forEach(function (btn) {
-      btn.onclick = function () {
-        // 댓글 수정 버튼을 클릭하면
-        let seq = this.getAttribute("data-edit-seq");
-        // 수정할 댓글을 댓글창에 노출하고 댓글등록 버튼을 수정버튼으로 변경
-        console.log("시퀀스 : ", seq);
+      if (commentContent) {
+        const currentText = commentContent.innerHTML.replace(/<br>/g, "\n"); // <br>을 줄바꿈으로 변환
 
-        fetchWithAuth(`http://localhost:8080/api/comment/${seq}`, "GET")
+        // 댓글의 원래 텍스트를 data-original-text 속성에 저장
+        commentContent.setAttribute("data-original-text", currentText);
+
+        // cancelCommentBtn이 존재하는지 확인 후 처리
+        if (cancelCommentBtn) {
+          // 기존 '삭제' 버튼을 '취소' 버튼으로 변경
+          cancelCommentBtn.innerText = "취소";
+          cancelCommentBtn.id = "comment-cancel"; // 취소 버튼으로 변경
+        }
+
+        // 댓글 내용을 인풋 박스로 변경
+        commentContent.innerHTML = `
+        <input type="text" class="edit-comment-input" value="${currentText}" />
+      `;
+      }
+
+      // 수정 버튼을 '저장' 버튼으로 변경
+      updateCommentBtn.innerText = "저장"; // 수정 버튼을 '저장'으로 변경
+      updateCommentBtn.id = "comment-save";
+
+      return;
+    }
+
+    // 취소 버튼 클릭 시 원래 상태로 복원
+    if (e.target.id === "comment-cancel") {
+      e.stopImmediatePropagation();
+
+      const seq = e.target.dataset.removeSeq; // 댓글의 고유 ID
+      const commentContent = document.querySelector(
+        `.comment-content[data-seq='${seq}']`
+      );
+      const cancelCommentBtn = e.target;
+      const updateCommentBtn = document.querySelector(
+        `.small-button[data-edit-seq='${seq}']`
+      );
+
+      if (commentContent && cancelCommentBtn) {
+        // '취소' 버튼을 다시 '삭제' 버튼으로 변경
+        cancelCommentBtn.innerText = "삭제";
+        cancelCommentBtn.id = "comment-delete"; // 삭제 버튼으로 복원
+
+        // 입력된 텍스트를 원래 내용으로 복원
+        const originalText = commentContent.getAttribute("data-original-text");
+        commentContent.innerHTML = originalText.replace(/\n/g, "<br>");
+
+        updateCommentBtn.innerHTML = "수정";
+        updateCommentBtn.id = "comment-update"; // 수정 버튼으로 복원
+      }
+
+      return;
+    }
+
+    // 저장 버튼 클릭 시 댓글 수정 내용 저장
+    if (e.target.id === "comment-save") {
+      e.stopImmediatePropagation();
+
+      const seq = e.target.dataset.editSeq; // 댓글의 고유 ID
+      const commentContent = document.querySelector(
+        `.comment-content[data-seq='${seq}']`
+      );
+
+      if (commentContent) {
+        const newText = commentContent.querySelector(
+          ".edit-comment-input"
+        ).value;
+
+        let modComment = { id: seq, text: newText };
+
+        fetchWithAuth(
+          "http://localhost:8080/api/comment/modify",
+          "PATCH",
+          modComment
+        )
           .then((response) => response.json())
           .then((data) => {
-            let modComment = data;
-            console.log(modComment);
-
-            comment.setAttribute("value", modComment.text);
-            commentSubBtn.innerHTML = "댓글 수정";
-
-            commentSubBtn.onclick = function () {
-              if (comment.value.length == 0) {
-                alert("수정할 댓글을 입력하세요");
-              } else {
-                let modCmt = { seq: seq, text: comment.value };
-
-                fetchWithAuth(
-                  "http://localhost:8080/api/comment/modify",
-                  "PATCH",
-                  modCmt
-                )
-                  .then((response) => response.json())
-                  .then((data) => {
-                    if (data.status == "SUCCESS") {
-                      alert("댓글이 성공적으로 수정되었습니다.");
-                      location.reload();
-                      console.log("댓글 수정 완료");
-                    } else {
-                      throw new Error("댓글 수정이 실패되었습니다.");
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("댓글 수정 중 오류가 발생했습니다:", error);
-                    alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
-                  });
-              } // else 닫는 중괄호
-            }; // 댓글 수정 작업 종료 commentSubBtn 버튼
+            if (data.status == "SUCCESS") {
+              alert("댓글이 성공적으로 수정되었습니다.");
+              location.reload();
+              console.log("댓글 수정 완료");
+            } else {
+              throw new Error("댓글 수정이 실패되었습니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("댓글 수정 중 오류가 발생했습니다:", error);
+            alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
           });
-      }; // btn.onclick 종료 중괄호
-    }); //댓글 수정 foreach문 중괄호
-  }
+      }
+
+      return;
+    }
+
+    // 댓글 삭제버튼 클릭 이벤트 할당
+    if (e.target.id === "comment-delete") {
+      e.stopImmediatePropagation();
+
+      const seq = e.target.dataset.removeSeq; // 댓글의 고유 ID
+      console.log("삭제하려는 댓글: ", seq);
+
+      modal.classList.remove("hide");
+      modalTitle.innerHTML = "댓글을 삭제하시겠습니까?";
+
+      // 모달창 - 취소버튼(댓글)
+      modalCancel.onclick = () => {
+        modal.classList.add("hide");
+        console.log("댓글 삭제 취소");
+      };
+
+      // 모달창 - 삭제버튼(댓글) -> 댓글 삭제
+      modalComplete.onclick = () => {
+        // 댓글 삭제처리
+        fetchWithAuth(`http://localhost:8080/api/comment/${seq}`, "DELETE")
+          .then((response) => {
+            if (!response.errorCode) {
+              alert("댓글이 삭제 되었습니다.");
+              location.reload();
+              console.log("댓글 삭제");
+            } else {
+              throw new Error("댓글 삭제 시 오류가 발생했습니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("댓글 삭제 중 오류가 발생했습니다:", error);
+            alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+          });
+
+        modal.classList.remove("hide"); // 모달 닫기(미노출)
+      };
+
+      return;
+    }
+  });
 
   //-------------------------- 댓글 등록 -------------------------
   //댓글 등록 버튼
   commentSubBtn.onclick = async () => {
-    let newCmt = {
+    let newComment = {
       postId: postId,
       text: comment.value,
-      userNum: loginUser,
     };
 
     if (comment.value.length == 0) {
       alert("댓글을 입력하세요");
-    } else if (user == null) {
+    } else if (loginUser == null) {
       alert("비회원은 댓글 작성이 불가합니다. 로그인 해주세요.");
     } else {
       // 새로운 댓글 등록
-      fetchWithAuth("http://localhost:8080/api/comment/edit", "POST", newCmt)
+      fetchWithAuth(
+        "http://localhost:8080/api/comment/edit",
+        "POST",
+        newComment
+      )
         .then((response) => {
           if (!response.errorCode) {
-            alert("댓글이 성공적으로 저장되었습니다.");
-            location.reload();
             console.log("댓글 등록 완료");
+            alert("댓글이 등록되었습니다.");
+            location.reload();
           } else {
             throw new Error("댓글 저장이 실패되었습니다.");
           }
