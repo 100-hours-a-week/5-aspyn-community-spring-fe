@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
           return null;
         } else {
-          // console.log("USER Info: ", data);
           return data; // user_id : 'n'
         }
       } else {
@@ -348,11 +347,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 프로필 이미지 [프로필 변경] 버튼 클릭
   profileBtn.addEventListener("click", function () {
-    imageInput.click();
+    // fileInput.click();
   });
 
   // 파일 선택 시 미리보기 업데이트
-  imageInput.addEventListener("change", await previewImage);
+  fileInput.addEventListener("change", previewImage);
 
   function previewImage(event) {
     const input = event.target;
