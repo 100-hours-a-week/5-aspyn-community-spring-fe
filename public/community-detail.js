@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       writer_profile.src = item.profileUrl;
     }
 
-    if (item.iris == null) {
+    if (item.iris == null || item.iris == "") {
       document
         .getElementsByClassName("metadata")[0]
         .querySelector("p")
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
       )[0].innerHTML = `<p>F${item.iris}</p>`;
     }
 
-    if (item.shutterSpeed == null) {
+    if (item.shutterSpeed == null || item.shutterSpeed == "") {
       document
         .getElementsByClassName("metadata")[1]
         .querySelector("p")
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
       )[1].innerHTML = `<p>${item.shutterSpeed}초</p>`;
     }
 
-    if (item.iso == null) {
+    if (item.iso == null || item.iso == "") {
       document
         .getElementsByClassName("metadata")[2]
         .querySelector("p")

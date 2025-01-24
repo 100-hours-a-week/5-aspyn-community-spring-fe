@@ -123,42 +123,77 @@ document.addEventListener("DOMContentLoaded", async () => {
         content.value.length !== 0 &&
         imageInput.files.length > 0
       ) {
+        // // 게시글 등록 기능
+        // let newPost = new FormData();
+        // newPost.append("title", title.value);
+        // newPost.append("text", content.value);
+        // newPost.append("userId", loginUser);
+
+        // if (iris.value && !validateIris(iris.value)) {
+        //   alert("조리개 값이 올바르지 않습니다.");
+        // } else if (validateIris(iris.value)) {
+        //   newPost.append("iris", iris.value);
+        // }
+
+        // if (shutterSpeed.value && !validateShutterSpeed(shutterSpeed.value)) {
+        //   alert("셔터스피드 값이 올바르지 않습니다.");
+        // } else if (validateShutterSpeed(shutterSpeed.value)) {
+        //   newPost.append("shutterSpeed", shutterSpeed.value);
+        // }
+
+        // if (iso.value && !validateISO(iso.value)) {
+        //   alert("ISO 값이 올바르지 않습니다.");
+        // } else if (validateISO(iso.value)) {
+        //   newPost.append("iso", iso.value);
+        // }
+
+        // let request = new FormData();
+        // request.append("request", newPost);
+        // request.append("file", imageInput.files[0]); // 이미지 파일 추가
+
         // 게시글 등록 기능
-        let newPost = new FormData();
-        newPost.append(
-          "request",
-          JSON.stringify({
-            title: title.value,
-            text: content.value,
-            userId: loginUser,
-          })
-        );
+        let newPost = {
+          title: title.value,
+          text: content.value,
+          userId: loginUser,
+        };
 
-        if (iris.value && !validateIris(iris.value)) {
-          alert("조리개 값이 올바르지 않습니다.");
-        } else if (validateIris(iris.value)) {
-          newPost.append("iris", iris.value);
+        // 조리개, 셔터스피드, ISO 값 검증 및 추가
+        if (iris.value) {
+          if (!validateIris(iris.value)) {
+            alert("조리개 값이 올바르지 않습니다.");
+            return;
+          }
+          newPost.iris = iris.value;
         }
 
-        if (shutterSpeed.value && !validateShutterSpeed(shutterSpeed.value)) {
-          alert("셔터스피드 값이 올바르지 않습니다.");
-        } else if (validateShutterSpeed(shutterSpeed.value)) {
-          newPost.append("shutterSpeed", shutterSpeed.value);
+        // ShutterSpeed 추가
+        if (shutterSpeed.value) {
+          if (!validateShutterSpeed(shutterSpeed.value)) {
+            alert("셔터스피드 값이 올바르지 않습니다.");
+            return;
+          }
+          newPost.shutterSpeed = shutterSpeed.value;
         }
 
-        if (iso.value && !validateISO(iso.value)) {
-          alert("ISO 값이 올바르지 않습니다.");
-        } else if (validateISO(iso.value)) {
-          newPost.append("iso", iso.value);
+        // ISO 추가
+        if (iso.value) {
+          if (!validateISO(iso.value)) {
+            alert("ISO 값이 올바르지 않습니다.");
+            return;
+          }
+          newPost.iso = iso.value;
         }
 
-        newPost.append("file", imageInput.files[0]); // 이미지 파일 추가
+        let request = new FormData();
+        request.append("request", JSON.stringify(newPost)); // JSON 문자열로 변환
+        request.append("file", imageInput.files[0]); // 이미지 파일 추가
 
         try {
           const response = await fetchWithImg(
             "http://localhost:8080/api/post/edit",
             "POST",
-            newPost
+            request
           );
 
           if (!response.ok) {
