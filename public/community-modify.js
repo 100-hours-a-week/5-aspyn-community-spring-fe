@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
           return null;
         } else {
-          // console.log("USER Info: ", data);
           return data; // user_id : 'n'
         }
       } else {
@@ -139,10 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 updatePost.append("iso", iso.value);
               }
 
-              console.log("Iris:", iris.value);
-              console.log("ShutterSpeed:", shutterSpeed.value);
-              console.log("ISO:", iso.value);
-
               if (title.value.length !== 0 && content.value.length !== 0) {
                 try {
                   const response = await fetchWithImg(
@@ -189,14 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   title.onkeyup = () => {
     if (title.value.length < 27) {
-      console.log("게시글 제목 입력");
       if (title.value.length > 0 && content.value.length > 0) {
         update.style.backgroundColor = "#7F6AEE";
       } else {
         update.style.backgroundColor = "#ff9191";
       }
     } else {
-      console.log("입력 글자 수 초과(최대 26글자)");
       alert("제목은 최대 26글자까지 입력 가능합니다.");
     }
   };

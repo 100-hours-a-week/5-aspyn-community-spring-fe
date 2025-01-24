@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
           return null;
         } else {
-          // console.log("USER Info: ", data);
           return data; // user_id : 'n'
         }
       } else {
@@ -59,8 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   function previewImage(event) {
     const file = event.target.files[0];
 
-    console.log("선택된 파일:", file); // 파일이 선택되었는지 확인하는 로그
-
     const previewContainer =
       document.getElementsByClassName("image-container")[0];
     const previewImage = document.getElementsByClassName("preview")[0];
@@ -69,8 +66,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const reader = new FileReader();
 
       reader.onload = function (e) {
-        console.log("파일 읽기 성공"); // 파일이 정상적으로 읽혔는지 확인하는 로그
-
         previewImage.src = e.target.result;
         previewContainer.style.display = "block"; // 미리보기 컨테이너 표시
       };
@@ -112,7 +107,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (imageInput && imageInput.files) {
         const files = imageInput.files;
         // 파일 처리 로직
-        console.log("선택된 파일:", files);
       } else {
         console.log("파일 입력 요소가 없거나 파일이 선택되지 않았습니다.");
         alert("이미지 파일을 선택해주세요.");
