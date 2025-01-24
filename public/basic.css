@@ -96,6 +96,7 @@ body {
   position: absolute;
   margin-top: 115px;
   margin-left: 450px;
+  z-index: 1;
 }
 
 .opt-box {

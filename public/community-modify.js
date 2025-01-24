@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
           return null;
         } else {
-          // console.log("USER Info: ", data);
           return data; // user_id : 'n'
         }
       } else {
@@ -106,17 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
           if (loginUser == postWriter) {
             //게시글 수정하기 버튼
             update.onclick = async () => {
-              console.log("게시글id>>>>> ", post);
               let updatePost = new FormData();
-              updatePost.append(
-                "request",
-                JSON.stringify({
-                  id: post,
-                  title: title.value,
-                  text: content.value,
-                  userId: loginUser,
-                })
-              );
+              updatePost.append("id", post);
+              updatePost.append("title", title.value);
+              updatePost.append("text", content.value);
+              updatePost.append("userId", loginUser);
 
               // Iris 추가
               if (iris.value) {
@@ -125,8 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   return;
                 }
                 updatePost.append("iris", iris.value);
-              } else {
-                updatePost.append("iris", "");
               }
 
               // ShutterSpeed 추가
@@ -136,8 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   return;
                 }
                 updatePost.append("shutterSpeed", shutterSpeed.value);
-              } else {
-                updatePost.append("shutterSpeed", "");
               }
 
               // ISO 추가
@@ -147,23 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
                   return;
                 }
                 updatePost.append("iso", iso.value);
-              } else {
-                updatePost.append("iso", "");
               }
-
-              console.log("Iris:", iris.value);
-              console.log("ShutterSpeed:", shutterSpeed.value);
-              console.log("ISO:", iso.value);
-              console.log("수정된 내용: ", updatePost);
-              for (let pair of updatePost.entries()) {
-                console.log(pair[0], pair[1]);
-              }
-
-              // TODO: 사진 메타데이터 값이 append 되지 않아 수정이 안 되고 있음 -> 수정 필요
 
               if (title.value.length !== 0 && content.value.length !== 0) {
                 try {
-                  const response = await fetchWithAuth(
+                  const response = await fetchWithImg(
                     `http://localhost:8080/api/post/${post}`,
                     "PATCH",
                     updatePost
@@ -207,14 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   title.onkeyup = () => {
     if (title.value.length < 27) {
-      console.log("게시글 제목 입력");
       if (title.value.length > 0 && content.value.length > 0) {
         update.style.backgroundColor = "#7F6AEE";
       } else {
         update.style.backgroundColor = "#ff9191";
       }
     } else {
-      console.log("입력 글자 수 초과(최대 26글자)");
       alert("제목은 최대 26글자까지 입력 가능합니다.");
     }
   };

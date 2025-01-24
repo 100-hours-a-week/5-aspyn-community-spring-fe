@@ -11,6 +11,7 @@ const confirmPasswordHelper = document.getElementById(
 const nicknameHelper = document.getElementById("nickname-helper");
 
 const preview = document.getElementById("profile-preview");
+const fileInput = document.getElementById("imageInput");
 const profileBtn = document.querySelector(".profile-button");
 const submitBtn = document.getElementById("submit-btn");
 
@@ -167,7 +168,6 @@ function handleSignUp() {
     );
 
     // 프로필 이미지 추가 (파일이 선택된 경우에만)
-    const fileInput = document.getElementById("imageInput");
     if (fileInput.files.length > 0) {
       formData.append("file", fileInput.files[0]);
     }
@@ -236,12 +236,10 @@ function handleSignIn() {
 }
 
 // 프로필 이미지 [파일선택] 버튼 클릭
-profileBtn.addEventListener("click", function () {
-  imageInput.click();
-});
+profileBtn.addEventListener("click", function () {});
 
 // 파일 선택 시 미리보기 업데이트
-imageInput.addEventListener("change", previewImage);
+fileInput.addEventListener("change", previewImage);
 
 function previewImage(event) {
   const input = event.target;

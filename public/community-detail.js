@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         const data = await response.json();
 
-        // console.log(data);
         if (data.status == "ERROR") {
           alert(data.message);
           window.location.href = "/"; // 로그인 페이지로 리다이렉트
@@ -187,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       writer_profile.src = item.profileUrl;
     }
 
-    if (item.iris == null) {
+    if (item.iris == null || item.iris == "") {
       document
         .getElementsByClassName("metadata")[0]
         .querySelector("p")
@@ -198,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
       )[0].innerHTML = `<p>F${item.iris}</p>`;
     }
 
-    if (item.shutterSpeed == null) {
+    if (item.shutterSpeed == null || item.shutterSpeed == "") {
       document
         .getElementsByClassName("metadata")[1]
         .querySelector("p")
@@ -209,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
       )[1].innerHTML = `<p>${item.shutterSpeed}초</p>`;
     }
 
-    if (item.iso == null) {
+    if (item.iso == null || item.iso == "") {
       document
         .getElementsByClassName("metadata")[2]
         .querySelector("p")
@@ -224,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 로그인 유저 넘버와 게시글 작성 유저 넘버가 같으면 수정/삭제 노출
     if (loginUser == item.userId) {
-      console.log("지금 로그인한 유저가 게시글 작성자임");
+      // console.log("지금 로그인한 유저가 게시글 작성자임");
       post_button.classList.remove("hide");
     }
   }
@@ -238,8 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return response.json();
     })
     .then((data) => {
-      console.log("api 호출 성공: ", data);
-
       if (data.status == "SUCCESS") {
         const post = data.post;
         loadContent(post);
@@ -434,7 +431,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopImmediatePropagation();
 
       const seq = e.target.dataset.removeSeq; // 댓글의 고유 ID
-      console.log("삭제하려는 댓글: ", seq);
 
       modal.classList.remove("hide");
       modalTitle.innerHTML = "댓글을 삭제하시겠습니까?";
