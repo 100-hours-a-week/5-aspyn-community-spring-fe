@@ -227,13 +227,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         </span>
         <span class="post-author">${item.nickname}</span>
       </div>
-      <div class="post-icon">
+      <div class="post-icon hide">
         <img class="thumbnail" src="/public/images/camera.png" />
       </div>
     </div>`;
 
     // 생성한 게시글을 목록에 추가
     document.querySelector(".post-list").append(newPost);
+
+    let cameraIcon = newPost.querySelector(".post-icon");
+    if (item.iris || item.shutterSpeed || item.iso) {
+      cameraIcon.classList.remove("hide");
+    }
 
     let postImg = newPost.querySelector(".post-image");
     let title = newPost.querySelector(".post-title");
