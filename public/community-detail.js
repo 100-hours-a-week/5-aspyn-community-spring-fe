@@ -308,9 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("article.content").append(newDiv);
   }
 
-  // 수정 버튼 클릭 이벤트 추가
+  // 댓글 수정 버튼 클릭 이벤트 추가
   document.addEventListener("click", (e) => {
-    // 수정 버튼 클릭 시
+    // 댓글 수정 버튼 클릭 시
     if (
       e.target.classList.contains("small-button") &&
       e.target.id === "comment-update"
@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 댓글 내용을 인풋 박스로 변경
         commentContent.innerHTML = `
-        <input type="text" class="edit-comment-input" value="${currentText}" />
+        <textarea class="edit-comment-input" placeholder="댓글을 입력해주세요.">${currentText}</textarea>
       `;
       }
 
