@@ -156,14 +156,24 @@ textarea::placeholder {
   margin-top: 24px;
 }
 
-.comment-box {
-  margin: 20px 0;
-}
 .comment-content {
   font-size: 15px;
   padding-left: 48px;
   padding-right: 32px;
+  line-height: 1.2em;
   /* padding-top: 10px; */
+}
+
+.edit-comment-input {
+  width: 520px;
+  height: 54px;
+  align-items: center;
+  border-radius: 4px;
+  /* border: none; */
+  border-color: #ddd;
+  resize: none;
+  font-family: "Pretendard-Regular";
+  font-size: 15px;
 }
 
 .modal-bg {

@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   nickname.setAttribute("value", userNick);
 
   //닉네임 유효성 검사 정규식
-  korEngNum = (str) => /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
+  const korEngNum = (str) => /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
 
   //닉네임 입력 유효성 검사
   nicknameInput.addEventListener("keyup", () => {
@@ -203,31 +203,33 @@ document.addEventListener("DOMContentLoaded", async function () {
       alert("닉네임을 입력하세요.");
       return;
     } else if (nicknameInput.value == userNick && !fileInput.files.length) {
+      // console.log("변경된 정보 없음");
       return;
     } else {
+      // formData 객체 생성
+      const formData = new FormData();
+
+      // 회원 정보
+      const userInfo = {
+        nickname: nicknameInput.value,
+      };
+
+      formData.append(
+        "request",
+        new Blob([JSON.stringify(userInfo)], { type: "application/json" })
+      );
+
+      // 프로필 이미지 추가 (파일이 선택된 경우에만)
+      if (fileInput.files.length > 0) {
+        formData.append("file", fileInput.files[0]);
+      }
+
+      // 닉네임 중복확인
       if (
         nicknameInput.value != userNick &&
+        korEngNum(nicknameInput.value) &&
         nickname.value.includes(" ") == false
       ) {
-        // formData 객체 생성
-        const formData = new FormData();
-
-        // 회원 정보
-        const userInfo = {
-          nickname: nicknameInput.value,
-        };
-
-        formData.append(
-          "request",
-          new Blob([JSON.stringify(userInfo)], { type: "application/json" })
-        );
-
-        // 프로필 이미지 추가 (파일이 선택된 경우에만)
-        if (fileInput.files.length > 0) {
-          formData.append("file", fileInput.files[0]);
-        }
-
-        // 닉네임 중복확인
         fetchWithAuth(
           `http://localhost:8080/api/user/isExist/${nickname.value}`,
           "GET"
@@ -237,24 +239,26 @@ document.addEventListener("DOMContentLoaded", async function () {
             // true이면 중복, false이면 중복된 닉네임 없음
             if (data) {
               alert("중복된 닉네임입니다. 다른 닉네임을 입력해주세요.");
-            } else {
-              // 닉네임 및 프로필 이미지 변경
-              fetchWithImg(
-                "http://localhost:8080/api/user/info",
-                "PATCH",
-                formData
-              ).then((response) => {
-                if (!response.errorCode) {
-                  toastOn();
-                  // alert("닉네임이 변경되었습니다.");
-                  console.log("닉네임 변경 완료");
-                } else {
-                  throw new Error("닉네임 변경 시 오류가 발생했습니다.");
-                }
-              });
+              return;
             }
           });
       }
+
+      // 닉네임 및 프로필 이미지 변경
+      fetchWithImg(
+        "http://localhost:8080/api/user/info",
+        "PATCH",
+        formData
+      ).then((response) => {
+        if (!response.errorCode) {
+          toastOn();
+          alert("회원정보가 변경되었습니다.");
+          // console.log("회원정보 변경 완료");
+          location.reload();
+        } else {
+          throw new Error("닉네임 변경 시 오류가 발생했습니다.");
+        }
+      });
     }
   }
 
@@ -293,8 +297,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       ).then((response) => {
         if (response) {
           toastOn();
-          // alert("비밀번호가 변경되었습니다.");
-          console.log("비밀번호 변경");
+          // console.log("비밀번호 변경");
         } else {
           throw new Error("비밀번호 변경 중 오류가 발생했습니다.");
         }
@@ -335,19 +338,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       .then((data) => {
         if (data.status == "SUCCESS") {
           alert("회원 탈퇴가 완료되었습니다.");
-          console.log("회원탈퇴 완료");
+          // console.log("회원탈퇴 완료");
           window.location.href = "/";
         } else {
-          alert("회원 탈퇴 오류");
-          console.log("회원탈퇴 오류");
+          alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
+          // console.log("회원탈퇴 오류");
           throw new Error("회원 탈퇴 처리 중 오류가 발생했습니다.");
         }
       });
-  });
-
-  // 프로필 이미지 [프로필 변경] 버튼 클릭
-  profileBtn.addEventListener("click", function () {
-    // fileInput.click();
   });
 
   // 파일 선택 시 미리보기 업데이트
