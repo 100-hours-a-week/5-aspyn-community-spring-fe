@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", async function () {
+  async function getConfig() {
+    const response = await fetch("/config");
+    const config = await response.json();
+    return config.API_URL;
+  }
+
+  const API_URL = await getConfig();
+
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(
-        `http://localhost:8080/api/userinfo`,
-        "GET"
-      );
+      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -230,10 +235,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         korEngNum(nicknameInput.value) &&
         nickname.value.includes(" ") == false
       ) {
-        fetchWithAuth(
-          `http://localhost:8080/api/user/isExist/${nickname.value}`,
-          "GET"
-        )
+        fetchWithAuth(`${API_URL}/api/user/isExist/${nickname.value}`, "GET")
           .then((response) => response.json())
           .then((data) => {
             // true이면 중복, false이면 중복된 닉네임 없음
@@ -245,20 +247,18 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
 
       // 닉네임 및 프로필 이미지 변경
-      fetchWithImg(
-        "http://localhost:8080/api/user/info",
-        "PATCH",
-        formData
-      ).then((response) => {
-        if (!response.errorCode) {
-          toastOn();
-          alert("회원정보가 변경되었습니다.");
-          // console.log("회원정보 변경 완료");
-          location.reload();
-        } else {
-          throw new Error("닉네임 변경 시 오류가 발생했습니다.");
+      fetchWithImg(`${API_URL}/api/user/info`, "PATCH", formData).then(
+        (response) => {
+          if (!response.errorCode) {
+            toastOn();
+            alert("회원정보가 변경되었습니다.");
+            // console.log("회원정보 변경 완료");
+            location.reload();
+          } else {
+            throw new Error("닉네임 변경 시 오류가 발생했습니다.");
+          }
         }
-      });
+      );
     }
   }
 
@@ -290,18 +290,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         new Blob([JSON.stringify(userInfo)], { type: "application/json" })
       );
 
-      fetchWithImg(
-        "http://localhost:8080/api/user/password",
-        "PATCH",
-        newPassword
-      ).then((response) => {
-        if (response) {
-          toastOn();
-          // console.log("비밀번호 변경");
-        } else {
-          throw new Error("비밀번호 변경 중 오류가 발생했습니다.");
+      fetchWithImg(`${API_URL}/api/user/password`, "PATCH", newPassword).then(
+        (response) => {
+          if (response) {
+            toastOn();
+            // console.log("비밀번호 변경");
+          } else {
+            throw new Error("비밀번호 변경 중 오류가 발생했습니다.");
+          }
         }
-      });
+      );
     } else {
       alert("비밀번호를 확인하세요.");
     }
@@ -333,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 탈퇴하기 모달 - 탈퇴 클릭
   modalComplete.addEventListener("click", () => {
-    fetchWithAuth("http://localhost:8080/api/user/leave", "DELETE")
+    fetchWithAuth(`${API_URL}/api/user/leave`, "DELETE")
       .then((response) => response.json())
       .then((data) => {
         if (data.status == "SUCCESS") {

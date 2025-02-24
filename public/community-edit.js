@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  async function getConfig() {
+    const response = await fetch("/config");
+    const config = await response.json();
+    return config.API_URL;
+  }
+
+  const API_URL = await getConfig();
+
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(
-        `http://localhost:8080/api/userinfo`,
-        "GET"
-      );
+      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -117,34 +122,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         content.value.length !== 0 &&
         imageInput.files.length > 0
       ) {
-        // // 게시글 등록 기능
-        // let newPost = new FormData();
-        // newPost.append("title", title.value);
-        // newPost.append("text", content.value);
-        // newPost.append("userId", loginUser);
-
-        // if (iris.value && !validateIris(iris.value)) {
-        //   alert("조리개 값이 올바르지 않습니다.");
-        // } else if (validateIris(iris.value)) {
-        //   newPost.append("iris", iris.value);
-        // }
-
-        // if (shutterSpeed.value && !validateShutterSpeed(shutterSpeed.value)) {
-        //   alert("셔터스피드 값이 올바르지 않습니다.");
-        // } else if (validateShutterSpeed(shutterSpeed.value)) {
-        //   newPost.append("shutterSpeed", shutterSpeed.value);
-        // }
-
-        // if (iso.value && !validateISO(iso.value)) {
-        //   alert("ISO 값이 올바르지 않습니다.");
-        // } else if (validateISO(iso.value)) {
-        //   newPost.append("iso", iso.value);
-        // }
-
-        // let request = new FormData();
-        // request.append("request", newPost);
-        // request.append("file", imageInput.files[0]); // 이미지 파일 추가
-
         // 게시글 등록 기능
         let newPost = {
           title: title.value,
@@ -185,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
           const response = await fetchWithImg(
-            "http://localhost:8080/api/post/edit",
+            `${API_URL}/api/post/edit`,
             "POST",
             request
           );
