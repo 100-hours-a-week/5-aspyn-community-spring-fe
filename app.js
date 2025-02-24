@@ -1,4 +1,5 @@
 // express 모듈을 불러옵니다.
+require("dotenv").config(); // 환경변수 fhem
 const express = require("express");
 const process = require("process");
 const cors = require("cors");
@@ -9,8 +10,9 @@ const app = express();
 // 웹 서버가 사용할 포트 번호를 정의합니다.
 const port = 3000;
 
+const corsOrigin = process.env.API_URL;
 let corsOptions = {
-  origin: "http://localhost:8080/",
+  origin: corsOrigin,
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -32,6 +34,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
+// 프론트엔드에서 환경변수를 가져갈 수 있도록 API 제공
+app.get("/config", (req, res) => {
+  res.json({ API_URL: process.env.API_URL });
+});
+
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

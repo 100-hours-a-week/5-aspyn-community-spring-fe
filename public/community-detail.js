@@ -1,11 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  async function getConfig() {
+    const response = await fetch("/config");
+    const config = await response.json();
+    return config.API_URL;
+  }
+
+  const API_URL = await getConfig();
+
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(
-        `http://localhost:8080/api/userinfo`,
-        "GET"
-      );
+      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -121,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 모달창 - 삭제버튼
     modalComplete.onclick = () => {
       // 게시글 삭제
-      fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "DELETE")
+      fetchWithAuth(`${API_URL}/api/post/${postId}`, "DELETE")
         .then((response) => {
           if (!response.errorCode) {
             alert("게시글이 삭제 되었습니다");
@@ -229,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 게시글&댓글 불러오기
-  fetchWithAuth(`http://localhost:8080/api/post/${postId}`, "GET")
+  fetchWithAuth(`${API_URL}/api/post/${postId}`, "GET")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -402,11 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let modComment = { id: seq, text: newText };
 
-        fetchWithAuth(
-          "http://localhost:8080/api/comment/modify",
-          "PATCH",
-          modComment
-        )
+        fetchWithAuth(`${API_URL}/api/comment/modify`, "PATCH", modComment)
           .then((response) => response.json())
           .then((data) => {
             if (data.status == "SUCCESS") {
@@ -444,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 모달창 - 삭제버튼(댓글) -> 댓글 삭제
       modalComplete.onclick = () => {
         // 댓글 삭제처리
-        fetchWithAuth(`http://localhost:8080/api/comment/${seq}`, "DELETE")
+        fetchWithAuth(`${API_URL}/api/comment/${seq}`, "DELETE")
           .then((response) => {
             if (!response.errorCode) {
               alert("댓글이 삭제 되었습니다.");
@@ -480,11 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("비회원은 댓글 작성이 불가합니다. 로그인 해주세요.");
     } else {
       // 새로운 댓글 등록
-      fetchWithAuth(
-        "http://localhost:8080/api/comment/edit",
-        "POST",
-        newComment
-      )
+      fetchWithAuth(`${API_URL}/api/comment/edit`, "POST", newComment)
         .then((response) => {
           if (!response.errorCode) {
             console.log("댓글 등록 완료");
