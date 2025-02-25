@@ -124,32 +124,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   // 로그인 or 회원가입 버튼 클릭
-  document
-    .getElementById("submit-btn")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // 기본 폼 제출 방지
-      const form = document.querySelector(".login-box");
+  submitBtn.addEventListener("click", function (event) {
+    event.preventDefault(); // 기본 폼 제출 방지
+    const form = document.querySelector(".login-box");
 
-      if (form.classList.contains("signin")) {
-        handleSignIn();
-      } else if (form.classList.contains("signup")) {
-        handleSignUp();
-      }
-    });
+    // 버튼 중복 클릭 방지
+    submitBtn.disabled = true;
+
+    if (form.classList.contains("signin")) {
+      handleSignIn();
+    } else if (form.classList.contains("signup")) {
+      handleSignUp();
+    }
+  });
 
   // 회원가입 동작
   function handleSignUp() {
     if (passwordInput.value !== confirmPasswordInput.value) {
       alert("비밀번호가 일치하지 않습니다.");
+      submitBtn.disabled = false;
       return;
     } else if (emailInput.value == "") {
       alert("이메일을 입력하세요.");
+      submitBtn.disabled = false;
       return;
     } else if (passwordInput.value == "") {
       alert("비밀번호를 입력하세요.");
+      submitBtn.disabled = false;
       return;
     } else if (nicknameInput.value == "") {
       alert("닉네임을 입력하세요.");
+      submitBtn.disabled = false;
       return;
     }
 
@@ -190,19 +195,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         .then((response) => response.json())
         .then((data) => {
           if (data.status == "SUCCESS") {
+            submitBtn.disabled = false;
             console.log("회원가입 완료");
             alert("회원가입이 완료되었습니다. 로그인을 해주세요.");
             window.location.href = "/";
           } else {
             alert(data.message);
+            submitBtn.disabled = false;
           }
         })
         .catch((error) => {
           console.error("Error: ", error);
           alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+          submitBtn.disabled = false;
         });
     } else {
       alert("회원가입 실패. 입력 정보를 확인하세요.");
+      submitBtn.disabled = false;
     }
   }
 
@@ -210,6 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function handleSignIn() {
     if (emailInput.value === "" || passwordInput.value === "") {
       alert("아이디와 비밀번호를 입력하세요.");
+      submitBtn.disabled = false;
       return;
     }
 
@@ -223,7 +233,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
       .then((response) => {
         if (!response.ok) {
-          // 로그인 실패 처리
+          // 버튼 활성화
+          submitBtn.disabled = false;
+
           alert("로그인 실패");
           return false;
         }
@@ -240,6 +252,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       })
       .catch((error) => {
+        // 버튼 활성화
+        submitBtn.disabled = false;
+
         console.error("Error:", error);
         alert("서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
       });

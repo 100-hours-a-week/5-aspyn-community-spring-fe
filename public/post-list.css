@@ -1,7 +1,6 @@
 /* 페이지 전체를 중앙에 600px로 제한하는 스타일 */
 .wrap {
   width: 100%;
-  min-width: 400px;
   max-width: 600px;
   margin: 0 auto;
   padding: 4px;
