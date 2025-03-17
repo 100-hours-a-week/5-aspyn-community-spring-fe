@@ -1,0 +1,34 @@
+name: Deploy Frontend to EC2
+
+on:
+  push:
+    branches:
+      - main # main 브랜치에 push될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+        # EC2 서버에 SSH로 접속하기 위해 SSH 키 설정
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3 #SSH 인증 설정
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+        # EC2 서버에서 프론트엔드 리포지토리 클론
+      - name: Clone frontend repo
+        run: |
+          mkdir -p /home/ubuntu/app/front 
+          cd /home/ubuntu/app/front
+          git clone https://github.com/100-hours-a-week/5-aspyn-community-spring-fe.git .
+
+      - name: Build and Deploy Frontend
+        run: |
+          cd /home/ubuntu/app/front
+          npm install
+          npm run build
+          pm2 start server.js
