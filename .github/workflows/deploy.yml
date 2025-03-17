@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: git clone
         run: |
-          cd /home/ubuntu/chalcak/front
-          git clone https://github.com/100-hours-a-week/5-aspyn-community-spring-fe.git
+          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
+          git pull
 
       - name: create .env
         run: |
