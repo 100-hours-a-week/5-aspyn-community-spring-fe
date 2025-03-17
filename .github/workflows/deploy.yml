@@ -22,13 +22,13 @@ jobs:
         # EC2 서버에서 프론트엔드 리포지토리 클론
       - name: Clone frontend repo
         run: |
-          mkdir -p /home/ubuntu/app/front 
-          cd /home/ubuntu/app/front
+          mkdir -p /app/front 
+          cd /app/front
           git clone https://github.com/100-hours-a-week/5-aspyn-community-spring-fe.git .
 
       - name: Build and Deploy Frontend
         run: |
-          cd /home/ubuntu/app/front
+          cd /app/front
           npm install
           npm run build
           pm2 start server.js
