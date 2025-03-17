@@ -23,5 +23,6 @@ jobs:
 
       - name: install depency and deploy
         run: |
+          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
           npm install
           pm2 start app.js
