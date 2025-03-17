@@ -7,34 +7,21 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, chalcak_fe]
+    name: git clone and deploy
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-        # EC2 서버에 SSH로 접속하기 위해 SSH 키 설정
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3 #SSH 인증 설정
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Print current directory
+      - name: git clone
         run: |
-          echo "Current working directory:"
-          pwd
-
-        # EC2 서버에서 프론트엔드 리포지토리 클론
-      - name: Clone frontend repo
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           cd /home/ubuntu/chalcak/front
-          git clone https://github.com/100-hours-a-week/5-aspyn-community-spring-fe.git .
+          git clone https://github.com/100-hours-a-week/5-aspyn-community-spring-fe.git
 
-      - name: Build and Deploy Frontend
+      - name: create .env
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/chalcak/front
+          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
+          echo "${{ secrets.ENV }}" > .env
+
+      - name: install depency and deploy
+        run: |
           npm install
-          npm run build
-          pm2 start server.js
+          pm2 start app.js
