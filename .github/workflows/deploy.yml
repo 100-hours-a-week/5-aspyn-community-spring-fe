@@ -49,6 +49,10 @@ jobs:
     needs: make-image-and-push # 앞의 job이 성공해야 실행됨
 
     steps:
+      - name: Creat .env File
+        run: |
+          echo "SERVER_NAME=${{ secrets.EC2_HOST }}" > /home/ubuntu/chalcak/fe/.env
+
       - name: Pull and Deploy New Docker Image
         run: |
           cd /home/ubuntu/chalcak/fe
