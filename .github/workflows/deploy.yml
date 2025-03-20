@@ -6,23 +6,58 @@ on:
       - main # main 브랜치에 push될 때 실행
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, Linux, X64, chalcak_fe]
-    name: git clone and deploy
+  make-image-and-push:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: git clone
-        run: |
-          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
-          git pull
+      # 리포지토리 체크아웃
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: create .env
+      # Node.js 설정
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      # 의존성 설치
+      - name: Install Dependencies
+        run: npm ci
+
+      # 환경 변수 파일 생성
+      - name: Create .env File
         run: |
-          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
+          touch .env
           echo "${{ secrets.ENV }}" > .env
 
-      - name: install depency and deploy
+      # 깃허브 로그인 (GitHub Container Registry)
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_OWNER }} --password-stdin
+
+      # Docker 이미지 빌드 & GHCR에 푸시
+      - name: Build and Push Docker Image
+        env:
+          GHCR_REPO: ghcr.io/bysoyeon/chalcak-fe-container
         run: |
-          cd /home/ubuntu/chalcak/front/5-aspyn-community-spring-fe
-          npm install
-          pm2 start app.js
+          docker build --build-arg SERVER_NAME=${{ secrets.EC2_HOST }} \
+                       -t $GHCR_REPO:latest .
+          docker push $GHCR_REPO:latest
+
+  pull-and-deploy:
+    runs-on: [self-hosted, Linux, X64, chalcak-frontend]
+    name: Deploy Frontend by Self-Hosted Runner
+    needs: make-image-and-push # 앞의 job이 성공해야 실행됨
+
+    steps:
+      - name: Pull and Deploy New Docker Image
+        run: |
+          cd /home/ubuntu/chalcak/fe
+
+          # 최신 이미지 가져오기
+          docker-compose pull
+
+          # 기존 컨테이너 중지 및 삭제
+          docker-compose down
+
+          # 새 컨테이너 실행
+          docker-compose up -d
