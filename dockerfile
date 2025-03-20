@@ -1,5 +1,5 @@
 # Node.js 기반 이미지 사용
-FROM node:latest
+FROM node:22
 
 # 컨테이너 내부에서 사용할 작업 디렉토리 설정
 WORKDIR /app
