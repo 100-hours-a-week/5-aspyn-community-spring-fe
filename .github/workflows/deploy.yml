@@ -24,12 +24,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # 환경 변수 파일 생성
-      - name: Create .env File
-        run: |
-          touch .env
-          echo "${{ secrets.ENV }}" > .env
-
       # 깃허브 로그인 (GitHub Container Registry)
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_OWNER }} --password-stdin
@@ -49,9 +43,10 @@ jobs:
     needs: make-image-and-push # 앞의 job이 성공해야 실행됨
 
     steps:
-      - name: Creat .env File
+      # 환경변수 파일 설정
+      - name: Create .env File
         run: |
-          echo "SERVER_NAME=${{ secrets.EC2_HOST }}" > /home/ubuntu/chalcak/fe/.env
+          echo "${{ secrets.ENV }}" > /home/ubuntu/chalcak/fe/.env
 
       - name: Login to GitHub Container Registry
         run: |

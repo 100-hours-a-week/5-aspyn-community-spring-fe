@@ -13,10 +13,6 @@ RUN npm ci
 # 애플리케이션 파일 복사
 COPY . .
 
-# 환경 변수 받아오기
-ARG SERVER_NAME
-ENV SERVER_NAME=$SERVER_NAME
-
 # 애플리케이션 실행
 CMD ["node", "app.js"]
 
