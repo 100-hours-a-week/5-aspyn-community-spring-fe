@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="post-info">
               <div class="profile-box">
                 <img src="${
-                  c.profileUrl ? c.profileUrl : "/public/images/basic_user.png"
+                  c.profileUrl ? c.profileUrl : "/images/basic_user.png"
                 }" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="post-info">
               <div class="profile-box">
                 <img src="${
-                  c.profileUrl ? c.profileUrl : "/public/images/basic_user.png"
+                  c.profileUrl ? c.profileUrl : "/images/basic_user.png"
                 }" />
               </div>
               <p class="profile-nickname">${c.nickname}</p>
