@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name chalcak.site www.chalcak.site;  # 도메인 이름
+    server_name chalcak.site;  # 도메인 이름
 
     # HTTP ->  HTTPS로 리디렉션
     return 301 https://$host$request_uri;
@@ -8,7 +8,7 @@ server {
 
 server {
     listen 443;
-    server_name chalcak.site www.chalcak.site;
+    server_name chalcak.site;
 
     # SSL 인증서 설정
     ssl_certificate /etc/letsencrypt/live/chalcak.site-0001/fullchain.pem; # managed by Certbot
