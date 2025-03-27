@@ -1,0 +1,84 @@
+server {
+    listen 80;
+    server_name chalcak.site www.chalcak.site;  # 도메인 이름
+
+    # HTTP ->  HTTPS로 리디렉션
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443;
+    server_name chalcak.site www.chalcak.site;
+
+    # SSL 인증서 설정
+    ssl_certificate /etc/letsencrypt/live/chalcak.site-0001/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/chalcak.site-0001/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    # 프론트엔드 정적 파일
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # 정적 리소스 (css, js, images, fonts 등) 처리 - public 디렉토리 root 기준
+    location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|otf|eot|ttc|map|json)$ {
+        expires 6M;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    # 회원가입 페이지
+    location /user/join {
+        rewrite ^ /community-join.html break;
+    }
+
+    # 회원정보 변경 페이지
+    location /user/info {
+        rewrite ^ /community-user.html break;
+    }
+
+    # 게시글 목록 페이지
+    location /post/list {
+        rewrite ^ /community-conlist.html break;
+    }
+
+    # 새 게시글 작성 페이지
+    location /post/new {
+        rewrite ^ /community-edit.html break;
+    }
+
+    # 게시글 수정 페이지 (예: /post/update/123 → /community-modify.html)
+    location ~ ^/post/update/\d+$ {
+        rewrite ^ /community-modify.html break;
+    }
+
+    # 게시글 상세 페이지 (예: /post/123 → /community-detail.html)
+    location ~ ^/post/\d+$ {
+        rewrite ^ /community-detail.html break;
+    }
+
+    # 기본 경로 설정
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 백엔드(Spring Boot) API 요청 전달
+    location /api/ {
+        proxy_pass ${API_URL};
+        proxy_set_header Host $host;                             # 원래의 Host 헤더 유지
+        proxy_set_header X-Real-IP $remote_addr;                 # 클라이언트의 실제 IP
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # 프록시 체인에 클라이언트 IP 추가
+        proxy_set_header X-Forwarded-Proto $scheme;              # 요청이 http 인지 https 인지 백엔드에 전달
+    }
+
+    # 로그인 요청 백엔드로 프록시
+    location /login {
+        proxy_pass ${API_URL}/login;
+        proxy_pass ${API_URL};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+        proxy_set_header X-Forwarded-Proto $scheme; 
+    }
+}
+

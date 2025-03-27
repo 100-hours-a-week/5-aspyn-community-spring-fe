@@ -221,18 +221,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     newPost.innerHTML = `
     <div class="post-image rel cursor">
-      <img src="${item.imgUrl || "/public/images/photo.jpg"}" />
+      <img src="${item.imgUrl || "/images/photo.jpg"}" />
     </div>
     <h3 class="post-title cursor">${item.title}</h3>
     <div class="post-info">
       <div class="post-info">
         <span class="author-profile">
-          <img src="${item.profileUrl || "/public/images/basic_user.png"}" />
+          <img src="${item.profileUrl || "/images/basic_user.png"}" />
         </span>
         <span class="post-author">${item.nickname}</span>
       </div>
       <div class="post-icon hide">
-        <img class="thumbnail" src="/public/images/camera.png" />
+        <img class="thumbnail" src="/images/camera.png" />
       </div>
     </div>`;
 

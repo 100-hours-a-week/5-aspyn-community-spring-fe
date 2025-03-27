@@ -1,20 +1,16 @@
-# Node.js 기반 이미지 사용
-FROM node:22
+# nginx 기반 이미지 사용
+FROM nginx:latest
 
-# 컨테이너 내부에서 사용할 작업 디렉토리 설정
-WORKDIR /app
+# 환경변수 설정
+ENV API_URL=${API_URL}
 
-# package.json과 package-lock.json을 컨테이너로 복사
-COPY package*.json ./
+#custom nginx.conf 적용
+COPY nginx.conf.template /etc/nginx/nginx.conf
 
-# 의존성 설치
-RUN npm ci
+# 정적 파일 복사
+COPY public /usr/share/nginx/html
 
-# 애플리케이션 파일 복사
-COPY . .
+# 컨테이너가 열 포트
+EXPOSE 80 443
 
-# 애플리케이션 실행
-CMD ["node", "app.js"]
-
-# 컨테이너가 열어야 하는 포트
-EXPOSE 3000
+CMD envsubst '$$API_URL' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'
