@@ -5,7 +5,7 @@ FROM nginx:latest
 ARG API_URL
 
 #custom nginx.conf 적용
-COPY nginx.conf.template /etc/nginx/nginx.conf
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 # 정적 파일 복사
 COPY public /usr/share/nginx/html
@@ -13,4 +13,4 @@ COPY public /usr/share/nginx/html
 # 컨테이너가 열 포트
 EXPOSE 80 443
 
-RUN envsubst '$API_URL' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+RUN envsubst '$API_URL' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
