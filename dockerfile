@@ -13,4 +13,4 @@ COPY public /usr/share/nginx/html
 # 컨테이너가 열 포트
 EXPOSE 80 443
 
-CMD envsubst '$API_URL' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+RUN envsubst '$API_URL' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
