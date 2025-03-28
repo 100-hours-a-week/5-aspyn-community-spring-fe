@@ -1,16 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  async function getConfig() {
-    const response = await fetch("/config");
-    const config = await response.json();
-    return config.API_URL;
-  }
-
-  const API_URL = await getConfig();
-
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
+      const response = await fetchWithAuth("/api/userinfo", "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -162,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
           const response = await fetchWithImg(
-            `${API_URL}/api/post/edit`,
+            "/api/post/edit",
             "POST",
             request
           );

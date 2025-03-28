@@ -1,12 +1,4 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  async function getConfig() {
-    const response = await fetch("/config");
-    const config = await response.json();
-    return config.API_URL;
-  }
-
-  const API_URL = await getConfig();
-
   // 로그인 유저 정보 가져오기
   const user = await fetchUserInfo();
   if (!user) return;
@@ -94,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // 게시글 목록 가져오는 메소드
   function fetchPosts(page) {
-    const url = `${API_URL}/api/post/list?page=${page}`;
+    const url = `/api/post/list?page=${page}`;
 
     fetchWithAuth(url, "GET")
       .then((response) => {
@@ -192,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
+      const response = await fetchWithAuth("/api/userinfo", "GET");
 
       if (response.ok) {
         const data = await response.json();

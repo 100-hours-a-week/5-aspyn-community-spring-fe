@@ -1,16 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  async function getConfig() {
-    const response = await fetch("/config");
-    const config = await response.json();
-    return config.API_URL;
-  }
-
-  const API_URL = await getConfig();
-
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
+      const response = await fetchWithAuth("/api/userinfo", "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -126,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 모달창 - 삭제버튼
     modalComplete.onclick = () => {
       // 게시글 삭제
-      fetchWithAuth(`${API_URL}/api/post/${postId}`, "DELETE")
+      fetchWithAuth(`/api/post/${postId}`, "DELETE")
         .then((response) => {
           if (!response.errorCode) {
             alert("게시글이 삭제 되었습니다");
@@ -234,7 +226,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 게시글&댓글 불러오기
-  fetchWithAuth(`${API_URL}/api/post/${postId}`, "GET")
+  fetchWithAuth(`/api/post/${postId}`, "GET")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -407,7 +399,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let modComment = { id: seq, text: newText };
 
-        fetchWithAuth(`${API_URL}/api/comment/modify`, "PATCH", modComment)
+        fetchWithAuth("/api/comment/modify", "PATCH", modComment)
           .then((response) => response.json())
           .then((data) => {
             if (data.status == "SUCCESS") {
@@ -445,7 +437,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // 모달창 - 삭제버튼(댓글) -> 댓글 삭제
       modalComplete.onclick = () => {
         // 댓글 삭제처리
-        fetchWithAuth(`${API_URL}/api/comment/${seq}`, "DELETE")
+        fetchWithAuth(`/api/comment/${seq}`, "DELETE")
           .then((response) => {
             if (!response.errorCode) {
               alert("댓글이 삭제 되었습니다.");
@@ -481,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("비회원은 댓글 작성이 불가합니다. 로그인 해주세요.");
     } else {
       // 새로운 댓글 등록
-      fetchWithAuth(`${API_URL}/api/comment/edit`, "POST", newComment)
+      fetchWithAuth("/api/comment/edit", "POST", newComment)
         .then((response) => {
           if (!response.errorCode) {
             console.log("댓글 등록 완료");

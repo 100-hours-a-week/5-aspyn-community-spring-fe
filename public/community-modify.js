@@ -1,16 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  async function getConfig() {
-    const response = await fetch("/config");
-    const config = await response.json();
-    return config.API_URL;
-  }
-
-  const API_URL = await getConfig();
-
   // 로그인 유저 확인
   async function fetchUserInfo() {
     try {
-      const response = await fetchWithAuth(`${API_URL}/api/userinfo`, "GET");
+      const response = await fetchWithAuth("/api/userinfo", "GET");
 
       if (response.ok) {
         const data = await response.json();
@@ -92,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     //수정할 게시글 불러오기
-    fetchWithAuth(`${API_URL}/api/post/${post}`, "GET")
+    fetchWithAuth(`/api/post/${post}`, "GET")
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -146,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               if (title.value.length !== 0 && content.value.length !== 0) {
                 try {
                   const response = await fetchWithImg(
-                    `${API_URL}/api/post/${post}`,
+                    `/api/post/${post}`,
                     "PATCH",
                     updatePost
                   );
