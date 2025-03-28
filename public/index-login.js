@@ -1,12 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  async function getConfig() {
-    const response = await fetch("/config");
-    const config = await response.json();
-    return config.API_URL;
-  }
-
-  const API_URL = await getConfig();
-
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const confirmPasswordInput = document.getElementById("confirm-password");
@@ -188,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       // 서버로 api 요청
-      fetch(`${API_URL}/api/user/join`, {
+      fetch("/api/user/join", {
         method: "POST",
         body: formData,
       })
@@ -227,7 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("email", emailInput.value);
     formData.append("password", passwordInput.value);
 
-    fetch(`${API_URL}/login`, {
+    fetch("/login", {
       method: "POST",
       body: formData,
     })
