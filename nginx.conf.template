@@ -40,11 +40,6 @@ http {
             try_files $uri =404;
         }
 
-        # 회원가입 페이지
-        location /user/join {
-            rewrite ^ /community-join.html break;
-        }
-
         # 회원정보 변경 페이지
         location /user/info {
             rewrite ^ /community-user.html break;
@@ -94,4 +89,3 @@ http {
         }
     }
 }
-
