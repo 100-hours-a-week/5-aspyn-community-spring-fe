@@ -30,7 +30,8 @@ jobs:
         env:
           GHCR_REPO: ghcr.io/bysoyeon/chalcak-fe-container
         run: |
-          docker build -t $GHCR_REPO:latest .
+          docker build --build-arg API_URL=${{ secrets.API_URL }} \
+                        -t $GHCR_REPO:latest .
           docker push $GHCR_REPO:latest
 
   pull-and-deploy:
